@@ -1,0 +1,127 @@
+body{
+    background: linear-gradient(135deg, #c9d6ff, #e2e2e2);
+}
+.section-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0 0 15px 0;
+    color: #333;
+}
+
+/* 3-column grid for: birthdate | phone | photo */
+.extra-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 22px;
+    align-items: flex-start;
+    /* align columns to top */
+    margin-bottom: 20px;
+}
+
+.extra-col {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+/* Icon at top of each column */
+.small-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    background: #f7f5ff;
+    box-shadow: 0 5px 16px rgba(106, 93, 252, 0.15);
+    color: #8f7bff;
+    /* SVG stroke color */
+}
+
+.field-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #444;
+}
+
+/* Birthdate + phone inputs */
+.extra-input {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: none;
+    background: #f5f5f5;
+    font-size: 14px;
+    outline: none;
+    transition: 0.2s;
+}
+
+.extra-input:focus {
+    background: #ffffff;
+    box-shadow: 0 0 0 2px rgba(106, 93, 252, 0.25);
+}
+
+/* Profile preview box (just visual, no JS) */
+.photo-preview.small-preview {
+    width: 100%;
+    height: 80px;
+    border-radius: 12px;
+    background: #f9f8ff;
+    border: 1px dashed rgba(143, 123, 255, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    color: #777;
+    margin-bottom: 6px;
+}
+
+/* File input */
+.extra-input-file {
+    font-size: 13px;
+}
+
+/* Next button wrapper */
+.next-btn-wrap {
+    display: flex;
+    justify-content: flex-end;
+    /* align button to right side */
+    margin-top: 10px;
+}
+
+/* Next button style */
+.next-btn {
+    padding: 10px 26px;
+    border-radius: 999px;
+    border: none;
+    background: #6a5dfc;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(106, 93, 252, 0.35);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.next-btn:hover {
+    background: #5849fb;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(88, 73, 251, 0.45);
+}
+
+.next-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(88, 73, 251, 0.4);
+}
+
+/* Responsive: stack columns on small screens */
+@media (max-width: 900px) {
+    .extra-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .next-btn-wrap {
+        justify-content: center;
+    }
+}

@@ -1,0 +1,35 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/sidebar.css' %}">
+
+<div class="sidebar">
+    <div class="sidebar-header">
+        <img src="{% static 'images/logo.png' %}" class="logo" alt="PixelOra Logo">
+        
+    </div>
+
+    <div class="profile">
+        <img src="profile.png" class="profile-pic">
+        <div class="profile-info">
+            <h4>Username</h4>
+            <span>My Account</span>
+        </div>
+    </div>
+
+    <div class="menu-label">MENU</div>
+
+    <ul class="menu">
+        <li><i class="bi bi-house-door"></i> <span>Home</span></li>
+        <li><i class="bi bi-plus-square"></i> <span>Create</span></li>
+        <li><i class="bi bi-camera-reels"></i> <span>Reels</span></li>
+        <li><i class="bi bi-chat-dots"></i> <span>Messages</span></li>
+        <li><i class="bi bi-people"></i> <span>Friends</span></li>
+        <li><i class="bi bi-bell"></i> <span>Notifications</span></li>
+        <li><i class="bi bi-person-circle"></i> <span>Profile</span></li>
+    </ul>
+
+    <div class="sidebar-bottom">
+        <button class="btn add-account">➕ <span>Add Account</span></button>
+        <button class="btn logout">⏻ <span>Logout</span></button>
+    </div>
+</div>
+

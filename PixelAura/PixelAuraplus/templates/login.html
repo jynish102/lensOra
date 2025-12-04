@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <title>Login</title>
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+</head>
+<body>
+
+<div class="page-wrapper">
+    <div class="left-side">
+        <div class="login-card">
+           <img src="{% static 'images/logo.png' %}" class="logo" alt="PixelAura+ logo">
+            <div class="brand-name">PixelAura+</div>
+
+            <form class="login-form" method="post">
+                {% csrf_token %}
+                
+                <input type="text" name="username" placeholder="Username" required>
+                <input type="text" name="password" placeholder="Password" required>
+
+                <button type="submit" class="login-btn">Log in</button>
+            </form>
+        </div>
+
+       
+        <div class="bottom-card">
+            <span>Don't have an account?</span>
+            <a href="{% url 'register' %}">Register</a>
+        </div>
+
+    </div>
+
+    
+    <div class="right-side">
+        <div class="phone-stack">
+            <div class="phone-img img1">
+                <img src="{% static 'images/img1.jpeg' %}" alt="preview 1">
+            </div>
+            <div class="phone-img img2">
+                <img src="{% static 'images/img2.jpg' %}" alt="preview 2">
+            </div>
+            <div class="phone-img img3">
+                <img src="{% static 'images/img3.jpg' %}" alt="preview 3">
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

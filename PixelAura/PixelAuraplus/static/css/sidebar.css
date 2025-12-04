@@ -1,0 +1,164 @@
+/* GENERAL BACKGROUND */
+body {
+    background: linear-gradient(135deg, #b9c0d8, #754dca, #5980a8);
+    background-size: cover;
+    background-attachment: fixed;
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* SIDEBAR */
+.sidebar {
+    width: 110px;
+    height: 100vh;
+    background: rgba(236, 231, 231, 0.06);
+    backdrop-filter: blur(18px);
+    border-right: 1px solid rgba(255, 255, 255, 0.15);
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 12px;
+    transition: width 0.35s ease;
+   
+}
+
+/* EXPAND ON HOVER */
+.sidebar:hover {
+    width: 260px;
+}
+
+/* LOGO */
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.brand-name {
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.sidebar:hover .brand-name {
+    opacity: 1;
+}
+
+/* PROFILE */
+.profile {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.profile-info {
+    opacity: 0;
+    white-space: nowrap;
+    transition: opacity 0.3s;
+}
+
+.sidebar:hover .profile-info {
+    opacity: 1;
+}
+
+.profile-pic {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+}
+
+/* MENU LABEL */
+.menu-label {
+    margin-top: 28px;
+    font-size: 13px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    white-space: nowrap;
+}
+
+.sidebar:hover .menu-label {
+    opacity: 0.7;
+}
+
+/* MENU */
+.menu {
+    list-style: none;
+    padding: 0;
+    margin-top: 12px;
+}
+
+.menu li {
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    color: white;
+    transition: background 0.25s;
+}
+
+.logo {
+    width: 110px;
+    height: 100px;
+    border-radius: 14px;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.menu li:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.menu li span {
+    opacity: 0;
+    transition: opacity 0.25s;
+    white-space: nowrap;
+}
+
+.sidebar:hover .menu li span {
+    opacity: 1;
+}
+
+/* BOTTOM BUTTONS */
+.sidebar-bottom {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.btn {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.08);
+    color: white;
+    cursor: pointer;
+    border: none;
+    transition: background 0.25s;
+}
+
+.btn span {
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.sidebar:hover .btn span {
+    opacity: 1;
+}
+
+.btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.logout {
+    background: rgba(255, 40, 40, 0.25);
+}
+
+.logout:hover {
+    background: rgba(255, 40, 40, 0.35);
+}
