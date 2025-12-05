@@ -9,4 +9,5 @@ urlpatterns = [
     path('home/',views.home,name='home'),
     path('sidebar/',views.sidebar,name='sidebar'),
     path('footer/',views.footer,name='footer'),
+    path('side/',views.side,name="side")
 ]
