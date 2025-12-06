@@ -1,7 +1,328 @@
-{% extends "sidebar.html" %}
+{% extends 'sidebar.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="home">
+    <div class="home-container">
+
+        <!-- Welcome Section -->
+        <div class="welcome-section">
+            <h1>Welcome to <span>PixelAura+</span> ✨</h1>
+            <p>Your creative journey starts here. Share your first post or explore content from featured creators.</p>
+
+            <div class="welcome-buttons">
+                <button class="btn-primary">Create Post</button>
+                <button class="btn-secondary">Upload Reel</button>
+            </div>
+        </div>
+
+        <!-- Suggested Users as Logo Only -->
+        <div class="suggested-section">
+                <h2>Creators</h2>
+
+                <div class="suggest-list logos-only">
+
+                    <!-- ✅ MAIN USER LOGO WITH PLUS -->
+                    <div class="logo-wrapper user-logo">
+                        <div class="default-avatar" id="storyPreview">
+                    <i class="bx bxs-user"></i>
+
+                </div>
+
+                <div class="add-icon" onClick ="openStoryUpload()">+</div>
+                <input type="file" id="storyInput" accept="image/*" hidden>
+            </div>
+
+            <!-- Other Logos -->
+            <div class="logo-wrapper">
+                <img src="https://i.pravatar.cc/100?img=11" class="logo-avatar">
+            </div>
+
+            <div class="logo-wrapper">
+                <img src="https://i.pravatar.cc/100?img=22" class="logo-avatar">
+            </div>
+
+            <div class="logo-wrapper">
+                <img src="https://i.pravatar.cc/100?img=33" class="logo-avatar">
+            </div>
+
+        </div>
+    </div>
+        <!-- Featured Posts -->
+            <div class="feed">
+
+            <!-- ✅ SINGLE POST (VIDEO) -->
+            <div class="post-card">
+
+                <!-- 🔥 USER OVERLAY -->
+                <div class="post-header">
+                    <img src="logo.png" class="post-user-logo">
+                    <div>
+                        <span class="post-username">pixelaura</span>
+                        <small>Suggested For You</small>
+                    </div>
+                </div>
+
+                <!-- 🎥 POST MEDIA -->
+                <div class="reel-container" data-type="video">
+                    <div class="tap-indicator">
+                        <i class="bx bx-pause"></i>
+                        <span>Paused</span>
+                    </div>
+
+                    <video class="post-media" autoplay loop muted playsinline>
+                      <source src="https://cdn.pixabay.com/video/2023/01/23/150310-808285211_large.mp4" type="video/mp4">
+                    </video>
+
+                    
+
+                    <!-- ❤️ POST ACTIONS -->
+                    <div class="post-actions-vertical">
+                        <div class="action-btn likeBtn">
+                            <i class="bx bx-heart"></i>
+                            <span>1.2k</span>
+                        </div>
+
+                        <div class="action-btn">
+                            <i class="bx bx-comment commentBtn"></i>
+                            <span>245</span>
+                        </div>
+
+                        <div class="action-btn">
+                            <i class="bx bx-bookmark"></i>
+                            <span>Save</span>
+                        </div>
+
+                        <!-- ✅ SOUND ICON FOR VIDEO -->
+                        <div class="action-btn soundBtn">
+                            <i class="bx bx-volume-full"></i>
+                            <span>Sound</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ✅ SINGLE POST (Posts) -->
+            <div class="post-card">
+
+                <!-- 🔥 USER OVERLAY -->
+                <div class="post-header">
+                    <img src="logo.png" class="post-user-logo">
+                    <div>
+                        <span class="post-username">pixelaura</span>
+                        <small>Suggested For You</small>
+                    </div>
+                </div>
+
+                <!-- 🎥 POST MEDIA -->
+                <div class="reel-container" data-type="photo">
+                    <div class="tap-indicator">
+                        <i class="bx bx-pause"></i>
+                        <span>Paused</span>
+                    </div>
+
+                    <img src="https://cdn.pixabay.com/photo/2023/08/18/08/35/mountain-8191071_1280.jpg" class="post-media">
+                    <!-- ❤️ POST ACTIONS -->
+                    <div class="post-actions-vertical">
+                        <div class="action-btn likeBtn">
+                            <i class="bx bx-heart"></i>
+                            <span>1.2k</span>
+                        </div>
+
+                        <div class="action-btn">
+                            <i class="bx bx-comment commentBtn"></i>
+                            <span>245</span>
+                        </div>
+
+                        <div class="action-btn">
+                            <i class="bx bx-bookmark"></i>
+                            <span>Save</span>
+                        </div>
+
+                        <!-- ✅ SOUND ICON FOR VIDEO -->
+                        <div class="action-btn soundBtn">
+                            <i class="bx bx-volume-full"></i>
+                            <span>Sound</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ✅ SINGLE POST (VIDEO) -->
+            <div class="post-card">
+
+                <!-- 🔥 USER OVERLAY -->
+                <div class="post-header">
+                    <img src="logo.png" class="post-user-logo">
+                    <div>
+                        <span class="post-username">pixelaura</span>
+                        <small>Suggested For You</small>
+                    </div>
+                </div>
+
+                <!-- 🎥 POST MEDIA -->
+                <div class="reel-container" data-type="video">
+                    <div class="tap-indicator">
+                        <i class="bx bx-pause"></i>
+                        <span>Paused</span>
+                    </div>
+
+                    <video class="post-media" autoplay loop muted playsinline>
+                      <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                    </video>
+
+                    
+
+                    <!-- ❤️ POST ACTIONS -->
+                    <div class="post-actions-vertical">
+                        <div class="action-btn likeBtn">
+                            <i class="bx bx-heart"></i>
+                            <span>1.2k</span>
+                        </div>
+
+                        <div class="action-btn">
+                            <i class="bx bx-comment commentBtn"></i>
+                            <span>245</span>
+                        </div>
+
+                        <div class="action-btn">
+                            <i class="bx bx-bookmark"></i>
+                            <span>Save</span>
+                        </div>
+
+                        <!-- ✅ SOUND ICON FOR VIDEO -->
+                        <div class="action-btn soundBtn">
+                            <i class="bx bx-volume-full"></i>
+                            <span>Sound</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+             <!-- ✅ SINGLE POST (Posts) -->
+            <div class="post-card">
+
+                <!-- 🔥 USER OVERLAY -->
+                <div class="post-header">
+                    <img src="logo.png" class="post-user-logo">
+                    <div>
+                        <span class="post-username">pixelaura</span>
+                        <small>Suggested For You</small>
+                    </div>
+                </div>
+
+                <!-- 🎥 POST MEDIA -->
+                <div class="reel-container" data-type="photo">
+                    <div class="tap-indicator">
+                        <i class="bx bx-pause"></i>
+                        <span>Paused</span>
+                    </div>
+
+                    <img src="https://picsum.photos/600/900" class="post-media">
+                    <!-- ❤️ POST ACTIONS -->
+                    <div class="post-actions-vertical">
+                        <div class="action-btn likeBtn">
+                            <i class="bx bx-heart"></i>
+                            <span>1.2k</span>
+                        </div>
+
+                        <div class="action-btn">
+                            <i class="bx bx-comment commentBtn"></i>
+                            <span>245</span>
+                        </div>
+
+                        <div class="action-btn">
+                            <i class="bx bx-bookmark"></i>
+                            <span>Save</span>
+                        </div>
+
+                        <!-- ✅ SOUND ICON FOR VIDEO -->
+                        <div class="action-btn soundBtn">
+                            <i class="bx bx-volume-full"></i>
+                            <span>Sound</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ✅ SINGLE POST (VIDEO) -->
+            <div class="post-card">
+
+                <!-- 🔥 USER OVERLAY -->
+                <div class="post-header">
+                    <img src="logo.png" class="post-user-logo">
+                    <div>
+                        <span class="post-username">pixelaura</span>
+                        <small>Suggested For You</small>
+                    </div>
+                </div>
+
+                <!-- 🎥 POST MEDIA -->
+                <div class="reel-container" data-type="video">
+                    <div class="tap-indicator">
+                        <i class="bx bx-pause"></i>
+                        <span>Paused</span>
+                    </div>
+
+                    <video class="post-media" autoplay loop muted playsinline>
+                      <source src="https://cdn.pixabay.com/video/2022/10/12/134909-754932563_large.mp4" type="video/mp4">
+                    </video>
+
+                    
+
+                    <!-- ❤️ POST ACTIONS -->
+                    <div class="post-actions-vertical">
+                        <div class="action-btn likeBtn">
+                            <i class="bx bx-heart"></i>
+                            <span>1.2k</span>
+                        </div>
+
+                        <div class="action-btn">
+                            <i class="bx bx-comment commentBtn"></i>
+                            <span>245</span>
+                        </div>
+
+                        <div class="action-btn">
+                            <i class="bx bx-bookmark"></i>
+                            <span>Save</span>
+                        </div>
+
+                        <!-- ✅ SOUND ICON FOR VIDEO -->
+                        <div class="action-btn soundBtn">
+                            <i class="bx bx-volume-full"></i>
+                            <span>Sound</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+
+
+            
+
+                
+
+            
+
+    
+
+    
+
+           
+
+            
+
+            
+
+        </div>
+
+        
+
+    </div>
+</section>
 
 
 
-<h1>This is home</h1>
-
-
+{% endblock %}

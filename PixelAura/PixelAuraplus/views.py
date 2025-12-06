@@ -41,5 +41,5 @@ def sidebar(request):
 def footer(request):
     return render(request,'footer.html')  
 
-def side(request):
-    return render(request,'side.html')  
+def base(request):
+    return render(request,'base.html')  
