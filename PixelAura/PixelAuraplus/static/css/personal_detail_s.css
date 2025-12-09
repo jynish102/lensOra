@@ -1,0 +1,62 @@
+.ac-content {
+    flex: 1;
+    padding: 30px 50px;
+}
+
+.ac-top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ac-close {
+    font-size: 22px;
+}
+
+.ac-desc {
+    font-size: 14px;
+    color: #555;
+    margin: 15px 0 25px;
+}
+
+.brand-color {
+    color: #2563eb;
+    font-weight: 600;
+}
+
+.profile-card {
+    border: 1px solid #ddd;
+    padding: 16px;
+    border-radius: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 520px;
+}
+
+.profile-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.profile-img {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #ddd;
+}
+
+.profile-left p {
+    margin-top: 2px;
+    color: gray;
+    font-size: 13px;
+}
+
+.add-accounts {
+    margin-top: 15px;
+    display: inline-block;
+    color: #2563eb;
+    font-size: 14px;
+    text-decoration: none;
+}

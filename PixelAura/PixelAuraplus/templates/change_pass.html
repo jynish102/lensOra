@@ -1,0 +1,69 @@
+{% extends "account_center.html" %}
+{% load static %}
+{% block content %}
+
+<div class="ac-content">
+
+    <div class="ac-top-bar">
+        <h2>Password and Security</h2>
+        <a href="{% url 'setting' %}" class="close-link">
+            <i class='bx bx-x ac-close'></i>
+        </a>
+    </div>
+
+    <h3 class="ps-section-title">Change Password</h3>
+    <small class="ac-desc">Choose Account to Change Password</small>
+
+    <!-- Profile Item 1 -->
+    <div class="profile-card" id="openChangePass1">
+        <div class="profile-left">
+            <div class="profile-img"></div>
+            <div>
+                <strong>{{ user.username }}</strong>
+                <p>Pixelaura</p>
+            </div>
+        </div>
+        <i class='bx bx-chevron-right'></i>
+    </div>
+
+    <!-- Profile Item 2 -->
+    <div class="profile-card" id="openChangePass2">
+        <div class="profile-left">
+            <div class="profile-img"></div>
+            <div>
+                <strong>{{ user.username }}</strong>
+                <p>Pixelaura</p>
+            </div>
+        </div>
+        <i class='bx bx-chevron-right'></i>
+    </div>
+
+</div>
+
+
+
+<!-- CHANGE PASSWORD POPUP -->
+<div class="cp-overlay" id="cpOverlay">
+    <div class="cp-modal">
+
+        <div class="cp-top">
+            <i class='bx bx-x cp-close'></i>
+        </div>
+
+        <p class="cp-user">{{ user.username }} · Pixelaura</p>
+        <h2>Change password</h2>
+
+        <input type="password" placeholder="Current password">
+        <input type="password" placeholder="New password">
+        <input type="password" placeholder="Re-type new password">
+
+        <a href="#" class="cp-forgot">Forgot your password?</a>
+
+        <button class="cp-btn">Change password</button>
+
+    </div>
+</div>
+
+<script src="{% static 'js/change_pass.js' %}"></script>
+
+{% endblock %}

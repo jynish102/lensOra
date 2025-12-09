@@ -1,0 +1,54 @@
+{% extends "account_center.html" %}
+{% load static %}
+
+{% block content %}
+
+
+
+
+
+  <div class="ac-content">
+
+  <!-- ✅ TOP BAR -->
+  <div class="ac-top-bar">
+    <h2>Personal details</h2>
+    <a href="{% url 'setting' %}">
+      <i class='bx bx-x ac-close'></i>
+    </a>
+  </div>
+
+  <!-- ✅ DESCRIPTION -->
+  <p class="ac-desc">
+    Pixelaura uses this information to verify your identity and keep the community safe.
+    You decide what personal details you make visible to others.
+  </p>
+
+  <!-- ✅ DETAILS CARD -->
+  <div class="pd-card">
+
+    <div class="pd-item">
+      <div>
+        <strong>Contact info</strong>
+        <p>jynik218@gmail.com</p>
+      </div>
+      
+    </div>
+
+    <div class="pd-item">
+      <div>
+        <strong>Birthday</strong>
+        <p>December 5, 2002</p>
+      </div>
+      
+    </div>
+
+  </div>
+
+</div>
+
+
+</div>
+
+</body>
+
+{% endblock  %}

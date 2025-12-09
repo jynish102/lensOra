@@ -17,38 +17,67 @@
             </div>
         </div>
 
-        <!-- Suggested Users as Logo Only -->
-        <div class="suggested-section">
-                <h2>Creators</h2>
+        <div class="suggested-panel">
 
-                <div class="suggest-list logos-only">
+  <!-- ✅ LOGGED IN USER -->
+  
 
-                    <!-- ✅ MAIN USER LOGO WITH PLUS -->
-                    <div class="logo-wrapper user-logo">
-                        <div class="default-avatar" id="storyPreview">
-                    <i class="bx bxs-user"></i>
+  <!-- ✅ HEADER -->
+  <div class="suggest-header">
+    <span>Suggested for you</span>
+    
+  </div>
 
-                </div>
+  <div class="story-suggest-wrapper">
 
-                <div class="add-icon" onClick ="openStoryUpload()">+</div>
-                <input type="file" id="storyInput" accept="image/*" hidden>
-            </div>
+  <!-- ✅ LEFT SIDE: HORIZONTAL SUGGESTED CREATORS -->
+  <div class="story-logos-row">
 
-            <!-- Other Logos -->
-            <div class="logo-wrapper">
-                <img src="https://i.pravatar.cc/100?img=11" class="logo-avatar">
-            </div>
-
-            <div class="logo-wrapper">
-                <img src="https://i.pravatar.cc/100?img=22" class="logo-avatar">
-            </div>
-
-            <div class="logo-wrapper">
-                <img src="https://i.pravatar.cc/100?img=33" class="logo-avatar">
-            </div>
-
-        </div>
+    <div class="logo-wrapper">
+      <img src="https://i.pravatar.cc/100?img=11" class="logo-avatar">
+      <p class="logo-name">user_one</p>
     </div>
+
+    <div class="logo-wrapper">
+      <img src="https://i.pravatar.cc/100?img=22" class="logo-avatar">
+      <p class="logo-name">user_two</p>
+    </div>
+
+    <div class="logo-wrapper">
+      <img src="https://i.pravatar.cc/100?img=33" class="logo-avatar">
+      <p class="logo-name">user_three</p>
+    </div>
+
+    <div class="logo-wrapper">
+      <img src="https://i.pravatar.cc/100?img=44" class="logo-avatar">
+      <p class="logo-name">user_four</p>
+    </div>
+
+  </div>
+
+  <!-- ✅ RIGHT SIDE: MAIN USER -->
+  <div class="main-user-box">
+    <a href="" classs="profile-link">
+    <div class="logo-wrapper user-logo">
+        
+      <div class="default-avatar">
+        
+        <i class="bx bxs-user"></i>
+        
+      </div>
+</div>
+</a>
+
+    <div class="main-user-text">
+      <span class="main-username">jynik218</span>
+      <span class="main-fullname">jy</span>
+    </div>
+
+  </div>
+  <a href=" " class="switch-btn">Switch</a>
+</div>
+
+
         <!-- Featured Posts -->
             <div class="feed">
 
@@ -57,7 +86,7 @@
 
                 <!-- 🔥 USER OVERLAY -->
                 <div class="post-header">
-                    <img src="logo.png" class="post-user-logo">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSU-qUBYEF1T26hIRXdi6wNxXuAJpWXs6KNfA&s" class="post-user-logo">
                     <div>
                         <span class="post-username">pixelaura</span>
                         <small>Suggested For You</small>
@@ -108,7 +137,7 @@
 
                 <!-- 🔥 USER OVERLAY -->
                 <div class="post-header">
-                    <img src="logo.png" class="post-user-logo">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSU-qUBYEF1T26hIRXdi6wNxXuAJpWXs6KNfA&s" class="post-user-logo">
                     <div>
                         <span class="post-username">pixelaura</span>
                         <small>Suggested For You</small>
@@ -117,12 +146,9 @@
 
                 <!-- 🎥 POST MEDIA -->
                 <div class="reel-container" data-type="photo">
-                    <div class="tap-indicator">
-                        <i class="bx bx-pause"></i>
-                        <span>Paused</span>
-                    </div>
+                    
 
-                    <img src="https://cdn.pixabay.com/photo/2023/08/18/08/35/mountain-8191071_1280.jpg" class="post-media">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSU-qUBYEF1T26hIRXdi6wNxXuAJpWXs6KNfA&s" class="post-media">
                     <!-- ❤️ POST ACTIONS -->
                     <div class="post-actions-vertical">
                         <div class="action-btn likeBtn">
@@ -140,11 +166,6 @@
                             <span>Save</span>
                         </div>
 
-                        <!-- ✅ SOUND ICON FOR VIDEO -->
-                        <div class="action-btn soundBtn">
-                            <i class="bx bx-volume-full"></i>
-                            <span>Sound</span>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -154,7 +175,7 @@
 
                 <!-- 🔥 USER OVERLAY -->
                 <div class="post-header">
-                    <img src="logo.png" class="post-user-logo">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSU-qUBYEF1T26hIRXdi6wNxXuAJpWXs6KNfA&s" class="post-user-logo">
                     <div>
                         <span class="post-username">pixelaura</span>
                         <small>Suggested For You</small>
@@ -214,10 +235,7 @@
 
                 <!-- 🎥 POST MEDIA -->
                 <div class="reel-container" data-type="photo">
-                    <div class="tap-indicator">
-                        <i class="bx bx-pause"></i>
-                        <span>Paused</span>
-                    </div>
+                
 
                     <img src="https://picsum.photos/600/900" class="post-media">
                     <!-- ❤️ POST ACTIONS -->
@@ -235,12 +253,6 @@
                         <div class="action-btn">
                             <i class="bx bx-bookmark"></i>
                             <span>Save</span>
-                        </div>
-
-                        <!-- ✅ SOUND ICON FOR VIDEO -->
-                        <div class="action-btn soundBtn">
-                            <i class="bx bx-volume-full"></i>
-                            <span>Sound</span>
                         </div>
                     </div>
                 </div>
@@ -296,26 +308,6 @@
                     </div>
                 </div>
             </div>
-
-            
-
-
-            
-
-                
-
-            
-
-    
-
-    
-
-           
-
-            
-
-            
-
         </div>
 
         

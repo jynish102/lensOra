@@ -1,0 +1,137 @@
+{% extends 'sidebar.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/setting.css'%}">
+<title>Settings</title>
+
+<section class="home">
+<div class="home-container">   
+<div class="app">
+<div class="settings-panel">
+
+  <!-- TOP TITLE -->
+  <h3 class="settings-title">Settings</h3>
+
+  <!-- ✅ ACCOUNTS CENTER CARD -->
+  <div class="accounts-card">
+    <div class="meta-row">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVzKi8C9IBFXXQXY1228D08Slsz7BBiyXZ0Q&s" class="meta-logo" alt="logo">
+      <strong>LensOra</strong>
+    </div>
+
+    <h4>Accounts Center</h4>
+    <p class="muted">
+      Manage your connected experiences and account settings across Meta technologies.
+    </p>
+
+    <ul class="accounts-links">
+      <li>
+        <a href="{% url 'personal_detail_s' %}" class="account-link">
+         <i class='bx bx-user'></i>
+         Personal details
+        </a>          
+      </li>
+    </ul>
+
+   
+  </div>
+
+  <!-- ✅ SECTION 1 -->
+  <p class="section-title">How you use Instagram</p>
+  <ul class="settings-list">
+    <li class="active">
+      <a href="setting.html">
+       <i class='bx bx-edit'></i>
+       Edit profile
+      </a>
+    </li>
+    
+  </ul>
+
+  <!-- ✅ SECTION 2 -->
+  <p class="section-title">Who can see your content</p>
+  <ul class="settings-list">
+    <li>
+      <a href="#">
+        <i class='bx bx-lock'></i>
+        Account privacy
+      </a>
+    </li>
+  </ul>
+
+  
+
+</div>
+
+
+  <!-- ✅ EDIT PROFILE SECTION (AS IT IS) -->
+  <div class="edit-profile">
+
+    <h2>Edit profile</h2>
+
+    <div class="profile-box">
+      <div class="profile-left">
+        <img src="https://i.pravatar.cc/100" alt="add Profile Photo">
+        <div>
+          <strong>jynik218</strong>
+          <p>jy</p>
+        </div>
+      </div>
+
+      <button id ="openPhotoModal">Change photo</button>
+    </div>
+
+    
+
+    <div class="form-group">
+      <label>Bio</label>
+      <textarea placeholder="Bio"></textarea>
+      <small>0 / 150</small>
+    </div>
+
+    <div class="form-group">
+      <label>Gender</label>
+      <select>
+        <option>Prefer not to say</option>
+        <option>Male</option>
+        <option>Female</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <button type="submit" class="submit-btn">Submit</button>
+    </div>
+
+    <!--popup---------------------------------------------->
+    <!-- ✅ PROFILE PHOTO POPUP -->
+<div class="photo-modal" id="photoModal">
+  <div class="photo-modal-box">
+
+    <h3>Change Profile Photo</h3>
+
+    <div class="photo-options upload">
+      Upload Photo
+      <input type="file" hidden>
+    </div>
+
+    <div class="photo-options remove">
+      Remove Current Photo
+    </div>
+
+    <div class="photo-options cancel" id="closePhotoModal">
+      Cancel
+    </div>
+
+  </div>
+</div>
+
+
+  </div>
+
+</div>
+</div>
+</section>
+
+{% endblock  %}
+
+

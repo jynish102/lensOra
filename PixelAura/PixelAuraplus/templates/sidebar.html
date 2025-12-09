@@ -14,6 +14,7 @@
             </span>
             
         </div>
+
         <i class="bx bx-chevron-right toggle"></i>
     </header>
 
@@ -30,29 +31,29 @@
             <!-- LINKS -->
             <ul class="menu-links">
                 <li class="nav-link">
-                    <a href="#">
+                    <a href="{% url 'home' %}">
                         <i class="bx bx-home-alt icon"></i>
                         <span class="text nav-text">Home</span>
                     </a>
                 </li>
 
                 <li class="nav-link">
-                    <a href="#">
+                    <a href="">
                         <i class='bx bx-plus-circle icon'></i>
                         <span class="text nav-text">Add Post</span>
                     </a>
                 </li>
 
                 <li class="nav-link">
-                    <a href="#">
+                    <a href="">
                         <i class='bx bx-movie-play icon'></i>
                         <span class="text nav-text">Reels</span>
                     </a>
                 </li>
 
                 <li class="profile-box">
-                <a href="#">
-                    <img src="" alt="profile">
+                <a href="">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQz4J1XfiouVQm6mrrz8CyL7qd6YZ7a3WZ6JA&s" alt="profile">
                     <span class="text nav-text">My Profile</span>
                 </a>
             </li>
@@ -63,10 +64,6 @@
         <!-- ✅ SIDEBAR BOTTOM DROPDOWN -->
 <div class="bottom-content">
   <ul class="bottom-list">
-
-    
-
-    <!-- ✅ MORE DROPDOWN -->
     <!-- ✅ MORE DROPDOWN -->
 <li class="nav-link dropdown hover-dropdown">
 
@@ -76,25 +73,25 @@
   </div>
 
   <div class="dropdown-menu hover-menu">
-    <a href="setting.html"><i class="bx bx-cog"></i> Settings</a>
+    <a href="{% url 'setting' %}"><i class="bx bx-cog"></i> Settings</a>
     
     <a href="saved.html"><i class="bx bx-bookmark"></i> Saved</a>
     <a href="javascript:void(0)" class="switch-appearance">
         <i class="bx bx-moon appearance-icon"></i>
         <span class="appearance-text">Dark Mode</span>
     </a>
+
+    
+
     <div class="divider"></div>
-    <a href="edit_profile.html">Switch accounts</a>
-    <a href="logout.html" class="danger">Log out</a>
+    <a href="{% url 'login' %}">Switch accounts</a>
+    <a href="#" class="danger">Log out</a>
   </div>
 
 </li>
 
   </ul>
 </div>
-
-
-
 </nav>
 
 <div class="main-content">
@@ -108,7 +105,7 @@
 <footer class="footer">
     <div class="footer-content">
         <div class="footer-brand">
-            <img src="your-logo.png" alt="LensORa Logo" class="footer-logo">
+            <img src="{% static 'images/logo.png' %}" alt="LensORa Logo" class="footer-logo">
             <span class="footer-text">by <strong>LensORa</strong></span>
         </div>
         <p>© 2025–26 PixelAura • All Rights Reserved</p>

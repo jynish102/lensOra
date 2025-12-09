@@ -1,0 +1,39 @@
+{% extends 'account_center.html' %}
+{% load static %}
+
+{% block content %}
+
+
+<!-- content.html -->
+<div class="ac-content">
+
+  <div class="ac-top-bar">
+    <h2>Profiles</h2>
+    <a href="{% url 'setting' %}" class="close-link">
+      <i class='bx bx-x ac-close'></i>
+    </a>
+  </div>
+
+  <p class="ac-desc">
+    Control your profile <span class="brand-color">identity and</span>
+    sync your details across Pixelaura services.
+    <span class="brand-color">Add more</span> profiles by connecting
+    more <span class="brand-color">Pixelaura accounts.</span>
+  </p>
+
+  <div class="profile-card">
+    <div class="profile-left">
+      <div class="profile-img"></div>
+      <div>
+        <strong>jynik218</strong>
+        <p>Pixelaura</p>
+      </div>
+    </div>
+    <i class='bx bx-chevron-right'></i>
+  </div>
+
+  <a class="add-accounts">Add accounts</a>
+
+</div>
+
+{% endblock %}

@@ -1,7 +1,7 @@
 const body = document.querySelector("body");
 const sidebar = document.querySelector(".sidebar");
 const toggle = document.querySelector(".toggle");
-const modeSwitch = document.querySelector(".toggle-switch");
+
 const modeText = document.querySelector(".mode-text");
 
 toggle.addEventListener("click", () => {
@@ -125,20 +125,3 @@ document.addEventListener("keydown", (e) => {
     moreDropdown.classList.remove("show");
   }
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

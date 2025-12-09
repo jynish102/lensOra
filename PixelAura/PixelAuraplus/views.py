@@ -38,8 +38,20 @@ def home(request):
 def sidebar(request):
     return render(request,'sidebar.html')
 
-def footer(request):
-    return render(request,'footer.html')  
+def setting(request):
+    return render(request,'setting.html')  
 
 def base(request):
     return render(request,'base.html')  
+
+def account_center(request):
+    return render(request, 'account_center.html')
+
+def personal_detail_s(request):
+    return render(request,"personal_detail_s.html")
+
+def change_pass(request):
+    return render(request,'change_pass.html')
+
+def personal_detail_ss(request):
+    return render (request,"personal_detail_ss.html")

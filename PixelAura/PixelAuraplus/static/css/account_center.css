@@ -1,0 +1,62 @@
+/* SIDEBAR WRAPPER */
+.ac-sidebar {
+    width: 340px;
+    border-right: 1px solid #ddd;
+    padding: 20px;
+}
+
+/* HEADER */
+.ac-header p {
+    font-size: 13px;
+    color: #555;
+}
+
+.meta-logo {
+    height: 22px;
+    border-radius: 50px;
+}
+
+/* MAIN LINKS */
+.ac-main-links {
+    margin-top: 20px;
+}
+
+.ac-link,
+.ac-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+/* Hover effect */
+.ac-item:hover {
+    background: #f1f1f1;
+}
+
+/* REMOVE default link styling */
+.ac-link-item {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.ac-section-title {
+    margin: 25px 0 10px;
+    font-size: 12px;
+    color: #555;
+}
+
+/* ACTIVE STATE */
+.ac-link-item.active .ac-link,
+.ac-link-item.active .ac-item {
+    background: #1f2d3d;
+    color: #fff;
+}
+
+.ac-link-item.active i {
+    color: #fff;
+}
