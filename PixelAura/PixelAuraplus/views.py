@@ -38,6 +38,9 @@ def home(request):
 def sidebar(request):
     return render(request,'sidebar.html')
 
+def account_sidebar(request):
+    return render(request,'account_sidebar.html')
+
 def setting(request):
     return render(request,'setting.html')  
 

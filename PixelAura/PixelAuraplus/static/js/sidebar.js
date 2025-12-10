@@ -125,3 +125,94 @@ document.addEventListener("keydown", (e) => {
     moreDropdown.classList.remove("show");
   }
 });
+
+
+/*add posts--------------------------------------------------------------------------------- */
+
+/* -----------------------------
+   OPEN POPUP
+------------------------------ */
+function openPopup() {
+    document.getElementById("addPostPopup").style.display = "flex";
+
+    // Reset previous preview if any
+    resetPreview();
+}
+
+/* -----------------------------
+   CLOSE POPUP → SHOW DISCARD CONFIRMATION
+------------------------------ */
+function closePopup() {
+    document.getElementById("discardPopup").style.display = "flex";
+}
+
+/* -----------------------------
+   CANCEL DISCARD POPUP
+------------------------------ */
+function closeDiscard() {
+    document.getElementById("discardPopup").style.display = "none";
+}
+
+/* -----------------------------
+   DISCARD POST → CLOSE BOTH POPUPS + RESET
+------------------------------ */
+function discardPost() {
+    // Close both popups
+    document.getElementById("discardPopup").style.display = "none";
+    document.getElementById("addPostPopup").style.display = "none";
+
+    // Reset preview & caption
+    resetPreview();
+}
+
+/* -----------------------------
+   RESET ALL PREVIEW CONTENT
+------------------------------ */
+function resetPreview() {
+    const img = document.getElementById("previewImg");
+    const video = document.getElementById("previewVideo");
+
+    // Reset image
+    img.src = "";
+    img.style.display = "none";
+
+    // Reset video
+    video.src = "";
+    video.style.display = "none";
+
+    // Reset caption
+    document.querySelector(".caption-box").value = "";
+
+    // Show upload area
+    document.querySelector(".upload-area").style.display = "flex";
+}
+
+/* -----------------------------
+   PREVIEW MEDIA (IMAGE / VIDEO)
+------------------------------ */
+function previewMedia(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const imagePreview = document.getElementById("previewImg");
+    const videoPreview = document.getElementById("previewVideo");
+
+    // Reset first
+    imagePreview.style.display = "none";
+    videoPreview.style.display = "none";
+
+    // Hide upload box
+    document.querySelector(".upload-area").style.display = "none";
+
+    // IMAGE
+    if (file.type.startsWith("image/")) {
+        imagePreview.src = URL.createObjectURL(file);
+        imagePreview.style.display = "block";
+    }
+
+    // VIDEO
+    else if (file.type.startsWith("video/")) {
+        videoPreview.src = URL.createObjectURL(file);
+        videoPreview.style.display = "block";
+    }
+}

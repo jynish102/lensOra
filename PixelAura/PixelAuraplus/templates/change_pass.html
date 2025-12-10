@@ -1,6 +1,15 @@
 {% extends "account_center.html" %}
 {% load static %}
+{% block title %}Change Password{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/change_pass.css' %}">
+{% endblock %}
 {% block content %}
+
+<title>Change Password</title>
+    <link rel="stylesheet" href="{% static 'css/change_pass.css' %}" >
+    
 
 <div class="ac-content">
 
@@ -63,7 +72,9 @@
 
     </div>
 </div>
+{% block extra_js %}
 
 <script src="{% static 'js/change_pass.js' %}"></script>
+{% endblock %}
 
 {% endblock %}

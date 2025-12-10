@@ -38,7 +38,7 @@
                 </li>
 
                 <li class="nav-link">
-                    <a href="">
+                    <a href="javascript:void(0)" onClick="openPopup()">
                         <i class='bx bx-plus-circle icon'></i>
                         <span class="text nav-text">Add Post</span>
                     </a>
@@ -91,8 +91,50 @@
 </li>
 
   </ul>
+  <!------------------------add POsst popup----------------------------------------->
+<div class="popup-overlay" id ="addPostPopup">
+    <div class="popup-box">
+        <div class="popup-header">
+            <span>Create New Post</span>
+            <button class="close-btn" onclick="closePopup()">Close</button>
+        </div>
+        <div class="popup-content">
+            <label for="fileUpload" class="upload-area">
+                <i class="bx bx-image-add"></i>
+                <p>Upload your Photo or Video</p>
+                <input type="file" id="fileUpload" hidden accept="image/*,video/*" onchange="previewMedia(event)">
+            </label>
+            <img id="previewImg" class="preview-img" style="display:none;">
+            <video id="previewVideo" class="preview-video" style="display:none;"></video>
+
+        </div>
+        <div class="user-info-bar">
+            <img src="p.png" alt="profile pic" class="user-dp">
+            <div class="user-text">
+                <span class="username">User-name</span>
+                <span class="fullname">Name</span>
+            </div>
+        </div>
+        <textarea class="caption-box" placeholder="write caption....."></textarea>
+        <button class="post-btn">Post</button>
+    </div>
 </div>
+<!------------------------------------------------------Discard POst----------------------->
+<div class="popup-overlay" id="discardPopup">
+    <div class="discard-box">
+        <h3>Discard-POst?</h3>
+        <p>IF you Leave Your POst Not Be Saved.</p>
+        <button class="discard-btn" onClick="discardPost()">Discard</button>
+        <button class="cancel-btn" onClick="closeDiscard()">Cancel</button>
+    </div>
+</div>
+</div>
+
 </nav>
+
+
+
+
 
 <div class="main-content">
         {% block content %}{% endblock %}

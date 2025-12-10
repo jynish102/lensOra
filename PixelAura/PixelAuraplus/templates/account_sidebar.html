@@ -1,0 +1,30 @@
+<div class="ac-sidebar">
+
+    <div class="ac-header">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVzKi8C9IBFXXQXY1228D08Slsz7BBiyXZ0Q&s"
+          class="meta-logo" alt="logo">
+      <strong>LensOra</strong>
+      <p>Manage your connected experiences and account settings across LensOra tech...</p>
+    </div>
+
+    <div class="ac-main-links">
+      <a href="{% url  'personal_detail_s' %}" class="ac-link-item">
+        <div class="ac-link">
+          <i class='bx bx-user'></i> Profiles
+        </div>
+      </a>
+    </div>
+
+    <p class="ac-section-title">Account settings</p>
+
+    <div class="ac-settings">
+      <a href="{% url 'change_pass' %}" class="ac-link-item">
+        <div class="ac-item"><i class='bx bx-lock'></i> Password and security</div>
+      </a>
+
+      <a href="{% url 'personal_detail_ss' %}" class="ac-link-item">
+        <div class="ac-item"><i class='bx bx-id-card'></i> Personal details</div>
+      </a>
+    </div>
+
+  </div>

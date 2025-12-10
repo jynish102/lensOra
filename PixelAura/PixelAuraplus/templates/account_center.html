@@ -1,49 +1,38 @@
 {% load static %}
+<html lang="en">
+<head>
 
-<link rel="stylesheet" href="{% static 'css/account_center.css' %}">
-<link rel="stylesheet" href="{% static 'css/personal_detail_s.css' %}">
-<link rel="stylesheet" href="{% static 'css/change_pass.css' %}">
-<link rel="stylesheet" href="{% static 'css/personal_detail_ss.css' %}">
-<link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <!-- Dynamic Page Title -->
+    <title>{% block title %}Account Center{% endblock %}</title>
 
+    <!-- Global Sidebar CSS -->
+    <link rel="stylesheet" href="{% static 'css/account_sidebar.css' %}">
+
+    <!-- Per-Page Extra CSS -->
+    {% block extra_css %}{% endblock %}
+
+    <!-- Icons -->
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+
+</head>
 <body>
-    <!-- sidebar.html -->
-<div class="ac-sidebar">
 
-  <div class="ac-header">
-    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVzKi8C9IBFXXQXY1228D08Slsz7BBiyXZ0Q&s"
-         class="meta-logo" alt="logo">
-    <strong>LensOra</strong>
-    <p>Manage your connected experiences and account settings across LensOra tech...</p>
-  </div>
+    <div class="ac-wrapper">
 
-  <div class="ac-main-links">
-    <a href="{% url  'personal_detail_s' %}" class="ac-link-item">
-      <div class="ac-link">
-        <i class='bx bx-user'></i> Profiles
-      </div>
-    </a>
-  </div>
+        <!-- LEFT SIDEBAR -->
+        {% include "account_sidebar.html" %}
 
-  <p class="ac-section-title">Account settings</p>
+        <!-- RIGHT PAGE CONTENT -->
+        {% block content %}
+        {% endblock %}
 
-  <div class="ac-settings">
-    <a href="{% url 'change_pass' %}" class="ac-link-item">
-      <div class="ac-item"><i class='bx bx-lock'></i> Password and security</div>
-    </a>
+    </div>
 
-    <a href="{% url 'personal_detail_ss' %}" class="ac-link-item">
-      <div class="ac-item"><i class='bx bx-id-card'></i> Personal details</div>
-    </a>
-  </div>
+    <!-- Sidebar active-state script -->
+    <script src="{% static 'js/account_sidebar.js' %}"></script>
 
-</div>
+    <!-- Per-Page Extra JS -->
+    {% block extra_js %}{% endblock %}
 
-    
-<div class="ac-wrapper">
-    {% block content %}
-    
-    {% endblock  %}
-</div>
 </body>
-<script src="{% static 'js/account_center.js' %}"></script>
+</html>

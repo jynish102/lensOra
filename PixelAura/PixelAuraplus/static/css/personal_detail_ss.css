@@ -1,49 +1,52 @@
-
-/* ✅ RIGHT PANEL */
+/* WRAPPER */
 .ac-content {
     flex: 1;
-    padding: 30px 50px;
+    padding: 40px 60px;
+    background: #fff;
 }
 
+/* TOP BAR */
 .ac-top-bar {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
+.ac-top-bar h2 {
+    font-size: 26px;
+    font-weight: 700;
+}
+
 .ac-close {
-    font-size: 22px;
+    font-size: 24px;
     cursor: pointer;
 }
 
+/* DESCRIPTION */
 .ac-desc {
     font-size: 14px;
     margin: 15px 0 25px;
-    color: #444;
+    color: #555;
+    max-width: 600px;
 }
 
-.ac-desc a {
-    color: #2563eb;
-    text-decoration: none;
-}
-
-/* ✅ PROFILE CARD */
+/* CARD */
 .pd-card {
     border: 1px solid #ddd;
     border-radius: 14px;
-    padding: 16px;
-    max-width: 650px;
     overflow: hidden;
+    max-width: 520px;
+    background: #fff;
 }
 
+/* SINGLE ITEM */
 .pd-item {
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
     padding: 16px 20px;
     border-bottom: 1px solid #eee;
     cursor: pointer;
-    transition: 0.2s;
 }
 
 .pd-item:last-child {
@@ -51,67 +54,20 @@
 }
 
 .pd-item:hover {
-    background: #f6f7f9;
+    background: #f5f5f5;
 }
 
 .pd-item strong {
     font-size: 15px;
-    display: block;
-    margin-bottom: 4px;
 }
 
 .pd-item p {
+    color: gray;
     font-size: 13px;
-    color: #666;
-    max-width: 460px;
+    margin-top: 4px;
 }
 
 .pd-item i {
     font-size: 20px;
-    color: #333;
-}
-
-.meta-logo {
-    font-weight: bold;
-    height: 22PX;
-    border-radius: 50px;
-    object-fit: cover;
-}
-
-.brand-color {
-    color: #2563eb;
-    font-weight: 600;
-}
-
-.highlight-text {
-    color: #10b981;
-    font-weight: 500;
-}
-
-.ac-link-item {
-    text-decoration: none;
-    color: inherit;
-    display: block;
-}
-
-.ac-item {
-    padding: 12px 16px;
-    border-radius: 10px;
-    cursor: pointer;
-    margin-bottom: 6px;
-    transition: 0.3s;
-}
-
-.ac-item:hover {
-    background: #f2f4f7;
-}
-
-/* ✅ ACTIVE STATE */
-.ac-link-item.active .ac-item {
-    background: #1f2d3d;
-    color: white;
-}
-
-.ac-link-item.active i {
-    color: white;
+    color: #444;
 }

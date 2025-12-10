@@ -1,15 +1,15 @@
 {% extends "account_center.html" %}
 {% load static %}
+{% block title %}Personal Detail{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/personal_detail_ss.css' %}">
+{% endblock %}
 
 {% block content %}
+<div class="ac-content">
 
-
-
-
-
-  <div class="ac-content">
-
-  <!-- ✅ TOP BAR -->
+  <!-- TOP BAR -->
   <div class="ac-top-bar">
     <h2>Personal details</h2>
     <a href="{% url 'setting' %}">
@@ -17,13 +17,13 @@
     </a>
   </div>
 
-  <!-- ✅ DESCRIPTION -->
+  <!-- DESCRIPTION -->
   <p class="ac-desc">
     Pixelaura uses this information to verify your identity and keep the community safe.
     You decide what personal details you make visible to others.
   </p>
 
-  <!-- ✅ DETAILS CARD -->
+  <!-- DETAILS CARD -->
   <div class="pd-card">
 
     <div class="pd-item">
@@ -31,7 +31,7 @@
         <strong>Contact info</strong>
         <p>jynik218@gmail.com</p>
       </div>
-      
+      <i class='bx bx-chevron-right'></i>
     </div>
 
     <div class="pd-item">
@@ -39,16 +39,10 @@
         <strong>Birthday</strong>
         <p>December 5, 2002</p>
       </div>
-      
+      <i class='bx bx-chevron-right'></i>
     </div>
 
   </div>
 
 </div>
-
-
-</div>
-
-</body>
-
-{% endblock  %}
+{% endblock %}

@@ -1,11 +1,25 @@
-/* SIDEBAR WRAPPER */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: system-ui, sans-serif;
+}
+
+body {
+    background: #fff;
+}
+
+.ac-wrapper {
+    display: flex;
+    height: 100vh;
+}
+
 .ac-sidebar {
     width: 340px;
     border-right: 1px solid #ddd;
     padding: 20px;
 }
 
-/* HEADER */
 .ac-header p {
     font-size: 13px;
     color: #555;
@@ -16,7 +30,6 @@
     border-radius: 50px;
 }
 
-/* MAIN LINKS */
 .ac-main-links {
     margin-top: 20px;
 }
@@ -32,12 +45,10 @@
     transition: 0.3s;
 }
 
-/* Hover effect */
 .ac-item:hover {
     background: #f1f1f1;
 }
 
-/* REMOVE default link styling */
 .ac-link-item {
     text-decoration: none;
     color: inherit;
@@ -50,7 +61,6 @@
     color: #555;
 }
 
-/* ACTIVE STATE */
 .ac-link-item.active .ac-link,
 .ac-link-item.active .ac-item {
     background: #1f2d3d;
