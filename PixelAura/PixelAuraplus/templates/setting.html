@@ -1,8 +1,9 @@
-{% extends 'sidebar.html' %}
+{% extends 'base.html' %}
 {% load static %}
+{% block title %}Setting{% endblock %}
 {% block content %}
-<link rel="stylesheet" href="{% static 'css/setting.css'%}">
-<title>Settings</title>
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/setting.css' %}">{% endblock %}
+
 
 <section class="home">
 <div class="home-container">   
