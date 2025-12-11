@@ -1,34 +1,19 @@
-{% load static %}
-
-
-<link rel="stylesheet" href="{% static 'css/sidebar.css' %}">
-<link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
-
-<body>
-
 <nav class="sidebar close">
     <header>
         <div class="image-text">
             <span class="image">
-                <img class="profile-custom" src="{% static 'images/logo.png' %}" alt="logo">
+                <img class="profile-custom" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQz4J1XfiouVQm6mrrz8CyL7qd6YZ7a3WZ6JA&s" alt="logo">
             </span>
-            
         </div>
-
         <i class="bx bx-chevron-right toggle"></i>
     </header>
 
-    <!-- Scrollable Menu -->
     <div class="menu-bar">
         <div class="menu">
-
-            <!-- SEARCH -->
             <li class="search-box">
                 <i class="bx bx-search icon"></i>
                 <input type="search" placeholder="Search...">
             </li>
-
-            <!-- LINKS -->
             <ul class="menu-links">
                 <li class="nav-link">
                     <a href="{% url 'home' %}">
@@ -36,124 +21,48 @@
                         <span class="text nav-text">Home</span>
                     </a>
                 </li>
-
                 <li class="nav-link">
-                    <a href="javascript:void(0)" onClick="openPopup()">
+                    <a href="#">
                         <i class='bx bx-plus-circle icon'></i>
                         <span class="text nav-text">Add Post</span>
                     </a>
                 </li>
-
                 <li class="nav-link">
-                    <a href="">
+                    <a href="{% url 'reels' %}">
                         <i class='bx bx-movie-play icon'></i>
                         <span class="text nav-text">Reels</span>
                     </a>
                 </li>
-
                 <li class="profile-box">
-                <a href="">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQz4J1XfiouVQm6mrrz8CyL7qd6YZ7a3WZ6JA&s" alt="profile">
-                    <span class="text nav-text">My Profile</span>
-                </a>
-            </li>
-
+                    <a href="{% url 'profile' %}">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQz4J1XfiouVQm6mrrz8CyL7qd6YZ7a3WZ6JA&s" alt="profile">
+                        <span class="text nav-text">My Profile</span>
+                    </a>
+                </li>
             </ul>
         </div>
 
-        <!-- ✅ SIDEBAR BOTTOM DROPDOWN -->
-<div class="bottom-content">
-  <ul class="bottom-list">
-    <!-- ✅ MORE DROPDOWN -->
-<li class="nav-link dropdown hover-dropdown">
-
-  <div class="dropdown-toggle">
-    <i class="bx bx-menu icon"></i>
-    <span class="text nav-text">More</span>
-  </div>
-
-  <div class="dropdown-menu hover-menu">
-    <a href="{% url 'setting' %}"><i class="bx bx-cog"></i> Settings</a>
-    
-    <a href="saved.html"><i class="bx bx-bookmark"></i> Saved</a>
-    <a href="javascript:void(0)" class="switch-appearance">
-        <i class="bx bx-moon appearance-icon"></i>
-        <span class="appearance-text">Dark Mode</span>
-    </a>
-
-    
-
-    <div class="divider"></div>
-    <a href="{% url 'login' %}">Switch accounts</a>
-    <a href="#" class="danger">Log out</a>
-  </div>
-
-</li>
-
-  </ul>
-  <!------------------------add POsst popup----------------------------------------->
-<div class="popup-overlay" id ="addPostPopup">
-    <div class="popup-box">
-        <div class="popup-header">
-            <span>Create New Post</span>
-            <button class="close-btn" onclick="closePopup()">Close</button>
+        <!-- Bottom dropdown -->
+        <div class="bottom-content">
+            <ul class="bottom-list">
+                <li class="nav-link dropdown hover-dropdown">
+                    <div class="dropdown-toggle">
+                        <i class="bx bx-menu icon"></i>
+                        <span class="text nav-text">More</span>
+                    </div>
+                    <div class="dropdown-menu hover-menu">
+                        <a href="{% url 'settings' %}"><i class="bx bx-cog"></i> Settings</a>
+                        <a href="{% url 'saved' %}"><i class="bx bx-bookmark"></i> Saved</a>
+                        <a href="javascript:void(0)" class="switch-appearance">
+                            <i class="bx bx-moon appearance-icon"></i>
+                            <span class="appearance-text">Dark Mode</span>
+                        </a>
+                        <div class="divider"></div>
+                        <a href="{% url 'switch_account' %}">Switch accounts</a>
+                        <a href="{% url 'logout' %}" class="danger">Log out</a>
+                    </div>
+                </li>
+            </ul>
         </div>
-        <div class="popup-content">
-            <label for="fileUpload" class="upload-area">
-                <i class="bx bx-image-add"></i>
-                <p>Upload your Photo or Video</p>
-                <input type="file" id="fileUpload" hidden accept="image/*,video/*" onchange="previewMedia(event)">
-            </label>
-            <img id="previewImg" class="preview-img" style="display:none;">
-            <video id="previewVideo" class="preview-video" style="display:none;"></video>
-
-        </div>
-        <div class="user-info-bar">
-            <img src="p.png" alt="profile pic" class="user-dp">
-            <div class="user-text">
-                <span class="username">User-name</span>
-                <span class="fullname">Name</span>
-            </div>
-        </div>
-        <textarea class="caption-box" placeholder="write caption....."></textarea>
-        <button class="post-btn">Post</button>
     </div>
-</div>
-<!------------------------------------------------------Discard POst----------------------->
-<div class="popup-overlay" id="discardPopup">
-    <div class="discard-box">
-        <h3>Discard-POst?</h3>
-        <p>IF you Leave Your POst Not Be Saved.</p>
-        <button class="discard-btn" onClick="discardPost()">Discard</button>
-        <button class="cancel-btn" onClick="closeDiscard()">Cancel</button>
-    </div>
-</div>
-</div>
-
 </nav>
-
-
-
-
-
-<div class="main-content">
-        {% block content %}{% endblock %}
-    </div>
-
-
-
-
-
-<footer class="footer">
-    <div class="footer-content">
-        <div class="footer-brand">
-            <img src="{% static 'images/logo.png' %}" alt="LensORa Logo" class="footer-logo">
-            <span class="footer-text">by <strong>LensORa</strong></span>
-        </div>
-        <p>© 2025–26 PixelAura • All Rights Reserved</p>
-    </div>
-</footer>
-</body>
-<script src="{% static 'js/sidebar.js' %}"></script>
-
-
