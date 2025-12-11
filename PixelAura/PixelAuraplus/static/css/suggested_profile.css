@@ -1,0 +1,67 @@
+.profile-header {
+    display: flex;
+    padding: 30px;
+}
+
+.profile-photo {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.profile-right {
+    margin-left: 40px;
+}
+
+.top-row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.username {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.follow-btn {
+    padding: 8px 18px;
+    background: #0095f6;
+    border: none;
+    color: white;
+    font-size: 14px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.profile-stats {
+    display: flex;
+    gap: 20px;
+    margin: 15px 0;
+}
+
+.profile-stats li {
+    list-style: none;
+    font-size: 15px;
+}
+
+.profile-stats span {
+    font-weight: 600;
+}
+
+.user-bio {
+    font-size: 14px;
+}
+
+.posts-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+}
+
+.posts-grid img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+}
