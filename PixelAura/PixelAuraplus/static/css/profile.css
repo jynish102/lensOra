@@ -1,0 +1,482 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #d6e2e2;
+    color: rgb(20, 19, 19);
+}
+
+
+.profile-container {
+    max-width: 420px;
+    margin: auto;
+    padding: 15px;
+}
+
+
+.profile-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 5px 18px;
+}
+
+.username {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.profile-menu {
+    font-size: 26px;
+    cursor: pointer;
+}
+
+
+.user-row {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 12px;
+}
+
+
+
+.user-right {
+    flex: 1;
+}
+
+.full-name {
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+.counts {
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+}
+
+.counts div {
+    font-size: 13px;
+}
+
+
+.edit-btn-container {
+    margin: 14px 0;
+}
+
+.edit-btn {
+    width: 100%;
+    padding: 8px;
+    border-radius: 8px;
+    border: none;
+    background: #93369b;
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+
+.tabs {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 18px;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.tab {
+    padding: 10px;
+    opacity: 0.6;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    cursor: pointer;
+}
+
+.tab.active {
+    opacity: 1;
+    border-bottom: 2px solid white;
+}
+
+
+.content-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    margin-top: 15px;
+}
+
+.grid-item {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.profile-pic-wrapper {
+    width: 42px;
+    height: 42px;
+    position: relative;
+    background: #dfeb39;
+    display: flex;
+    align-items: center;
+     justify-content: center;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 30%;
+    border-bottom-left-radius: 30%;
+    border-bottom-right-radius: 6px;
+    overflow:hidden;
+}
+
+
+
+.default-user-icon {
+    font-size: 48px;
+    color: white;
+}
+
+.camera-icon {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+   
+    background: rgb(85, 84, 84);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.camera-icon i {
+    color: white;
+    font-size: 16px;
+}
+
+.user-top-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    justify-content: space-between;
+}
+
+.user-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+
+/* ✅ GETTING STARTED WRAPPER */
+.getting-started {
+    margin-top: 10px;
+    padding: 10px 0;
+    width: 100%;
+    
+    text-align: left;
+    display:block ;
+}
+
+.gs-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 14px;
+    color: #111;
+}
+
+/* ✅ CARD ROW */
+.gs-cards {
+    display: flex;
+    gap: 18px;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+/* ✅ SINGLE CARD */
+.gs-card {
+    width: 260px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 18px;
+    background: #fff;
+    margin-left: 0;
+    text-align: center;
+}
+
+/* ✅ ICON CIRCLE */
+.gs-icon {
+    width: 54px;
+    height: 54px;
+    border: 1px solid #333;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 12px;
+    font-size: 22px;
+    color: #000;
+}
+
+.gs-card h4 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #000;
+}
+
+.gs-card p {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 12px;
+    line-height: 1.4;
+}
+
+/* ✅ BUTTON */
+.gs-btn {
+    background: #4f5dff;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+/* ✅ MODAL BACKGROUND */
+.create-post-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.65);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+/* ✅ MODAL BOX */
+.create-post-box {
+    width: 420px;
+    height: 460px;
+    background: #fff;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* ✅ HEADER */
+.create-post-header {
+    height: 50px;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    position: relative;
+}
+
+.create-post-header i {
+    position: absolute;
+    right: 15px;
+    cursor: pointer;
+    font-size: 22px;
+}
+
+/* ✅ BODY */
+.create-post-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.post-big-icon {
+    font-size: 70px;
+    color: #333;
+}
+
+.select-btn {
+    background: #4f46e5;
+    color: #fff;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* ✅ CROP OVERLAY */
+.crop-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+}
+
+/* ✅ CROP BOX */
+.crop-box {
+    width: 420px;
+    height: 520px;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ✅ HEADER */
+.crop-header {
+    height: 52px;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    font-weight: 600;
+    background: #fff;
+}
+
+.crop-header i {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 14px;
+    
+}
+
+.next-btn {
+    
+    right: 15px;
+    background: none;
+    border: none;
+    color: #3b82f6;
+    font-weight: 600;
+    cursor: pointer;
+    position: absolute;
+}
+
+/* ✅ IMAGE AREA */
+.crop-preview {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #000;
+}
+
+.crop-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ✅ BOTTOM CONTROLS */
+.crop-controls {
+    height: 50px;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 15px;
+    color: #fff;
+    font-size: 20px;
+}
+.crop-back{
+    font-size: 24px;
+    cursor: pointer;
+    position: absolute;
+    left: 15px;
+}
+
+
+/* ✅ DISCARD OVERLAY */
+.discard-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 20000;
+}
+
+/* ✅ DISCARD BOX */
+.discard-box {
+    width: 360px;
+    background: #fff;
+    border-radius: 12px;
+    text-align: center;
+    overflow: hidden;
+}
+
+.discard-box h3 {
+    margin: 15px 0 5px;
+    font-size: 18px;
+}
+
+.discard-box p {
+    color: #666;
+    font-size: 14px;
+    padding-bottom: 10px;
+}
+
+/* ✅ ACTION BUTTONS */
+.discard-actions {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid #ddd;
+}
+
+.discard-btn {
+    padding: 12px;
+    border: none;
+    background: none;
+    color: red;
+    font-weight: bold;
+    cursor: pointer;
+    border-bottom: 1px solid #ddd;
+}
+
+.cancel-btn {
+    padding: 12px;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.close-crop {
+    font-size: 26px;
+    color: rgb(175, 20, 20);
+    cursor: pointer;
+    position: absolute;     
+    top:2px;
+    left: -5px;
+   
+
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.tab.active {
+    border-bottom: 2px solid black;
+    font-weight: bold;
+}
