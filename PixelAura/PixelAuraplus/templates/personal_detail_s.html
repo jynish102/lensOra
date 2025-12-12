@@ -41,6 +41,9 @@
 <div id="popup" class="popup-overlay">
     <div class="popup-box">
 
+       <!-- Close Icon -->
+        <i class='bx bx-x close-icon' id="closePopup"></i>
+
         <!-- Profile Section -->
         <img src="https://via.placeholder.com/80" class="profile-pic" alt="Profile">
         <h2 class="username">John Doe</h2>
@@ -62,7 +65,7 @@
         </div>
 
         <!-- Close Button -->
-        <button id="closePopup" class="close-btn">Close</button>
+        <button  class="submit-btn">Submit</button>
     </div>
 </div>
 
@@ -71,5 +74,10 @@
   <a class="add-accounts">Add accounts</a>
 
 </div>
+
+{% block extra_js %}
+<script src="{% static 'js/personal_detail_s.js' %}"></script>
+{% endblock %}
+
 
 {% endblock %}
