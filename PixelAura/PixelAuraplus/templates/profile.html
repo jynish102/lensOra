@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Profile</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="css/profile.css">
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <div class="profile-container">
+
+    <!-- ✅ USER INFO ROW (Updated Layout) -->
+    <div class="user-row">
+
+      <!-- ✅ PROFILE IMAGE WITH CAMERA & DEFAULT ICON -->
+      <div class="profile-pic-wrapper">
+        <i class="bx bxs-user default-user-icon"></i>
+        <label class="camera-icon">
+        <i class="bx bx-camera camera-icon"></i>
+        <input type="file" hidden>
+        </label>
+      </div>
+
+      <!-- ✅ USERNAME + NAME + SETTINGS ICON -->
+      <div class="user-right">
+
+        <div class="user-top-row">
+          <div class="user-text">
+            <h2 class="username">username_here</h2>
+            <span class="full-name">Full Name</span>
+          </div>
+
+        </div>
+
+        <!-- ✅ COUNTS ROW (UNCHANGED) -->
+        <div class="counts">
+          <div>
+            <b>12</b>
+            <span>Posts</span>
+          </div>
+          <div>
+            <b>150</b>
+            <span>Followers</span>
+          </div>
+          <div>
+            <b>200</b>
+            <span>Following</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ✅ EDIT BUTTON ROW (UNCHANGED) -->
+    <div class="edit-btn-container">
+      <a href="edit_profile.html">
+        <button class="edit-btn">Edit Profile</button>
+      </a>
+    </div>
+
+   <!-- ✅ TABS -->
+<div class="tabs">
+  <div class="tab active" data-tab="posts">
+    <i class="bx bx-grid-alt"></i>
+    <span>Posts</span>
+  </div>
+
+  <div class="tab" data-tab="reels">
+    <i class="bx bx-play-circle"></i>
+    <span>Reels</span>
+  </div>
+
+  <div class="tab" data-tab="saved">
+    <i class="bx bx-bookmark"></i>
+    <span>Saved</span>
+  </div>
+</div>
+
+
+<!-- ✅ POSTS TAB CONTENT (IMPORTANT FIX ✅) -->
+<div class="tab-content active" id="posts">
+
+  <div class="getting-started">
+    <h3 class="gs-title">Getting Started</h3>
+
+    <div class="gs-cards">
+      <div class="gs-card">
+        <div class="gs-icon">
+          <i class="bx bx-camera"></i>
+        </div>
+
+        <h4>Share Photos</h4>
+        <p>When you share photos, they'll appear on your profile.</p>
+
+        <button class="gs-btn" id="openCreatePost">
+          Share your first photo
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- ✅ REELS TAB CONTENT -->
+<div class="tab-content" id="reels">
+  <h3 class="gs-title">Reels</h3>
+  <p>This is your Reels section.</p>
+</div>
+
+
+<!-- ✅ SAVED TAB CONTENT -->
+<div class="tab-content" id="saved">
+  <h3 class="gs-title">Saved</h3>
+  <p>This is your Saved posts section.</p>
+</div>
+
+  
+
+
+
+<!--popuo------------------------------------------>
+<!-- ✅ CREATE POST MODAL -->
+<div class="create-post-overlay" id="createPostModal">
+
+  <div class="create-post-box">
+
+    <!-- HEADER -->
+    <div class="create-post-header">
+      <span>Create new post</span>
+      <i class="bx bx-x" id="closePostModal"></i>
+    </div>
+
+    <!-- BODY -->
+    <div class="create-post-body">
+      <i class="bx bx-images post-big-icon"></i>
+      <p>Drag photos and videos here</p>
+
+      <button class="select-btn" id="selectFromComputer">
+        Select from computer
+      </button>
+
+      <input type="file" id="postFileInput" hidden accept="image/*,video/*">
+    </div>
+
+  </div>
+</div>
+
+
+<!-------------------------------------------------------------secomd popup-->
+
+<!-- ✅ CROP MODAL -->
+<div class="crop-overlay" id="cropModal">
+
+  <div class="crop-box">
+    <i class="bx bx-x close-crop" id="closeCrop"></i>
+
+    <!-- ✅ HEADER -->
+    <div class="crop-header">
+      <i class="bx bx-arrow-back crop-back" id="backToUpload"></i>
+      
+      <button class="next-btn">Next</button>
+      
+    </div>
+
+    <!-- ✅ IMAGE PREVIEW -->
+    <div class="crop-preview">
+      <img id="cropImage" src="">
+    </div>
+
+    
+
+  </div>
+</div>
+
+<!--3rd popup------------------------------------------------------->
+<!-- ✅ DISCARD CONFIRM MODAL -->
+<div class="discard-overlay" id="discardModal">
+
+  <div class="discard-box">
+    <h3>Discard post?</h3>
+    <p>If you leave, your edits won't be saved.</p>
+
+    <div class="discard-actions">
+      <button class="discard-btn" id="confirmDiscard">Discard</button>
+      <button class="cancel-btn" id="cancelDiscard">Cancel</button>
+    </div>
+  </div>
+
+</div>
+
+
+
+
+</body>
+
+<script>
+  
+  const hasPosts = false; // change to true when backend sends posts
+
+  if (hasPosts) {
+    document.getElementById("emptyState").style.display = "none";
+  }
+
+  document.querySelector(".gs-btn").onclick = () => {
+  alert("Open upload modal here");
+};
+
+
+
+/*------------first popup-------------------------------------- */
+
+const openBtn = document.getElementById("openCreatePost");
+const modal = document.getElementById("createPostModal");
+const closeBtn = document.getElementById("closePostModal");
+const selectBtn = document.getElementById("selectFromComputer");
+const fileInput = document.getElementById("postFileInput");
+
+const cropModal = document.getElementById("cropModal");
+const cropImage = document.getElementById("cropImage");
+const backBtn = document.getElementById("backToUpload");
+const closeCrop = document.getElementById("closeCrop");
+
+const discardModal = document.getElementById("discardModal");
+const confirmDiscard = document.getElementById("confirmDiscard");
+const cancelDiscard = document.getElementById("cancelDiscard");
+
+/* ✅ OPEN FIRST POPUP */
+openBtn.onclick = () => {
+  modal.style.display = "flex";
+};
+
+/* ✅ CLOSE FIRST POPUP */
+closeBtn.onclick = () => {
+  modal.style.display = "none";
+};
+
+/* ✅ OPEN FILE PICKER */
+selectBtn.onclick = () => {
+  fileInput.click();
+};
+
+/* ✅ AFTER FILE SELECT → OPEN CROP POPUP */
+fileInput.onchange = () => {
+  const file = fileInput.files[0];
+
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      cropImage.src = reader.result;
+      modal.style.display = "none";
+      cropModal.style.display = "flex";
+    };
+    reader.readAsDataURL(file);
+  }
+};
+
+/* ✅ BACK BUTTON FROM CROP */
+backBtn.onclick = () => {
+  cropModal.style.display = "none";
+  modal.style.display = "flex";
+};
+
+/* ✅ X BUTTON → OPEN DISCARD POPUP */
+closeCrop.onclick = () => {
+  discardModal.style.display = "flex";
+};
+
+/* ✅ CANCEL DISCARD */
+cancelDiscard.onclick = () => {
+  discardModal.style.display = "none";
+};
+
+/* ✅ CONFIRM DISCARD */
+confirmDiscard.onclick = () => {
+  discardModal.style.display = "none";
+  cropModal.style.display = "none";
+  modal.style.display = "none";
+  fileInput.value = ""; // clear file input
+};
+
+
+/*--------------------------------------------------------*/
+
+  const tabs = document.querySelectorAll(".tab");
+const contents = document.querySelectorAll(".tab-content");
+
+tabs.forEach(tab => {
+  tab.addEventListener("click", () => {
+
+    // ✅ Remove active from all tabs
+    tabs.forEach(t => t.classList.remove("active"));
+
+    // ✅ Hide all tab contents (INCLUDING POSTS)
+    contents.forEach(c => c.classList.remove("active"));
+
+    // ✅ Activate clicked tab
+    tab.classList.add("active");
+
+    const target = tab.getAttribute("data-tab");
+    const activeContent = document.getElementById(target);
+
+    if (activeContent) {
+      activeContent.classList.add("active");
+    }
+
+  });
+});
+
+
+
+</script>
+
+
+
+
+
+
+</html>
