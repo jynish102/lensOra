@@ -58,3 +58,13 @@ def change_pass(request):
 
 def personal_detail_ss(request):
     return render (request,"personal_detail_ss.html")
+
+def reels(request):
+    return render(request,"reels.html")
+
+def profile(request):
+    return render(request,"profile.html")
+
+def saved(request):
+    return render(request,"saved.html")
+
