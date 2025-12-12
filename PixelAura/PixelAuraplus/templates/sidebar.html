@@ -1,8 +1,9 @@
+{% load static %}
 <nav class="sidebar close">
     <header>
         <div class="image-text">
             <span class="image">
-                <img class="profile-custom" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQz4J1XfiouVQm6mrrz8CyL7qd6YZ7a3WZ6JA&s" alt="logo">
+                <img class="{% static 'images/logo.png' %}" alt="logo">
             </span>
         </div>
         <i class="bx bx-chevron-right toggle"></i>
@@ -115,3 +116,12 @@
 
     </div>
 </div>
+<footer class="footer">
+    <div class="footer-content">
+        <div class="footer-brand">
+            <img src="{% static 'images/logo.png' %}" alt="LensORa Logo" class="footer-logo">
+            <span class="footer-text">by <strong>LensORa</strong></span>
+        </div>
+        <p>© 2025–26 PixelAura • All Rights Reserved</p>
+    </div>
+</footer>
