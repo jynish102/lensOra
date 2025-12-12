@@ -33,6 +33,22 @@ def details(request):
     return render(request,'more_detail.html')   
 
 def home(request):
+    with connection.cursor() as cursor:
+        q = "select * from register"
+        cursor.execute(q)
+        data = cursor.fetchall()
+        datalist = [
+            {
+                'id' :row[0],
+                'name':row[1],
+                'email':row[2],
+                'password':row[3],
+                'mobile':row[4],
+                'birthdate':row[5],
+                'username':row[6]
+            }for row in data
+        ]
+    return render(request,'home.html', {'datas' : datalist})
     return render(request,'home.html')
 
 def sidebar(request):
