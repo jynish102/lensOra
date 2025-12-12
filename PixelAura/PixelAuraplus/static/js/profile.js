@@ -1,10 +1,17 @@
-const hasPosts = false; // change to true when backend sends posts
-if (hasPosts) {
+
+  
+  const hasPosts = false; // change to true when backend sends posts
+
+  if (hasPosts) {
     document.getElementById("emptyState").style.display = "none";
   }
-document.querySelector(".gs-btn").onclick = () => {
+
+  document.querySelector(".gs-btn").onclick = () => {
   alert("Open upload modal here");
 };
+
+
+
 /*------------first popup-------------------------------------- */
 
 const openBtn = document.getElementById("openCreatePost");
@@ -102,4 +109,23 @@ tabs.forEach(tab => {
     }
 
   });
+});
+
+
+/*---------------------------------add post 2 like comment */
+
+const sharePost = document.getElementById("sharePost");
+const imageInput = document.getElementById("imageInput"); // your file input
+
+// Load the image into left preview
+imageInput.addEventListener("change", () => {
+  const file = imageInput.files[0];
+  if (file) {
+    cropImage.src = URL.createObjectURL(file);
+  }
+});
+
+// Share click
+sharePost.addEventListener("click", () => {
+  alert("Post Shared!");
 });
