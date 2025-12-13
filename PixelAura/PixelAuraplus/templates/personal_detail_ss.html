@@ -29,7 +29,8 @@
     <div class="pd-item">
       <div>
         <strong>Contact info</strong>
-        <p>jynik218@gmail.com</p>
+        {% for dt in datas %}
+        <p>{{ dt.email }</p>
       </div>
       <i class='bx bx-chevron-right'></i>
     </div>
@@ -37,12 +38,12 @@
     <div class="pd-item">
       <div>
         <strong>Birthday</strong>
-        <p>December 5, 2002</p>
+        {% for dt in datas %}
+        <p>{{ dt.birthdate }}</p>
+        {% endfor %}
       </div>
       <i class='bx bx-chevron-right'></i>
     </div>
-
-  </div>
-
+</div>
 </div>
 {% endblock %}
