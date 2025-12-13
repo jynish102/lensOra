@@ -33,7 +33,11 @@ def details(request):
     return render(request,'more_detail.html')   
 
 def home(request):
-    with connection.cursor() as cursor:
+    datalist = getuser(request)
+    return render(request,'home.html', {'datas' : datalist})
+
+def getuser(request):
+     with connection.cursor() as cursor:
         q = "select * from register"
         cursor.execute(q)
         data = cursor.fetchall()
@@ -48,8 +52,8 @@ def home(request):
                 'username':row[6]
             }for row in data
         ]
-    return render(request,'home.html', {'datas' : datalist})
-    return render(request,'home.html')
+        return datalist
+
 
 def sidebar(request):
     return render(request,'sidebar.html')
@@ -58,7 +62,8 @@ def account_sidebar(request):
     return render(request,'account_sidebar.html')
 
 def setting(request):
-    return render(request,'setting.html')  
+    datalist = getuser(request)
+    return render(request,'setting.html', {'datas' : datalist})  
 
 def base(request):
     return render(request,'base.html')  
@@ -67,19 +72,22 @@ def account_center(request):
     return render(request, 'account_center.html')
 
 def personal_detail_s(request):
-    return render(request,"personal_detail_s.html")
+     datalist = getuser(request)
+    return render(request,"personal_detail_s.html", {'datas' : datalist })
 
 def change_pass(request):
     return render(request,'change_pass.html')
 
 def personal_detail_ss(request):
-    return render (request,"personal_detail_ss.html")
+    datalist = getuser(request)
+    return render (request,"personal_detail_ss.html", {'datas' : datalist })
 
 def reels(request):
     return render(request,"reels.html")
 
 def profile(request):
-    return render(request,"profile.html")
+    datalist = getuser(request)
+    return render(request,"profile.html", {'datas' : datalist })
 
 def saved(request):
     return render(request,"saved.html")
