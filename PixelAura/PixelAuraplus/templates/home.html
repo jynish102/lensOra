@@ -60,8 +60,10 @@
 </a>
 
     <div class="main-user-text">
-      <span class="main-username">jynik218</span>
-      <span class="main-fullname">jy</span>
+            {% for dt in datas %}
+      <span class="main-username">{{ dt.username }}</span>
+      <span class="main-fullname">{{ dt.name }}</span>
+            {% endfor %}
     </div>
 
   </div>
