@@ -73,8 +73,10 @@
       <div class="profile-left">
         <img src="https://i.pravatar.cc/100" alt="add Profile Photo">
         <div>
-          <strong>jynik218</strong>
-          <p>jy</p>
+          {% for dt in datas %}
+          <strong>{{ dt.username }}</strong>
+          <p>{{ dt.name }}</p>
+          {% endfor %}
         </div>
       </div>
 
