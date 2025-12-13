@@ -48,7 +48,9 @@
 
         <!-- Profile Section -->
         <img src="https://via.placeholder.com/80" class="profile-pic" alt="Profile">
-        <h2 class="username">John Doe</h2>
+      {% for dt in datas %}
+        <h2 class="username">{{ dt.name }}</h2>
+      {% endfor %}
 
         <!-- Form Fields -->
         <div class="form-group">
