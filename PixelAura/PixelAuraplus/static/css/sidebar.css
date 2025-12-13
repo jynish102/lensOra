@@ -313,36 +313,6 @@ body:not(.dark) .dropdown-toggle {
     margin-top: 0px;
     font-size: 15px;
 }
-
-.welcome-buttons {
-    margin-top: 20px;
-    display: flex;
-    gap: 15px;
-}
-
-.btn-primary {
-    background: #695CFE;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 6px;
-    border: none;
-    cursor: pointer;
-}
-
-.btn-secondary {
-    background: transparent;
-    border: 2px solid #695CFE;
-    color: #695CFE;
-    padding: 10px 20px;
-    border-radius: 6px;
-    cursor: pointer;
-}
-
-.btn-primary:hover,
-.btn-secondary:hover {
-    opacity: 0.8;
-}
-
 .feed {
     max-width: 520px;
     margin-top: 20px;
