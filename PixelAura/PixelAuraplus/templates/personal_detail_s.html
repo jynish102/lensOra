@@ -28,7 +28,9 @@
     <div class="profile-left">
       <div class="profile-img"></div>
       <div>
-        <strong>jynik218</strong>
+        {% for dt in datas %}
+        <strong>{{ dt.username }}</strong>
+        {% end for %}
         <p>Pixelaura</p>
       </div>
     </div>
