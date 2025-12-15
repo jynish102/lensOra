@@ -675,19 +675,10 @@ body:not(.dark) .hover-menu .danger {
 
 
 /*---------------------------------------------------------------------------------------*/
-.story-suggest-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px;
-}
 
 
-.story-logos-row {
-    display: flex;
-    gap: 14px;
 
-}
+
 
 .logo-wrapper {
     position: relative;
@@ -857,6 +848,8 @@ body:not(.dark) .hover-menu .danger {
     resize: none;
     border-radius: 10px;
     font-size: 14px;
+    width: calc(100% - 30px);
+    box-sizing: border-box;
 }
 
 /* Post Button */
@@ -869,6 +862,7 @@ body:not(.dark) .hover-menu .danger {
     border-radius: 10px;
     cursor: pointer;
     font-size: 16px;
+    width: calc(100% - 30px);
 }
 
 .post-btn:hover {
