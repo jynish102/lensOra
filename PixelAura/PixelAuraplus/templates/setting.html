@@ -68,10 +68,15 @@
   <div class="edit-profile">
 
     <h2>Edit profile</h2>
+    <form id="editProfileForm" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
 
     <div class="profile-box">
       <div class="profile-left">
-        <img src="https://i.pravatar.cc/100" alt="add Profile Photo">
+       <img id="profilePreview"
+             src="https://cdn-icons-png.flaticon.com/512/847/847969.png"
+             alt="Profile">
         <div>
           {% for dt in datas %}
           <strong>{{ dt.username }}</strong>
@@ -80,8 +85,13 @@
         </div>
       </div>
 
-      <button id ="openPhotoModal">Change photo</button>
+      <button type="button" id ="openPhotoModal">Change photo</button>
     </div>
+       <input type="file"
+           id="profileImageInput"
+           name="profile_image"
+           accept="image/*"
+           hidden>
 
     
 
@@ -103,6 +113,7 @@
     <div class="form-group">
       <button type="submit" class="submit-btn">Submit</button>
     </div>
+    </form>
 
     <!--popup---------------------------------------------->
     <!-- ✅ PROFILE PHOTO POPUP -->
@@ -111,12 +122,12 @@
 
     <h3>Change Profile Photo</h3>
 
-    <div class="photo-options upload">
+    <div class="photo-options uploadBtn">
       Upload Photo
-      <input type="file" hidden>
+   
     </div>
 
-    <div class="photo-options remove">
+    <div class="photo-options removeBtn">
       Remove Current Photo
     </div>
 
