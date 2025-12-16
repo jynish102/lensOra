@@ -198,10 +198,7 @@ small {
     background: #f4f4f4;
 }
 
-.settings-list li.active {
-    background: #eee;
-    font-weight: 600;
-}
+
 
 .submit-btn {
     background: #4b5cff;
