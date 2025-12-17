@@ -33,26 +33,41 @@ def details(request):
     return render(request,'more_detail.html')   
 
 def home(request):
-    datalist = getuser(request)
-    return render(request,'home.html', {'datas' : datalist})
+    if "user" not in request.session:
+        return redirect('login')
+    username=request.session.get("user")
+    with connection.cursor() as cursor:
+        q = "select * from register where username=%s"
+        cursor.execute(q,[username])
+        data = cursor.fetchone()
+        datalist = {
+                'id' :data[0],
+                'name':data[1],
+                'email':data[2],
+                'password':  data[3],
+                'mobile':  data[4],
+                'birthdate':data[5],
+                'username': data[6]
+            }
+    suser=suggestuser(request)
+    return render(request,'home.html', {'datas' : datalist,'ulist':suser})
 
-def getuser(request):
+def suggestuser(request):
+     username=request.session.get("user")
      with connection.cursor() as cursor:
-        q = "select * from register"
-        cursor.execute(q)
+        q = "select * from register where username!=%s"
+        cursor.execute(q,[username])
         data = cursor.fetchall()
-        datalist = [
-            {
+        userlist = [{
                 'id' :row[0],
                 'name':row[1],
                 'email':row[2],
-                'password':row[3],
-                'mobile':row[4],
+                'password':  row[3],
+                'mobile':  row[4],
                 'birthdate':row[5],
-                'username':row[6]
-            }for row in data
-        ]
-        return datalist
+                'username': row[6]
+            }for row in data]
+        return userlist
 
 
 def sidebar(request):
@@ -91,4 +106,10 @@ def profile(request):
 
 def saved(request):
     return render(request,"saved.html")
+
+def logout(request):
+    if "user" in request.session:
+        request.session.flush()
+        return redirect("login")
+
 
