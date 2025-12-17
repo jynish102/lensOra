@@ -52,6 +52,26 @@ def home(request):
     suser=suggestuser(request)
     return render(request,'home.html', {'datas' : datalist,'ulist':suser})
 
+def getloginuserdt(request):
+    username=request.session.get("user")
+    with connection.cursor() as cursor:
+        q = "select * from register where username=%s"
+        cursor.execute(q,[username])
+        data = cursor.fetchall()
+        datalist = [{
+                'id' :row[0],
+                'name':row[1],
+                'email':row[2],
+                'password':row[3],
+                'mobile':  row[4],
+                'birthdate':row[5],
+                'username': row[6]
+            }
+            for row in data
+            ]
+        return datalist 
+   
+
 def suggestuser(request):
      username=request.session.get("user")
      with connection.cursor() as cursor:
@@ -77,8 +97,8 @@ def account_sidebar(request):
     return render(request,'account_sidebar.html')
 
 def setting(request):
-    datalist = getuser(request)
-    return render(request,'setting.html', {'datas' : datalist})  
+   loginu = getloginuserdt(request)
+    return render(request,'setting.html', {'datas' : loginu})  
 
 def base(request):
     return render(request,'base.html')  
@@ -88,21 +108,21 @@ def account_center(request):
 
 def personal_detail_s(request):
      datalist = getuser(request)
-    return render(request,"personal_detail_s.html", {'datas' : datalist })
+    return render(request,"personal_detail_s.html", {'datas' : loginu})
 
 def change_pass(request):
     return render(request,'change_pass.html')
 
 def personal_detail_ss(request):
-    datalist = getuser(request)
-    return render (request,"personal_detail_ss.html", {'datas' : datalist })
+   loginu = getloginuserdt(request)
+    return render (request,"personal_detail_ss.html", {'datas' : loginu })
 
 def reels(request):
     return render(request,"reels.html")
 
 def profile(request):
-    datalist = getuser(request)
-    return render(request,"profile.html", {'datas' : datalist })
+    loginu = getloginuserdt(request)
+    return render(request,"profile.html", {'userlogin' : loginu })
 
 def saved(request):
     return render(request,"saved.html")
@@ -111,5 +131,3 @@ def logout(request):
     if "user" in request.session:
         request.session.flush()
         return redirect("login")
-
-
