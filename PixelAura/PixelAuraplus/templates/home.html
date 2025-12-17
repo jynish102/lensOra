@@ -24,26 +24,14 @@
   <!-- ✅ LEFT SIDE: HORIZONTAL SUGGESTED CREATORS -->
   <div class="story-logos-row">
 
+    {% for u in ulist %}
     <div class="logo-wrapper">
+        <a href="{% url 'suggested_profile' %}" >
       <img src="https://i.pravatar.cc/100?img=11" class="logo-avatar">
-      <p class="logo-name">user_one</p>
+    </a>
+      <p class="logo-name">{{ u.username }}</p>
     </div>
-
-    <div class="logo-wrapper">
-      <img src="https://i.pravatar.cc/100?img=22" class="logo-avatar">
-      <p class="logo-name">user_two</p>
-    </div>
-
-    <div class="logo-wrapper">
-      <img src="https://i.pravatar.cc/100?img=33" class="logo-avatar">
-      <p class="logo-name">user_three</p>
-    </div>
-
-    <div class="logo-wrapper">
-      <img src="https://i.pravatar.cc/100?img=44" class="logo-avatar">
-      <p class="logo-name">user_four</p>
-    </div>
-
+    {% endfor %}
   </div>
 
   <!-- ✅ RIGHT SIDE: MAIN USER -->
@@ -60,10 +48,10 @@
 </a>
 
     <div class="main-user-text">
-            {% for dt in datas %}
-      <span class="main-username">{{ dt.username }}</span>
-      <span class="main-fullname">{{ dt.name }}</span>
-            {% endfor %}
+        
+      <span class="main-username">{{ datas.username }}</span>
+      <span class="main-fullname">{{ datas.name }}</span>
+  
     </div>
 
   </div>
