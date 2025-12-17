@@ -24,10 +24,10 @@
 
         <div class="user-top-row">
           <div class="user-text">
-               {% for dt in datas %}
-            <h2 class="username">{{ dt.username }}</h2>
-            <span class="full-name">{{ dt.name }}</span>
-            {% endfor %}
+              {% for login in userlogin %}
+            <h2 class="username">{{ login.username }}</h2>
+            <span class="full-name">{{ login.name }}</span>
+          {% endfor %}
           </div>
 
         </div>
