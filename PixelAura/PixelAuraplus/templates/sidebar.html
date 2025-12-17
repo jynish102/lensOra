@@ -3,7 +3,7 @@
     <header>
         <div class="image-text">
             <span class="image">
-                <img class="{% static 'images/logo.png' %}" alt="logo">
+                <img class="profile-custom" src="{% static 'images/logo.png' %}" alt="logo">
             </span>
         </div>
         <i class="bx bx-chevron-right toggle"></i>
@@ -66,12 +66,17 @@
             </ul>
         </div>
     </div>
-</nav>
 
- <!-- Add Post Popup -->
+    <!--cmtpopup--------------------------------------------------------------------------->
+   
+    
+</nav>
+<!-- Add Post Popup -->
 <div id="addPostPopup" class="popup-overlay">
     <div class="popup-box">
-<form method="post">
+          
+        <form method="post">
+            {% csrf_token %}
         <div class="popup-header">
             <span>Create New Post</span>
             <button class="close-btn" onclick="closePopup()">×</button>
@@ -81,27 +86,29 @@
             <label for="fileUpload" class="upload-area">
                 <i class='bx bx-image-add'></i>
                 <p>Upload your photo or video</p>
-                <input type="file" id="fileUpload" hidden accept="image/*,video/*" onchange="previewMedia(event)">
+                <input name="img" type="file" id="fileUpload" hidden accept="image/*,video/*" onchange="previewMedia(event)">
             </label>
 
-            <img id="previewImg" class="preview-img" style="display: none;">
-            <video id="previewVideo" class="preview-video" controls style="display:none;"></video>
+            <img id="previewImg" class="preview-img" style="display: none;" name="img">
+            <video id="previewVideo" class="preview-video" controls style="display:none;" name="video"></video>
         </div>
         
         <div class="user-info-bar">
-    <img src="your-profile.jpg" class="user-dp" alt="User">
+    <img name="img" src="your-profile.jpg" class="user-dp" alt="User">
     
     <div class="user-text">
-        <span class="username">{{ datas.username }}</span>
+       
+        <span class="username">{{ datas.username }}<span>
+    
        
     </div>
 </div>
 
 
-        <textarea class="caption-box" placeholder="Write a caption..."></textarea>
+        <textarea name="txtarea" class="caption-box" placeholder="Write a caption..."></textarea>
 
-        <button class="post-btn">Post</button>
-        </form>
+        <button class="post-btn" type="submit">Post</button>
+</form>
 
     </div>
 </div>
@@ -117,6 +124,7 @@
 
     </div>
 </div>
+
 <footer class="footer">
     <div class="footer-content">
         <div class="footer-brand">
@@ -126,3 +134,4 @@
         <p>© 2025–26 PixelAura • All Rights Reserved</p>
     </div>
 </footer>
+
