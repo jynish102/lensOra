@@ -18,5 +18,6 @@ urlpatterns = [
     path('reels/', views.reels, name='reels'),
     path('profile/', views.profile, name="profile"),
     path('saved/',views.saved, name="saved"),
+    path('logout/', views.logout, name="logout")
 
 ]
