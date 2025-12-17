@@ -216,3 +216,4 @@ function previewMedia(event) {
         videoPreview.style.display = "block";
     }
 }
+
