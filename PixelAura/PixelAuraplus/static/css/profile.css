@@ -519,3 +519,18 @@ body {
   font-size: 15px;
 }
 
+* Close icon at top right */
+.close-icon {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #333;
+}
+.ac-close {
+    font-size: 22px;
+    cursor: pointer;
+}
+
+
