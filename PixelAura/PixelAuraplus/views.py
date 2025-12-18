@@ -1,5 +1,7 @@
 from django.shortcuts import render,redirect
 from django.db import connection
+from django.conf import settings
+import os
 
 def login(request):
     if request.method == 'POST':
@@ -126,6 +128,25 @@ def profile(request):
 
 def saved(request):
     return render(request,"saved.html")
+
+def add_post(request):
+    if request.method =="post" :
+        img = request.FILES.get('image')
+        un = request.session.get('user')
+        cp = request.POST.get("txtarea")
+        if img :
+            image_path = os.path.join(settings.MEDIA_ROOT, "posts", img.name)
+            os.makedirs(os.path.dirname(image_path), exist_ok=True)
+            with open(image_path,"wb") as f:
+                for chunk in img.chunks():
+                    f.write(chunk)
+            image_r_p = "/PixelAuraPlus/static/images/posts/" +img.name
+
+        with connection.cursor() as cursor:
+            q = "insert into posts (image,username,caption) values (%s,%s,%s)"   
+            cursor.execute(q,[image_r_p,un,cp])    
+            return redirect('home') 
+    return render(request,"login.html") 
 
 def logout(request):
     if "user" in request.session:
