@@ -148,6 +148,18 @@ def add_post(request):
             return redirect('home') 
     return render(request,"login.html") 
 
+def viewpost(request):
+    with connection.cursor() as cursor:
+        cursor.execute("""
+            SELECT id, image, username, caption
+            FROM posts
+            ORDER BY id DESC
+        """)
+        posts = cursor.fetchall()
+
+    return posts
+    
+
 def logout(request):
     if "user" in request.session:
         request.session.flush()
