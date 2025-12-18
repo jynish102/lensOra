@@ -75,7 +75,7 @@
 <div id="addPostPopup" class="popup-overlay">
     <div class="popup-box">
           
-        <form method="post">
+        <form action="{% url 'add_post' %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
         <div class="popup-header">
             <span>Create New Post</span>
@@ -86,7 +86,7 @@
             <label for="fileUpload" class="upload-area">
                 <i class='bx bx-image-add'></i>
                 <p>Upload your photo or video</p>
-                <input name="img" type="file" id="fileUpload" hidden accept="image/*,video/*" onchange="previewMedia(event)">
+                <input name="image" type="file" id="fileUpload" accept="image/*,video/*" onchange="previewMedia(event)">
             </label>
 
             <img id="previewImg" class="preview-img" style="display: none;" name="img">
@@ -98,7 +98,7 @@
     
     <div class="user-text">
        
-        <span class="username">{{ datas.username }}<span>
+        <span name="name" class="username">{{ datas.username }}<span>
     
        
     </div>
@@ -107,7 +107,7 @@
 
         <textarea name="txtarea" class="caption-box" placeholder="Write a caption..."></textarea>
 
-        <button class="post-btn" type="submit">Post</button>
+        <input class="post-btn" type="submit" value="Post">
 </form>
 
     </div>
