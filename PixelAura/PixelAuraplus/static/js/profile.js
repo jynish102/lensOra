@@ -129,3 +129,11 @@ imageInput.addEventListener("change", () => {
 sharePost.addEventListener("click", () => {
   alert("Post Shared!");
 });
+
+const closeBtn = document.getElementById("closePopup");
+
+closeBtn.addEventListener("click", () => {
+    popup.style.display = "none";
+});
+
+
