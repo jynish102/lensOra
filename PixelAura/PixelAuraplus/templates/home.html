@@ -3,291 +3,316 @@
 {% block title %}Home{% endblock %}
 {% block content %}
 <!-- Welcome Section -->
-        <div class="welcome-section">
-            <h1>Welcome to <span>PixelAura+</span> ✨</h1>
-            <p>Your creative journey starts here. Share your first post or explore content from featured creators.</p>
+<div class="welcome-section">
+    <h1>Welcome to <span>PixelAura+</span> ✨</h1>
+    <p>Your creative journey starts here. Share your first post or explore content from featured creators.</p>
 </div>
 
-        <div class="suggested-panel">
+<div class="suggested-panel">
 
-  <!-- ✅ LOGGED IN USER -->
-  
+    <!-- ✅ LOGGED IN USER -->
 
-  <!-- ✅ HEADER -->
-  <div class="suggest-header">
-    <span>Suggested for you</span>
-    
-  </div>
 
-  <div class="story-suggest-wrapper">
+    <!-- ✅ HEADER -->
+    <div class="suggest-header">
+        <span>Suggested for you</span>
 
-  <!-- ✅ LEFT SIDE: HORIZONTAL SUGGESTED CREATORS -->
-  <div class="story-logos-row">
-
-    {% for u in ulist %}
-    <div class="logo-wrapper">
-        <a href="{% url 'suggested_profile' %}" >
-      <img src="https://i.pravatar.cc/100?img=11" class="logo-avatar">
-    </a>
-      <p class="logo-name">{{ u.username }}</p>
-    </div>
-    {% endfor %}
-  </div>
-
-  <!-- ✅ RIGHT SIDE: MAIN USER -->
-  <div class="main-user-box">
-    <a href="" classs="profile-link">
-    <div class="logo-wrapper user-logo">
-        
-      <div class="default-avatar">
-        
-        <i class="bx bxs-user"></i>
-        
-      </div>
-</div>
-</a>
-
-    <div class="main-user-text">
-        
-      <span class="main-username">{{ datas.username }}</span>
-      <span class="main-fullname">{{ datas.name }}</span>
-  
     </div>
 
-  </div>
-  <a href=" " class="switch-btn">Switch</a>
-</div>
+    <div class="story-suggest-wrapper">
+
+        <!-- ✅ LEFT SIDE: HORIZONTAL SUGGESTED CREATORS -->
+        <div class="story-logos-row">
+            {% for u in ulist %}
+            <div class="logo-wrapper">
+                <a href="{% url 'suggested_profile' %}">
+                    <img src="https://i.pravatar.cc/100?img=11" class="logo-avatar">
+                </a>
+                <p class="logo-name">{{ u.username }}</p>
+            </div>
+            {% endfor %}
 
 
-        <!-- Featured Posts -->
-            <div class="feed">
+        </div>
 
-            <!-- ✅ SINGLE POST (VIDEO) -->
-            <div class="post-card">
+        <!-- ✅ RIGHT SIDE: MAIN USER -->
+        <div class="main-user-box">
+            <a href="" classs="profile-link">
+                <div class="logo-wrapper user-logo">
 
-                <!-- 🔥 USER OVERLAY -->
-                <div class="post-header">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSU-qUBYEF1T26hIRXdi6wNxXuAJpWXs6KNfA&s" class="post-user-logo">
-                    <div>
-                        <span class="post-username">pixelaura</span>
-                        <small>Suggested For You</small>
+                    <div class="default-avatar">
+
+                        <i class="bx bxs-user"></i>
+
                     </div>
                 </div>
+            </a>
 
-                <!-- 🎥 POST MEDIA -->
-                <div class="reel-container" data-type="video">
-                    <div class="tap-indicator">
-                        <i class="bx bx-pause"></i>
-                        <span>Paused</span>
-                    </div>
+            <div class="main-user-text">
 
-                    <video class="post-media" autoplay loop muted playsinline>
-                      <source src="https://cdn.pixabay.com/video/2023/01/23/150310-808285211_large.mp4" type="video/mp4">
-                    </video>
+                <span class="main-username">{{ datas.username }}</span>
+                <span class="main-fullname">{{ datas.name }}</span>
 
-                    
 
-                    <!-- ❤️ POST ACTIONS -->
-                    <div class="post-actions-vertical">
-                        <div class="action-btn likeBtn">
-                            <i class="bx bx-heart"></i>
-                            <span>1.2k</span>
-                        </div>
+            </div>
 
-                        <div class="action-btn">
-                            <i class="bx bx-comment commentBtn"></i>
-                            <span>245</span>
-                        </div>
+        </div>
+        <a href="{% url 'login' %}" class="switch-btn">Switch</a>
+    </div>
 
-                        <div class="action-btn">
-                            <i class="bx bx-bookmark"></i>
-                            <span>Save</span>
-                        </div>
 
-                        <!-- ✅ SOUND ICON FOR VIDEO -->
-                        <div class="action-btn soundBtn">
-                            <i class="bx bx-volume-full"></i>
-                            <span>Sound</span>
-                        </div>
-                    </div>
+    <!-- Featured Posts -->
+    <div class="feed">
+
+        {% for p in posts %}
+        <!-- ✅ SINGLE POST (VIDEO) -->
+        <div class="post-card">
+
+            <!-- 🔥 USER OVERLAY -->
+            <div class="post-header">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSU-qUBYEF1T26hIRXdi6wNxXuAJpWXs6KNfA&s"
+                    class="post-user-logo">
+                <div>
+                    <span class="post-username">{{ p.2 }}</span>
+                    <small>Suggested For You</small>
                 </div>
             </div>
 
-            <!-- ✅ SINGLE POST (Posts) -->
-            <div class="post-card">
-
-                <!-- 🔥 USER OVERLAY -->
-                <div class="post-header">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSU-qUBYEF1T26hIRXdi6wNxXuAJpWXs6KNfA&s" class="post-user-logo">
-                    <div>
-                        <span class="post-username">pixelaura</span>
-                        <small>Suggested For You</small>
-                    </div>
+            <!-- 🎥 POST MEDIA -->
+            <div class="reel-container" data-type="video">
+                <div class="tap-indicator">
+                    <i class="bx bx-pause"></i>
+                    <span>Paused</span>
                 </div>
 
-                <!-- 🎥 POST MEDIA -->
-                <div class="reel-container" data-type="photo">
-                    
+                {% if p.1 %}
+                {% if p.1|lower|slice:"-4:" == ".mp4" %}
+                <!-- VIDEO -->
+                <video class="post-media" autoplay loop muted playsinline>
+                    <source src="{{ p.1 }}" type="video/mp4">
+                </video>
+                {% else %}
+                <!-- IMAGE -->
+                <img class="post-media" src="{{ p.1 }}" alt="post image">
+                {% endif %}
+                {% endif %}
 
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSU-qUBYEF1T26hIRXdi6wNxXuAJpWXs6KNfA&s" class="post-media">
-                    <!-- ❤️ POST ACTIONS -->
-                    <div class="post-actions-vertical">
-                        <div class="action-btn likeBtn">
-                            <i class="bx bx-heart"></i>
-                            <span>1.2k</span>
-                        </div>
 
-                        <div class="action-btn">
-                            <i class="bx bx-comment commentBtn"></i>
-                            <span>245</span>
-                        </div>
 
-                        <div class="action-btn">
-                            <i class="bx bx-bookmark"></i>
-                            <span>Save</span>
-                        </div>
-
+                <!-- ❤️ POST ACTIONS -->
+                <div class="post-actions-vertical">
+                    <div class="action-btn likeBtn">
+                        <i class="bx bx-heart"></i>
+                        <span>1.2k</span>
                     </div>
+
+                    <div class="action-btn">
+                        <i class="bx bx-comment commentBtn"></i>
+                        <span>245</span>
+                    </div>
+
+                    <div class="action-btn">
+                        <i class="bx bx-bookmark"></i>
+                        <span>Save</span>
+                    </div>
+
+                    <!-- ✅ SOUND ICON FOR VIDEO -->
+                    <div class="action-btn soundBtn">
+                        <i class="bx bx-volume-full"></i>
+                        <span>Sound</span>
+                    </div>
+
+                    {% if p.3 %}
+                    <div class="post-caption">
+                        <p>{{ p.3 }}</p>
+                    </div>
+                    {% endif %}
+
+
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+        <!-- ✅ SINGLE POST (Posts) -->
+        <div class="post-card">
+
+            <!-- 🔥 USER OVERLAY -->
+            <div class="post-header">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSU-qUBYEF1T26hIRXdi6wNxXuAJpWXs6KNfA&s"
+                    class="post-user-logo">
+                <div>
+                    <span class="post-username">pixelaura</span>
+                    <small>Suggested For You</small>
                 </div>
             </div>
 
-            <!-- ✅ SINGLE POST (VIDEO) -->
-            <div class="post-card">
+            <!-- 🎥 POST MEDIA -->
+            <div class="reel-container" data-type="photo">
 
-                <!-- 🔥 USER OVERLAY -->
-                <div class="post-header">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSU-qUBYEF1T26hIRXdi6wNxXuAJpWXs6KNfA&s" class="post-user-logo">
-                    <div>
-                        <span class="post-username">pixelaura</span>
-                        <small>Suggested For You</small>
+
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSU-qUBYEF1T26hIRXdi6wNxXuAJpWXs6KNfA&s"
+                    class="post-media">
+                <!-- ❤️ POST ACTIONS -->
+                <div class="post-actions-vertical">
+                    <div class="action-btn likeBtn">
+                        <i class="bx bx-heart"></i>
+                        <span>1.2k</span>
                     </div>
+
+                    <div class="action-btn">
+                        <i class="bx bx-comment commentBtn"></i>
+                        <span>245</span>
+                    </div>
+
+                    <div class="action-btn">
+                        <i class="bx bx-bookmark"></i>
+                        <span>Save</span>
+                    </div>
+
                 </div>
+            </div>
+        </div>
 
-                <!-- 🎥 POST MEDIA -->
-                <div class="reel-container" data-type="video">
-                    <div class="tap-indicator">
-                        <i class="bx bx-pause"></i>
-                        <span>Paused</span>
-                    </div>
+        <!-- ✅ SINGLE POST (VIDEO) -->
+        <div class="post-card">
 
-                    <video class="post-media" autoplay loop muted playsinline>
-                      <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
-                    </video>
-
-                    
-
-                    <!-- ❤️ POST ACTIONS -->
-                    <div class="post-actions-vertical">
-                        <div class="action-btn likeBtn">
-                            <i class="bx bx-heart"></i>
-                            <span>1.2k</span>
-                        </div>
-
-                        <div class="action-btn">
-                            <i class="bx bx-comment commentBtn"></i>
-                            <span>245</span>
-                        </div>
-
-                        <div class="action-btn">
-                            <i class="bx bx-bookmark"></i>
-                            <span>Save</span>
-                        </div>
-
-                        <!-- ✅ SOUND ICON FOR VIDEO -->
-                        <div class="action-btn soundBtn">
-                            <i class="bx bx-volume-full"></i>
-                            <span>Sound</span>
-                        </div>
-                    </div>
+            <!-- 🔥 USER OVERLAY -->
+            <div class="post-header">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSU-qUBYEF1T26hIRXdi6wNxXuAJpWXs6KNfA&s"
+                    class="post-user-logo">
+                <div>
+                    <span class="post-username">pixelaura</span>
+                    <small>Suggested For You</small>
                 </div>
             </div>
 
-             <!-- ✅ SINGLE POST (Posts) -->
-            <div class="post-card">
-
-                <!-- 🔥 USER OVERLAY -->
-                <div class="post-header">
-                    <img src="logo.png" class="post-user-logo">
-                    <div>
-                        <span class="post-username">pixelaura</span>
-                        <small>Suggested For You</small>
-                    </div>
+            <!-- 🎥 POST MEDIA -->
+            <div class="reel-container" data-type="video">
+                <div class="tap-indicator">
+                    <i class="bx bx-pause"></i>
+                    <span>Paused</span>
                 </div>
 
-                <!-- 🎥 POST MEDIA -->
-                <div class="reel-container" data-type="photo">
-                
+                <video class="post-media" autoplay loop muted playsinline>
+                    <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                </video>
 
-                    <img src="https://picsum.photos/600/900" class="post-media">
-                    <!-- ❤️ POST ACTIONS -->
-                    <div class="post-actions-vertical">
-                        <div class="action-btn likeBtn">
-                            <i class="bx bx-heart"></i>
-                            <span>1.2k</span>
-                        </div>
 
-                        <div class="action-btn">
-                            <i class="bx bx-comment commentBtn"></i>
-                            <span>245</span>
-                        </div>
 
-                        <div class="action-btn">
-                            <i class="bx bx-bookmark"></i>
-                            <span>Save</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ✅ SINGLE POST (VIDEO) -->
-            <div class="post-card">
-
-                <!-- 🔥 USER OVERLAY -->
-                <div class="post-header">
-                    <img src="logo.png" class="post-user-logo">
-                    <div>
-                        <span class="post-username">pixelaura</span>
-                        <small>Suggested For You</small>
-                    </div>
-                </div>
-
-                <!-- 🎥 POST MEDIA -->
-                <div class="reel-container" data-type="video">
-                    <div class="tap-indicator">
-                        <i class="bx bx-pause"></i>
-                        <span>Paused</span>
+                <!-- ❤️ POST ACTIONS -->
+                <div class="post-actions-vertical">
+                    <div class="action-btn likeBtn">
+                        <i class="bx bx-heart"></i>
+                        <span>1.2k</span>
                     </div>
 
-                    <video class="post-media" autoplay loop muted playsinline>
-                      <source src="https://cdn.pixabay.com/video/2022/10/12/134909-754932563_large.mp4" type="video/mp4">
-                    </video>
+                    <div class="action-btn">
+                        <i class="bx bx-comment commentBtn"></i>
+                        <span>245</span>
+                    </div>
 
-                    
+                    <div class="action-btn">
+                        <i class="bx bx-bookmark"></i>
+                        <span>Save</span>
+                    </div>
 
-                    <!-- ❤️ POST ACTIONS -->
-                    <div class="post-actions-vertical">
-                        <div class="action-btn likeBtn">
-                            <i class="bx bx-heart"></i>
-                            <span>1.2k</span>
-                        </div>
-
-                        <div class="action-btn">
-                            <i class="bx bx-comment commentBtn"></i>
-                            <span>245</span>
-                        </div>
-
-                        <div class="action-btn">
-                            <i class="bx bx-bookmark"></i>
-                            <span>Save</span>
-                        </div>
-
-                        <!-- ✅ SOUND ICON FOR VIDEO -->
-                        <div class="action-btn soundBtn">
-                            <i class="bx bx-volume-full"></i>
-                            <span>Sound</span>
-                        </div>
+                    <!-- ✅ SOUND ICON FOR VIDEO -->
+                    <div class="action-btn soundBtn">
+                        <i class="bx bx-volume-full"></i>
+                        <span>Sound</span>
                     </div>
                 </div>
             </div>
         </div>
-{% endblock %}
+
+        <!-- ✅ SINGLE POST (Posts) -->
+        <div class="post-card">
+
+            <!-- 🔥 USER OVERLAY -->
+            <div class="post-header">
+                <img src="logo.png" class="post-user-logo">
+                <div>
+                    <span class="post-username">pixelaura</span>
+                    <small>Suggested For You</small>
+                </div>
+            </div>
+
+            <!-- 🎥 POST MEDIA -->
+            <div class="reel-container" data-type="photo">
+
+
+                <img src="https://picsum.photos/600/900" class="post-media">
+                <!-- ❤️ POST ACTIONS -->
+                <div class="post-actions-vertical">
+                    <div class="action-btn likeBtn">
+                        <i class="bx bx-heart"></i>
+                        <span>1.2k</span>
+                    </div>
+
+                    <div class="action-btn">
+                        <i class="bx bx-comment commentBtn"></i>
+                        <span>245</span>
+                    </div>
+
+                    <div class="action-btn">
+                        <i class="bx bx-bookmark"></i>
+                        <span>Save</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ✅ SINGLE POST (VIDEO) -->
+        <div class="post-card">
+
+            <!-- 🔥 USER OVERLAY -->
+            <div class="post-header">
+                <img src="logo.png" class="post-user-logo">
+                <div>
+                    <span class="post-username">pixelaura</span>
+                    <small>Suggested For You</small>
+                </div>
+            </div>
+
+            <!-- 🎥 POST MEDIA -->
+            <div class="reel-container" data-type="video">
+                <div class="tap-indicator">
+                    <i class="bx bx-pause"></i>
+                    <span>Paused</span>
+                </div>
+
+                <video class="post-media" autoplay loop muted playsinline>
+                    <source src="https://cdn.pixabay.com/video/2022/10/12/134909-754932563_large.mp4" type="video/mp4">
+                </video>
+
+
+
+                <!-- ❤️ POST ACTIONS -->
+                <div class="post-actions-vertical">
+                    <div class="action-btn likeBtn">
+                        <i class="bx bx-heart"></i>
+                        <span>1.2k</span>
+                    </div>
+
+                    <div class="action-btn">
+                        <i class="bx bx-comment commentBtn"></i>
+                        <span>245</span>
+                    </div>
+
+                    <div class="action-btn">
+                        <i class="bx bx-bookmark"></i>
+                        <span>Save</span>
+                    </div>
+
+                    <!-- ✅ SOUND ICON FOR VIDEO -->
+                    <div class="action-btn soundBtn">
+                        <i class="bx bx-volume-full"></i>
+                        <span>Sound</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% endblock %}
