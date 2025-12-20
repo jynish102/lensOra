@@ -93,9 +93,18 @@
         <div class="posts-grid">
           {% for p in posts %}
           <div class="post-item">
-            {% if p.1 %}
-            <img src="{{ p.1 }}" width="250">
-            {% endif %}
+           
+      {% if p.1 %}
+        {% if p.1|lower|slice:"-4:" == ".mp4" %}
+          <video width="250" controls>
+            <source src="{{ p.1 }}" type="video/mp4">
+            Your browser does not support video.
+          </video>
+
+        {% else %}
+          <img src="{{ p.1 }}" width="250">
+        {% endif %}
+      {% endif %}
           </div>
           {% empty %}
           <p>No posts available.</p>
