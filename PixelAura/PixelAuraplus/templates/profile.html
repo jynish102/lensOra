@@ -1,159 +1,107 @@
 {% load static %}
 <title> Profile </title>
+
+
+
 <link rel="stylesheet" href="{% static 'css/profile.css' %}">
 <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+
+
 </head>
+
 <body>
-<div class="profile-container">
+
+  <div class="profile-container">
     <a href="{% url 'home' %}" class="close-link">
       <i class='bx bx-x ac-close'></i>
     </a>
-      <div class="profile-sticky">
-    <!-- ✅ USER INFO ROW (Updated Layout) -->
-    <div class="user-row">
+    <div class="profile-sticky">
+      <!-- ✅ USER INFO ROW (Updated Layout) -->
+      <div class="user-row">
 
-      <!-- ✅ PROFILE IMAGE WITH CAMERA & DEFAULT ICON -->
-      <div class="profile-pic-wrapper">
-        <i class="bx bxs-user default-user-icon"></i>
-        <label class="camera-icon">
-          <i class="bx bx-camera camera-icon"></i>
-          <input type="file" hidden>
-        </label>
-      </div>
+        <!-- ✅ PROFILE IMAGE WITH CAMERA & DEFAULT ICON -->
+        <div class="profile-pic-wrapper">
+          <i class="bx bxs-user default-user-icon"></i>
+          <label class="camera-icon">
+            <i class="bx bx-camera camera-icon"></i>
+            <input type="file" hidden>
+          </label>
+        </div>
 
-      <!-- ✅ USERNAME + NAME + SETTINGS ICON -->
-      <div class="user-right">
+        <!-- ✅ USERNAME + NAME + SETTINGS ICON -->
+        <div class="user-right">
 
-        <div class="user-top-row">
-          <div class="user-text">
-            {% for login in userlogin %}
-            <h2 class="username">{{ login.username }}</h2>
-            <span class="full-name">{{ login.name }}</span>
-            {% endfor %}
+          <div class="user-top-row">
+            <div class="user-text">
+              {% for login in userlogin %}
+              <h2 class="username">{{ login.username }}</h2>
+              <span class="full-name">{{ login.name }}</span>
+              {% endfor %}
+            </div>
+
+          </div>
+
+          <!-- ✅ COUNTS ROW (UNCHANGED) -->
+          <div class="counts">
+            <div>
+              <b>12</b>
+              <span>Posts</span>
+            </div>
+            <div>
+              <b>150</b>
+              <span>Followers</span>
+            </div>
+            <div>
+              <b>200</b>
+              <span>Following</span>
+            </div>
           </div>
 
         </div>
+      </div>
 
-        <!-- ✅ COUNTS ROW (UNCHANGED) -->
-        <div class="counts">
-          <div>
-            <b>12</b>
-            <span>Posts</span>
-          </div>
-          <div>
-            <b>150</b>
-            <span>Followers</span>
-          </div>
-          <div>
-            <b>200</b>
-            <span>Following</span>
-          </div>
+      <!-- ✅ EDIT BUTTON ROW (UNCHANGED) -->
+      <div class="edit-btn-container">
+        <a href="{% url 'setting' %}">
+          <button class="edit-btn">Edit Profile</button>
+        </a>
+      </div>
+
+      <!-- ✅ TABS -->
+      <div class="tabs">
+        <div class="tab active" data-tab="posts">
+          <i class="bx bx-grid-alt"></i>
+          <span>Posts</span>
         </div>
 
-      </div>
-    </div>
+        <div class="tab" data-tab="reels">
+          <i class="bx bx-play-circle"></i>
+          <span>Reels</span>
+        </div>
 
-    <!-- ✅ EDIT BUTTON ROW (UNCHANGED) -->
-    <div class="edit-btn-container">
-      <a href="{% url 'setting' %}">
-        <button class="edit-btn">Edit Profile</button>
-      </a>
-    </div>
-
-    <!-- ✅ TABS -->
-    <div class="tabs">
-      <div class="tab active" data-tab="posts">
-        <i class="bx bx-grid-alt"></i>
-        <span>Posts</span>
-      </div>
-
-      <div class="tab" data-tab="reels">
-        <i class="bx bx-play-circle"></i>
-        <span>Reels</span>
-      </div>
-
-      <div class="tab" data-tab="saved">
-        <i class="bx bx-bookmark"></i>
-        <span>Saved</span>
-      </div>
-    </div>
-
-
-    <!-- ✅ POSTS TAB CONTENT (IMPORTANT FIX ✅) -->
-    <div class="tab-content active" id="posts">
-
-      <h2>All Posts</h2>
-       <div class="posts-grid">
-    <div class="post-item">
-
-      {% for p in posts %}
-      <div>
-      {% if p.1 %}
-        <img src="{{ p.1 }}" width="250">
-        {% endif %}
-
-      
-      </div>
-      {% empty %}
-      <p>No posts available.</p>
-      {% endfor %}
-      </div>
-
-<div class="post-item">
-
-      {% for p in posts %}
-      <div>
-      {% if p.1 %}
-        <img src="{{ p.1 }}" width="250">
-        {% endif %}
-
-      
-      </div>
-      {% empty %}
-      <p>No posts available.</p>
-      {% endfor %}
+        <div class="tab" data-tab="saved">
+          <i class="bx bx-bookmark"></i>
+          <span>Saved</span>
+        </div>
       </div>
 
 
+      <!-- ✅ POSTS TAB CONTENT (IMPORTANT FIX ✅) -->
+      <div class="tab-content active" id="posts">
 
-
+        <h2>All Posts</h2>
+        <div class="posts-grid">
+          {% for p in posts %}
+          <div class="post-item">
+            {% if p.1 %}
+            <img src="{{ p.1 }}" width="250">
+            {% endif %}
+          </div>
+          {% empty %}
+          <p>No posts available.</p>
+          {% endfor %}
+        </div>
       </div>
-
-      
-
-
-      
-  <!-- ✅ GRID GOES HERE -->
-  <div class="posts-grid">
-    <div class="post-item">
-      <img src="https://picsum.photos/600/600?random=1">
-    </div>
-    <div class="post-item">
-      <img src="https://picsum.photos/600/600?random=2">
-    </div>
-    <div class="post-item">
-      <img src="https://picsum.photos/600/600?random=3">
-    </div>
-    <div class="post-item">
-      <img src="https://picsum.photos/600/600?random=4">
-    </div>
-    <div class="post-item">
-      <img src="https://picsum.photos/600/600?random=5">
-    </div>
-    <div class="post-item">
-      <img src="https://picsum.photos/600/600?random=6">
-    </div>
-    <div class="post-item">
-      <img src="https://picsum.photos/600/600?random=7">
-    </div>
-    <div class="post-item">
-      <img src="https://picsum.photos/600/600?random=8">
-    </div>
-    <div class="post-item">
-      <img src="https://picsum.photos/600/600?random=9">
-    </div>
-  </div>
-
     </div>
 
 
@@ -169,6 +117,61 @@
       <h3 class="gs-title">Saved</h3>
       <p>This is your Saved posts section.</p>
     </div>
+
+      <div class="feed">
+
+            <!-- ✅ SINGLE POST (VIDEO) -->
+            <div class="post-card">
+
+                <!-- 🔥 USER OVERLAY -->
+                <div class="post-header">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSU-qUBYEF1T26hIRXdi6wNxXuAJpWXs6KNfA&s" class="post-user-logo">
+                    <div>
+                        <span class="post-username">pixelaura</span>
+                        <small>Suggested For You</small>
+                    </div>
+                </div>
+
+                <!-- 🎥 POST MEDIA -->
+                <div class="reel-container" data-type="video">
+                    <div class="tap-indicator">
+                        <i class="bx bx-pause"></i>
+                        <span>Paused</span>
+                    </div>
+
+                    <video class="post-media" autoplay loop muted playsinline>
+                      <source src="https://cdn.pixabay.com/video/2023/01/23/150310-808285211_large.mp4" type="video/mp4">
+                    </video>
+
+                    
+
+                    <!-- ❤️ POST ACTIONS -->
+                    <div class="post-actions-vertical">
+                        <div class="action-btn likeBtn">
+                            <i class="bx bx-heart"></i>
+                            <span>1.2k</span>
+                        </div>
+
+                        <div class="action-btn">
+                            <i class="bx bx-comment commentBtn"></i>
+                            <span>245</span>
+                        </div>
+
+                        <div class="action-btn">
+                            <i class="bx bx-bookmark"></i>
+                            <span>Save</span>
+                        </div>
+
+                        <!-- ✅ SOUND ICON FOR VIDEO -->
+                        <div class="action-btn soundBtn">
+                            <i class="bx bx-volume-full"></i>
+                            <span>Sound</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+      </div>      
+
 
 
 
@@ -252,7 +255,7 @@
         </div>
       </div>
     </div>
-   </div> 
+  </div>
 </body>
 <script src="{% static 'js/profile.js' %}"></script>
 
