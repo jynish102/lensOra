@@ -123,6 +123,8 @@ def reels(request):
     return render(request,"reels.html")
 
 def profile(request):
+    if "user" not in request.session:
+        return redirect('login')
     loginu = getloginuserdt(request)
     return render(request,"profile.html", {'userlogin' : loginu })
 
@@ -149,15 +151,19 @@ def add_post(request):
     return render(request,"login.html") 
 
 def viewpost(request):
+      username = request.session.get('user')
     with connection.cursor() as cursor:
         cursor.execute("""
             SELECT id, image, username, caption
             FROM posts
+              WHERE username = %s
             ORDER BY id DESC
-        """)
+        """ , [username])
         posts = cursor.fetchall()
 
     return posts
+
+
     
 
 def logout(request):
