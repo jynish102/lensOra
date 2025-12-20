@@ -1,15 +1,14 @@
 {% load static %}
 <title> Profile </title>
-   <link rel="stylesheet" href="{% static 'css/profile.css' %}">
-  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/profile.css' %}">
+<link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 </head>
 <body>
-
-  <div class="profile-container">
-     <a href="{% url 'setting' %}" class="close-link">
+<div class="profile-container">
+    <a href="{% url 'home' %}" class="close-link">
       <i class='bx bx-x ac-close'></i>
     </a>
-
+      <div class="profile-sticky">
     <!-- ✅ USER INFO ROW (Updated Layout) -->
     <div class="user-row">
 
@@ -17,8 +16,8 @@
       <div class="profile-pic-wrapper">
         <i class="bx bxs-user default-user-icon"></i>
         <label class="camera-icon">
-        <i class="bx bx-camera camera-icon"></i>
-        <input type="file" hidden>
+          <i class="bx bx-camera camera-icon"></i>
+          <input type="file" hidden>
         </label>
       </div>
 
@@ -27,10 +26,10 @@
 
         <div class="user-top-row">
           <div class="user-text">
-              {% for login in userlogin %}
+            {% for login in userlogin %}
             <h2 class="username">{{ login.username }}</h2>
             <span class="full-name">{{ login.name }}</span>
-          {% endfor %}
+            {% endfor %}
           </div>
 
         </div>
@@ -61,141 +60,200 @@
       </a>
     </div>
 
-   <!-- ✅ TABS -->
-<div class="tabs">
-  <div class="tab active" data-tab="posts">
-    <i class="bx bx-grid-alt"></i>
-    <span>Posts</span>
+    <!-- ✅ TABS -->
+    <div class="tabs">
+      <div class="tab active" data-tab="posts">
+        <i class="bx bx-grid-alt"></i>
+        <span>Posts</span>
+      </div>
+
+      <div class="tab" data-tab="reels">
+        <i class="bx bx-play-circle"></i>
+        <span>Reels</span>
+      </div>
+
+      <div class="tab" data-tab="saved">
+        <i class="bx bx-bookmark"></i>
+        <span>Saved</span>
+      </div>
+    </div>
+
+
+    <!-- ✅ POSTS TAB CONTENT (IMPORTANT FIX ✅) -->
+    <div class="tab-content active" id="posts">
+
+      <h2>All Posts</h2>
+       <div class="posts-grid">
+    <div class="post-item">
+
+      {% for p in posts %}
+      <div>
+      {% if p.1 %}
+        <img src="{{ p.1 }}" width="250">
+        {% endif %}
+
+      
+      </div>
+      {% empty %}
+      <p>No posts available.</p>
+      {% endfor %}
+      </div>
+
+<div class="post-item">
+
+      {% for p in posts %}
+      <div>
+      {% if p.1 %}
+        <img src="{{ p.1 }}" width="250">
+        {% endif %}
+
+      
+      </div>
+      {% empty %}
+      <p>No posts available.</p>
+      {% endfor %}
+      </div>
+
+
+
+
+      </div>
+
+      
+
+
+      
+  <!-- ✅ GRID GOES HERE -->
+  <div class="posts-grid">
+    <div class="post-item">
+      <img src="https://picsum.photos/600/600?random=1">
+    </div>
+    <div class="post-item">
+      <img src="https://picsum.photos/600/600?random=2">
+    </div>
+    <div class="post-item">
+      <img src="https://picsum.photos/600/600?random=3">
+    </div>
+    <div class="post-item">
+      <img src="https://picsum.photos/600/600?random=4">
+    </div>
+    <div class="post-item">
+      <img src="https://picsum.photos/600/600?random=5">
+    </div>
+    <div class="post-item">
+      <img src="https://picsum.photos/600/600?random=6">
+    </div>
+    <div class="post-item">
+      <img src="https://picsum.photos/600/600?random=7">
+    </div>
+    <div class="post-item">
+      <img src="https://picsum.photos/600/600?random=8">
+    </div>
+    <div class="post-item">
+      <img src="https://picsum.photos/600/600?random=9">
+    </div>
   </div>
 
-  <div class="tab" data-tab="reels">
-    <i class="bx bx-play-circle"></i>
-    <span>Reels</span>
-  </div>
-
-  <div class="tab" data-tab="saved">
-    <i class="bx bx-bookmark"></i>
-    <span>Saved</span>
-  </div>
-</div>
+    </div>
 
 
-<!-- ✅ POSTS TAB CONTENT (IMPORTANT FIX ✅) -->
-<div class="tab-content active" id="posts">
+    <!-- ✅ REELS TAB CONTENT -->
+    <div class="tab-content" id="reels">
+      <h3 class="gs-title">Reels</h3>
+      <p>This is your Reels section.</p>
+    </div>
 
-  <div class="getting-started">
-    <h3 class="gs-title">Getting Started</h3>
 
-    <div class="gs-cards">
-      <div class="gs-card">
-        <div class="gs-icon">
-          <i class="bx bx-camera"></i>
+    <!-- ✅ SAVED TAB CONTENT -->
+    <div class="tab-content" id="saved">
+      <h3 class="gs-title">Saved</h3>
+      <p>This is your Saved posts section.</p>
+    </div>
+
+
+
+
+
+
+
+
+
+    <!--popuo------------------------------------------>
+    <!-- ✅ CREATE POST MODAL -->
+    <div class="create-post-overlay" id="createPostModal">
+
+      <div class="create-post-box">
+
+        <!-- HEADER -->
+        <div class="create-post-header">
+          <span>Create new post</span>
+          <i class="bx bx-x" id="closePostModal"></i>
         </div>
 
-        <h4>Share Photos</h4>
-        <p>When you share photos, they'll appear on your profile.</p>
+        <!-- BODY -->
+        <div class="create-post-body">
+          <i class="bx bx-images post-big-icon"></i>
+          <p>Drag photos and videos here</p>
 
-        <button class="gs-btn" id="openCreatePost">
-          Share your first photo
-        </button>
-      </div>
-    </div>
-  </div>
+          <button class="select-btn" id="selectFromComputer">
+            Select from computer
+          </button>
 
-</div>
-
-
-<!-- ✅ REELS TAB CONTENT -->
-<div class="tab-content" id="reels">
-  <h3 class="gs-title">Reels</h3>
-  <p>This is your Reels section.</p>
-</div>
-
-
-<!-- ✅ SAVED TAB CONTENT -->
-<div class="tab-content" id="saved">
-  <h3 class="gs-title">Saved</h3>
-  <p>This is your Saved posts section.</p>
-</div>
-
-  
-
-
-
-<!--popuo------------------------------------------>
-<!-- ✅ CREATE POST MODAL -->
-<div class="create-post-overlay" id="createPostModal">
-
-  <div class="create-post-box">
-
-    <!-- HEADER -->
-    <div class="create-post-header">
-      <span>Create new post</span>
-      <i class="bx bx-x" id="closePostModal"></i>
-    </div>
-
-    <!-- BODY -->
-    <div class="create-post-body">
-      <i class="bx bx-images post-big-icon"></i>
-      <p>Drag photos and videos here</p>
-
-      <button class="select-btn" id="selectFromComputer">
-        Select from computer
-      </button>
-
-      <input type="file" id="postFileInput" hidden accept="image/*,video/*">
-    </div>
-
-  </div>
-</div>
-
-
-<!-------------------------------------------------------------secomd popup-->
-
-<!-- ✅ CROP MODAL -->
-<div class="crop-overlay" id="cropModal">
-  <div class="crop-box">
-    <i class="bx bx-x close-crop" id="closeCrop"></i>
-
-    <!-- ✅ HEADER -->
-    <div class="crop-header">
-      <i class="bx bx-arrow-back crop-back" id="backToUpload"></i>
-      <button class="share-btn" id="sharepost">Share</button>
-    </div>
-
-    <div class="crop-body">
-     <!-- ✅ IMAGE PREVIEW -->
-      <div class="crop-left">
-        <img id="cropImage" src="">
-      </div>
-
-      <!-- RIGHT SIDE: USER + CAPTION -->
-      <div class="crop-right">
-
-        <div class="user-info">
-          <img src="user.jpg" class="user-pic">
-          <span class="username">your_username</span>
+          <input type="file" id="postFileInput" hidden accept="image/*,video/*">
         </div>
-        <textarea class="caption-box" placeholder="Write a caption..."></textarea>
+
       </div>
     </div>
-  </div>
-</div>
 
-<!--3rd popup------------------------------------------------------->
-<!-- ✅ DISCARD CONFIRM MODAL -->
-<div class="discard-overlay" id="discardModal">
 
-  <div class="discard-box">
-    <h3>Discard post?</h3>
-    <p>If you leave, your edits won't be saved.</p>
+    <!-------------------------------------------------------------secomd popup-->
 
-    <div class="discard-actions">
-      <button class="discard-btn" id="confirmDiscard">Discard</button>
-      <button class="cancel-btn" id="cancelDiscard">Cancel</button>
+    <!-- ✅ CROP MODAL -->
+    <div class="crop-overlay" id="cropModal">
+      <div class="crop-box">
+        <i class="bx bx-x close-crop" id="closeCrop"></i>
+
+        <!-- ✅ HEADER -->
+        <div class="crop-header">
+          <i class="bx bx-arrow-back crop-back" id="backToUpload"></i>
+          <button class="share-btn" id="sharepost">Share</button>
+        </div>
+
+        <div class="crop-body">
+          <!-- ✅ IMAGE PREVIEW -->
+          <div class="crop-left">
+            <img id="cropImage" src="">
+          </div>
+
+          <!-- RIGHT SIDE: USER + CAPTION -->
+          <div class="crop-right">
+
+            <div class="user-info">
+              <img src="user.jpg" class="user-pic">
+              <span class="username">your_username</span>
+            </div>
+            <textarea class="caption-box" placeholder="Write a caption..."></textarea>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
+
+    <!--3rd popup------------------------------------------------------->
+    <!-- ✅ DISCARD CONFIRM MODAL -->
+    <div class="discard-overlay" id="discardModal">
+
+      <div class="discard-box">
+        <h3>Discard post?</h3>
+        <p>If you leave, your edits won't be saved.</p>
+
+        <div class="discard-actions">
+          <button class="discard-btn" id="confirmDiscard">Discard</button>
+          <button class="cancel-btn" id="cancelDiscard">Cancel</button>
+        </div>
+      </div>
+    </div>
+   </div> 
 </body>
 <script src="{% static 'js/profile.js' %}"></script>
+
 </html>
