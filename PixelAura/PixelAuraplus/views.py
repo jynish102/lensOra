@@ -99,9 +99,26 @@ def account_sidebar(request):
     return render(request,'account_sidebar.html')
 
 def setting(request):
-   loginu = getloginuserdt(request)
-    return render(request,'setting.html', {'datas' : loginu})  
+    loginu = getloginuserdt(request)
+    if request.method == "POST":
+        un = request.session.get('user')
+        bio = request.POST.get("bio")
+        gen  = request.POST.get("gender")
+        pro_img =request.FILES.get("profile_image")
 
+        if pro_img :
+            image_path = os.path.join(settings.MEDIA_ROOT, "profile", pro_img.name)
+            os.makedirs(os.path.dirname(image_path), exist_ok=True)
+            with open(image_path,"wb") as f:
+                for chunk in pro_img.chunks():
+                    f.write(chunk)
+            pro_image_r_p = "/PixelAuraplus/static/images/profile/" +pro_img.name
+
+        with connection.cursor() as cursor:
+            q="insert into profile (username,bio,gender,image) values (%s, %s, %s, %s)"
+            cursor.execute(q,[un,bio,gen,pro_image_r_p])
+            return redirect("profile")
+    return render(request,'setting.html',{'datas' :loginu})
 def base(request):
     return render(request,'base.html')  
 
