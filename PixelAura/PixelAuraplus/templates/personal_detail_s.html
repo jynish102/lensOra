@@ -47,7 +47,7 @@
         <i class='bx bx-x close-icon' id="closePopup"></i>
 
         <!-- Profile Section -->
-        <img src="https://via.placeholder.com/80" class="profile-pic" alt="Profile">
+        <img src"{{ profile.image|default:'/static/images/default-user.png' }}" class="profile-pic" alt="Profile">
       {% for dt in datas %}
         <h2 class="username">{{ dt.name }}</h2>
       {% endfor %}
