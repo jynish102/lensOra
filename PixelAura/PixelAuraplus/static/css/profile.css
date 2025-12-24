@@ -519,7 +519,13 @@ body {
   font-size: 15px;
 }
 
-* Close icon at top right */
+
+.ac-close {
+    font-size: 22px;
+    cursor: pointer;
+}
+
+
 .close-icon {
     position: absolute;
     top: 12px;
@@ -528,173 +534,109 @@ body {
     cursor: pointer;
     color: #333;
 }
-.ac-close {
-    font-size: 22px;
-    cursor: pointer;
+
+.posts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Responsive square columns */
+  gap: 4px;
+  width: 100%;
+  max-width: 935px;
+  margin: 16px auto;
 }
 
-.feed {
-    max-width: 520px;
-    margin-top: 20px;
-    padding-bottom: 80px;
+.post-item {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1; /* force square */
+  overflow: hidden;
+  background-color: #f0f0f0;
 }
 
-
-.post-card {
-    position: relative;
-    width: 100%;
-    margin-bottom: 35px;
-    border-radius: 14px;
-    overflow: hidden;
-    background: #000;
+.post-item img,
+.post-item video {
+  position: absolute; /* position inside the square */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* maintain cover without distortion */
+  display: block;
 }
 
-.post-media {
-    width: 100%;
-    height: 550px;
-    object-fit: cover;
-    display: block;
+/*--------*/
+.view-post-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
 }
 
-
-.post-header {
-    position: absolute;
-    top: 12px;
-    left: 12px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    z-index: 10;
-    color: white;
+.view-post-box {
+  width: 900px;
+  height: 550px;
+  background: white;
+  display: flex;
 }
 
-.post-user-logo {
-    width: 45px;
-    height: 45px;
-    object-fit: cover;
-    border-radius: 12px;
-    border-top-left-radius: 8px;
-    border-bottom-right-radius: 14px;
-    background: #222;
+.view-post-left {
+  width: 55%;
+  background: black;
 }
 
-.post-username {
-    font-size: 14px;
-    font-weight: 600;
+.view-post-left img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.post-header small {
-    font-size: 11px;
-    opacity: 0.8;
+.view-post-right {
+  width: 45%;
+  display: flex;
+  flex-direction: column;
 }
 
-
-.post-actions {
-    position: absolute;
-    bottom: 10px;
-    left: 0;
-    right: 0;
-    padding: 0 15px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    color: white;
-    z-index: 10;
+.view-post-header {
+  padding: 12px;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #ddd;
 }
 
-.left-actions {
-    display: flex;
-    gap: 18px;
+.view-comments {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
 }
 
-.post-actions i {
-    font-size: 24px;
-    cursor: pointer;
-    transition: 0.2s;
+.view-actions {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
 }
 
-.post-actions i:hover {
-    color: #6c63ff;
+.view-add-comment {
+  border-top: 1px solid #ddd;
+  display: flex;
 }
 
-.post-actions-vertical {
-    position: absolute;
-    right: 15px;
-    bottom: 80px;
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-    z-index: 10;
-}
-
-.action-btn {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: rgb(243, 239, 239);
-    cursor: pointer;
-    font-size: 13px;
-}
-
-.action-btn i {
-    font-size: 30px;
-    margin-bottom: 3px;
-    transition: transform 0.2s ease;
-}
-
-.action-btn:hover i {
-    transform: scale(1.15);
-}
-
-.reel-container {
-    position: relative;
-
-    margin: auto;
-    overflow: hidden;
-    border-radius: 14px;
-}
-
-.action-btn span {
-    font-size: 12px;
-}
-
-.tap-indicator {
-    position: absolute;
-    inset: 0;
-    top: 50%;
-    left: 50%;
-    padding: 14px 24px;
-    border-radius: 14px;
-    gap: 6px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background: rgba(0, 0, 0, 0.4);
-    color: white;
-    font-size: 22px;
-    opacity: 0;
-    pointer-events: none;
-    transition: 0.2s;
-}
-
-.tap-indicator i {
-    font-size: 28px;
-}
-
-.tap-indicator.show {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-}
-
-.likeBtn i {
-    transition: 0.2s;
-}
-
-.likeBtn.liked i {
-    color: red;
-    transform: scale(1.2);
+.view-add-comment input {
+  flex: 1;
+  border: none;
+  padding: 10px;
 }
 
 
+/*---------bio-------------------*/
+.bio {
+  margin-top: 10px;
+}
+
+.bio-text {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.4;
+}
 
