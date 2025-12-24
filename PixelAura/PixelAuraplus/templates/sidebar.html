@@ -36,7 +36,7 @@
                 </li>
                 <li class="profile-box">
                     <a href="{% url 'profile' %}">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQz4J1XfiouVQm6mrrz8CyL7qd6YZ7a3WZ6JA&s" alt="profile">
+                        <img src="{{ profile.image|default:'/static/images/default-user.png' }}" alt="profile">
                         <span class="text nav-text">My Profile</span>
                     </a>
                 </li>
@@ -94,7 +94,7 @@
         </div>
         
         <div class="user-info-bar">
-    <img name="img" src="your-profile.jpg" class="user-dp" alt="User">
+    <img name="img" src="{{ profile.image|default:'/static/images/default-user.png' }}" class="user-dp" alt="User">
     
     <div class="user-text">
        
