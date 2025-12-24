@@ -1,12 +1,7 @@
 {% load static %}
 <title> Profile </title>
-
-
-
 <link rel="stylesheet" href="{% static 'css/profile.css' %}">
 <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
-
-
 </head>
 
 <body>
@@ -22,9 +17,10 @@
         <!-- ✅ PROFILE IMAGE WITH CAMERA & DEFAULT ICON -->
         <div class="profile-pic-wrapper">
           <i class="bx bxs-user default-user-icon"></i>
+          
           <label class="camera-icon">
             <i class="bx bx-camera camera-icon"></i>
-            <input type="file" hidden>
+            <input type="file"  hidden>
           </label>
         </div>
 
@@ -56,6 +52,13 @@
               <span>Following</span>
             </div>
           </div>
+
+           <div class="bio">
+          <p class="bio-text">
+            {{ profile.bio|default:"No bio added yet." }}
+          </p>
+        </div>
+          
 
         </div>
       </div>
@@ -93,25 +96,45 @@
         <div class="posts-grid">
           {% for p in posts %}
           <div class="post-item">
-           
-      {% if p.1 %}
-        {% if p.1|lower|slice:"-4:" == ".mp4" %}
-          <video width="250" controls>
-            <source src="{{ p.1 }}" type="video/mp4">
-            Your browser does not support video.
-          </video>
-
-        {% else %}
-          <img src="{{ p.1 }}" width="250">
-        {% endif %}
-      {% endif %}
+            {% if p.1 %}
+            {% if p.1|lower|slice:"-4:" == ".mp4" %}
+            <video controls>
+              <source src="{{ p.1 }}"  class="grid-post"  type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+            {% else %}
+            <img src="{{ p.1 }}"  class="grid-post"  alt="post image" onclick="openPostView('{{ p.1 }}')" />
+            {% endif %}
+            {% endif %}
           </div>
+
           {% empty %}
           <p>No posts available.</p>
           {% endfor %}
         </div>
       </div>
+        
+
+
+   
+
+
     </div>
+
+    <!-------------------------------------------------------------------------------------------------->
+    <!-- POST VIEW MODAL -->
+<div class="post-view-overlay" id="postViewModal">
+  <div class="post-view-box">
+
+    <!-- LEFT IMAGE -->
+    <div class="post-view-left">
+      <img id="postViewImage" src="">
+    </div>
+
+
+  </div>
+</div>
+
 
 
     <!-- ✅ REELS TAB CONTENT -->
@@ -127,59 +150,7 @@
       <p>This is your Saved posts section.</p>
     </div>
 
-      <div class="feed">
 
-            <!-- ✅ SINGLE POST (VIDEO) -->
-            <div class="post-card">
-
-                <!-- 🔥 USER OVERLAY -->
-                <div class="post-header">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSU-qUBYEF1T26hIRXdi6wNxXuAJpWXs6KNfA&s" class="post-user-logo">
-                    <div>
-                        <span class="post-username">pixelaura</span>
-                        <small>Suggested For You</small>
-                    </div>
-                </div>
-
-                <!-- 🎥 POST MEDIA -->
-                <div class="reel-container" data-type="video">
-                    <div class="tap-indicator">
-                        <i class="bx bx-pause"></i>
-                        <span>Paused</span>
-                    </div>
-
-                    <video class="post-media" autoplay loop muted playsinline>
-                      <source src="https://cdn.pixabay.com/video/2023/01/23/150310-808285211_large.mp4" type="video/mp4">
-                    </video>
-
-                    
-
-                    <!-- ❤️ POST ACTIONS -->
-                    <div class="post-actions-vertical">
-                        <div class="action-btn likeBtn">
-                            <i class="bx bx-heart"></i>
-                            <span>1.2k</span>
-                        </div>
-
-                        <div class="action-btn">
-                            <i class="bx bx-comment commentBtn"></i>
-                            <span>245</span>
-                        </div>
-
-                        <div class="action-btn">
-                            <i class="bx bx-bookmark"></i>
-                            <span>Save</span>
-                        </div>
-
-                        <!-- ✅ SOUND ICON FOR VIDEO -->
-                        <div class="action-btn soundBtn">
-                            <i class="bx bx-volume-full"></i>
-                            <span>Sound</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-      </div>      
 
 
 
@@ -265,6 +236,62 @@
       </div>
     </div>
   </div>
+
+
+
+
+
+  <!-- VIEW POST POPUP (NEW) -->
+<div class="view-post-overlay" id="viewPostPopup">
+
+  <div class="view-post-box">
+
+    <!-- LEFT IMAGE -->
+    <div class="view-post-left">
+      <img id="viewPostImage" src="">
+    </div>
+
+    <!-- RIGHT CONTENT -->
+    <div class="view-post-right">
+      <form method="post">
+        {% csrf_token %}
+
+        <!-- HEADER -->
+        <div class="view-post-header">
+          <div class="view-user">
+            <img src="{{ request.user.profile.image.url }}" class="view-user-pic">
+            <span>{{ request.user.username }}</span>
+          </div>
+          <i class="bx bx-dots-horizontal-rounded"></i>
+        </div>
+
+        <!-- COMMENTS -->
+        <div class="view-comments">
+          <p><b>{{ request.user.username }}</b> Caption here</p>
+          <p><b>user1</b> Nice 🔥</p>
+        </div>
+
+        <!-- ACTIONS -->
+        <div class="view-actions">
+          <div>
+            <i class="bx bx-heart"></i>
+            <i class="bx bx-comment"></i>
+          </div>
+          <i class="bx bx-bookmark"></i>
+        </div>
+
+        <!-- ADD COMMENT -->
+        <div class="view-add-comment">
+          <input type="text" name="comment" placeholder="Add a comment...">
+          <button type="submit">Post</button>
+        </div>
+
+      </form>
+    </div>
+
+  </div>
+</div>
+
 </body>
 <script src="{% static 'js/profile.js' %}"></script>
 
