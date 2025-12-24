@@ -3,7 +3,6 @@
 <link rel="stylesheet" href="{% static 'css/profile.css' %}">
 <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 </head>
-
 <body>
 
   <div class="profile-container">
@@ -19,8 +18,8 @@
           <i class="bx bxs-user default-user-icon"></i>
           
           <label class="camera-icon">
-            <i class="bx bx-camera camera-icon"></i>
-            <input type="file"  hidden>
+             <img src="{{ profile.image|default:'/static/images/default-user.png' }}" class="profile-img">
+
           </label>
         </div>
 
