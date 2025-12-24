@@ -75,7 +75,7 @@
     <div class="profile-box">
       <div class="profile-left">
        <img id="profilePreview"
-             src="https://cdn-icons-png.flaticon.com/512/847/847969.png"
+             src="{{ profile.image|default:'/static/images/default-user.png' }}"
              alt="Profile">
         <div>
           {% for dt in datas %}
