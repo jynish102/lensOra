@@ -140,10 +140,32 @@ def reels(request):
     return render(request,"reels.html")
 
 def profile(request):
-    if "user" not in request.session:
+    if 'user' not in request.session:
         return redirect('login')
+    username = request.session.get('user')
+
     loginu = getloginuserdt(request)
-    return render(request,"profile.html", {'userlogin' : loginu })
+    posts=viewpost(request)
+
+    profile_data = None
+    with connection.cursor() as cursor:
+        cursor.execute("""
+            SELECT username, bio, gender, image
+            FROM profile
+            WHERE username = %s
+        """, [username])
+
+        row = cursor.fetchone()
+
+        if row:
+            profile_data = {
+                'username': row[0],
+                'bio': row[1],
+                'gender': row[2],
+                'image': row[3],
+            }
+
+    return render(request,"profile.html",{'userlogin' :loginu, "posts": posts , "profile": profile_data})
 
 def saved(request):
     return render(request,"saved.html")
