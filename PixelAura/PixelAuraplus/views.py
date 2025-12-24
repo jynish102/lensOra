@@ -52,7 +52,8 @@ def home(request):
                 'username': data[6]
             }
     suser=suggestuser(request)
-    return render(request,'home.html', {'datas' : datalist,'ulist':suser})
+    profile = profiledata(request) 
+    return render(request,'home.html', {'datas' : datalist,'ulist':suser , "profile" :profile})
 
 def getloginuserdt(request):
     username=request.session.get("user")
@@ -93,7 +94,8 @@ def suggestuser(request):
 
 
 def sidebar(request):
-    return render(request,'sidebar.html')
+    profile = profiledata(request) 
+    return render(request,'sidebar.html' {"profile" : profile})
 
 def account_sidebar(request):
     return render(request,'account_sidebar.html')
@@ -118,7 +120,9 @@ def setting(request):
             q="insert into profile (username,bio,gender,image) values (%s, %s, %s, %s)"
             cursor.execute(q,[un,bio,gen,pro_image_r_p])
             return redirect("profile")
-    return render(request,'setting.html',{'datas' :loginu})
+
+    profile = profiledata(request) 
+    return render(request,'setting.html',{'datas' :loginu , "profile" : profile})
 def base(request):
     return render(request,'base.html')  
 
@@ -126,8 +130,9 @@ def account_center(request):
     return render(request, 'account_center.html')
 
 def personal_detail_s(request):
-     datalist = getuser(request)
-    return render(request,"personal_detail_s.html", {'datas' : loginu})
+    datalist = getuser(request)
+    profile = profiledata(request) 
+    return render(request,"personal_detail_s.html", {'datas' : loginu , "profile" : profile})
 
 def change_pass(request):
     return render(request,'change_pass.html')
