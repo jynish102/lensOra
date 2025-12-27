@@ -4,6 +4,8 @@ from django.conf import settings
 import os
 
 def login(request):
+    if "user" in request.session:
+        return redirect('home')
     if request.method == 'POST':
         un = request.POST.get('username')
         pw = request.POST.get('password')
@@ -12,6 +14,7 @@ def login(request):
             cursor.execute(query,[un,pw])
             data = cursor.fetchone()
             if data:
+                request.session['user'] = data[6]
                 return redirect('home')
             else:
                 return redirect('login')
@@ -50,10 +53,11 @@ def home(request):
                 'mobile':  data[4],
                 'birthdate':data[5],
                 'username': data[6]
-            }
+        }
+       
     suser=suggestuser(request)
     profile = profiledata(request) 
-    return render(request,'home.html', {'datas' : datalist,'ulist':suser , "profile" :profile})
+    return render(request,'home.html', {'datas' : datalist,'ulist':suser , "profile" : profile})
 
 def getloginuserdt(request):
     username=request.session.get("user")
@@ -85,7 +89,7 @@ def suggestuser(request):
                 'id' :row[0],
                 'name':row[1],
                 'email':row[2],
-                'password':  row[3],
+                'password':row[3],
                 'mobile':  row[4],
                 'birthdate':row[5],
                 'username': row[6]
@@ -95,7 +99,7 @@ def suggestuser(request):
 
 def sidebar(request):
     profile = profiledata(request) 
-    return render(request,'sidebar.html' {"profile" : profile})
+    return render(request,'sidebar.html', {"profile" : profile})
 
 def account_sidebar(request):
     return render(request,'account_sidebar.html')
@@ -107,6 +111,7 @@ def setting(request):
         bio = request.POST.get("bio")
         gen  = request.POST.get("gender")
         pro_img =request.FILES.get("profile_image")
+        pro_image_r_p = None  # IMPORTANT
 
         if pro_img :
             image_path = os.path.join(settings.MEDIA_ROOT, "profile", pro_img.name)
@@ -117,12 +122,15 @@ def setting(request):
             pro_image_r_p = "/PixelAuraplus/static/images/profile/" +pro_img.name
 
         with connection.cursor() as cursor:
-            q="insert into profile (username,bio,gender,image) values (%s, %s, %s, %s)"
+            q = """
+            insert into profile (username,bio,gender,image) 
+            values (%s, %s, %s, %s)
+            """
             cursor.execute(q,[un,bio,gen,pro_image_r_p])
             return redirect("profile")
-
-    profile = profiledata(request) 
+    profile = profiledata(request)     
     return render(request,'setting.html',{'datas' :loginu , "profile" : profile})
+
 def base(request):
     return render(request,'base.html')  
 
@@ -130,29 +138,40 @@ def account_center(request):
     return render(request, 'account_center.html')
 
 def personal_detail_s(request):
-    datalist = getuser(request)
+    loginu = getloginuserdt(request)
     profile = profiledata(request) 
-    return render(request,"personal_detail_s.html", {'datas' : loginu , "profile" : profile})
+    return render(request,"personal_detail_s.html",{'datas' :loginu , "profile" : profile})
 
 def change_pass(request):
     return render(request,'change_pass.html')
 
 def personal_detail_ss(request):
-   loginu = getloginuserdt(request)
-    return render (request,"personal_detail_ss.html", {'datas' : loginu })
+    loginu = getloginuserdt(request)
+    return render (request,"personal_detail_ss.html",{'datas' :loginu})
 
 def reels(request):
-    return render(request,"reels.html")
+    profile = profiledata(request)
+    return render(request,"reels.html" , {"profile" : profile})
 
 def profile(request):
     if 'user' not in request.session:
         return redirect('login')
-    username = request.session.get('user')
-
+   
     loginu = getloginuserdt(request)
     posts=viewpost(request)
 
-    profile_data = None
+    profile = profiledata(request)  
+    return render(request,"profile.html",{'userlogin' :loginu, "posts": posts , "profile": profile})
+
+
+def profiledata(request):
+    username = request.session.get('user')
+    profile_data = {
+        'username': username,
+        'bio': '',
+        'gender': '',
+        'image': None
+    }
     with connection.cursor() as cursor:
         cursor.execute("""
             SELECT username, bio, gender, image
@@ -169,46 +188,93 @@ def profile(request):
                 'gender': row[2],
                 'image': row[3],
             }
+        return profile_data    
 
-    return render(request,"profile.html",{'userlogin' :loginu, "posts": posts , "profile": profile_data})
 
 def saved(request):
     return render(request,"saved.html")
 
+def suggested_profile(request):
+    return render(request,'suggested_profile.html')
+
+# def add_post(request):
+#     if request.method =="POST" :
+#         img = request.FILES.get('image')
+#         un = request.session.get('user')
+#         cp = request.POST.get("txtarea")
+#         if img :
+#             image_path = os.path.join(settings.MEDIA_ROOT, "posts", img.name)
+#             os.makedirs(os.path.dirname(image_path), exist_ok=True)
+#             with open(image_path,"wb") as f:
+#                 for chunk in img.chunks():
+#                     f.write(chunk)
+#             image_r_p = "/PixelAuraplus/static/images/posts/" +img.name
+
+#         with connection.cursor() as cursor:
+#             q = "insert into posts (image,username,caption) values (%s,%s, %s)"   
+#             cursor.execute(q,[image_r_p,un,cp])    
+#             return redirect('home') 
+#     return render(request,"login.html") 
+
 def add_post(request):
-    if request.method =="post" :
+    if request.method == "POST":
         img = request.FILES.get('image')
         un = request.session.get('user')
         cp = request.POST.get("txtarea")
-        if img :
+
+        image_r_p = None  # IMPORTANT
+
+        if img:
             image_path = os.path.join(settings.MEDIA_ROOT, "posts", img.name)
             os.makedirs(os.path.dirname(image_path), exist_ok=True)
-            with open(image_path,"wb") as f:
+
+            with open(image_path, "wb") as f:
                 for chunk in img.chunks():
                     f.write(chunk)
-            image_r_p = "/PixelAuraPlus/static/images/posts/" +img.name
 
+            image_r_p = settings.MEDIA_URL + "posts/" + img.name
+       
         with connection.cursor() as cursor:
-            q = "insert into posts (image,username,caption) values (%s,%s,%s)"   
-            cursor.execute(q,[image_r_p,un,cp])    
-            return redirect('home') 
-    return render(request,"login.html") 
+                q = """
+                INSERT INTO posts (image, username, caption)
+                VALUES (%s, %s, %s)
+                """
+                cursor.execute(q, [image_r_p, un, cp])
+
+        return redirect('home')
+
+    return render(request, "login.html")
 
 def viewpost(request):
-      username = request.session.get('user')
+    username = request.session.get('user')
+
     with connection.cursor() as cursor:
         cursor.execute("""
             SELECT id, image, username, caption
             FROM posts
-              WHERE username = %s
+            WHERE username = %s
             ORDER BY id DESC
-        """ , [username])
+        """, [username])
         posts = cursor.fetchall()
 
     return posts
 
+def viewprofile(request):
+    username = request.session.get('user')
 
-    
+    with connection.cursor() as cursor:
+        cursor.execute("""
+            SELECT id,username,bio,gender,image
+            FROM profile
+            WHERE username = %s
+        """, [username])
+        profile = cursor.fetchall()
+
+    return render(request, "profile.html", {
+        "profile": profile
+    })
+
+
 
 def logout(request):
     if "user" in request.session:
