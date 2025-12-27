@@ -13,14 +13,18 @@
       <!-- ✅ USER INFO ROW (Updated Layout) -->
       <div class="user-row">
 
+       
         <!-- ✅ PROFILE IMAGE WITH CAMERA & DEFAULT ICON -->
         <div class="profile-pic-wrapper">
-          <i class="bx bxs-user default-user-icon"></i>
-          
-          <label class="camera-icon">
-             <img src="{{ profile.image|default:'/static/images/default-user.png' }}" class="profile-img">
 
-          </label>
+          {% if profile.image %}
+          <img src="{{ profile.image }}" class="profile-img">
+          {% else %}
+          <i class="bx bxs-user default-user-icon"></i>
+          <img src="{% static 'images/default-user.png' %}" class="profile-img">
+          {% endif %}
+
+          <label class="camera-icon"></label>
         </div>
 
         <!-- ✅ USERNAME + NAME + SETTINGS ICON -->
