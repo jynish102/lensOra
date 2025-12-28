@@ -121,7 +121,7 @@ USE_TZ = True
 
 
 STATIC_URL = 'static/'
-STATICFILES_DIR = [os.path.join(BASE_DIR,"PixelAuraPlus/static")]
+STATICFILES_DIR = [os.path.join(BASE_DIR,"PixelAuraplus/static")]
 
 MEDIA_URL ="/PixelAuraplus/static/images/"
 MEDIA_ROOT = os.path.join(BASE_DIR,"/PixelAuraplus/static/images")
