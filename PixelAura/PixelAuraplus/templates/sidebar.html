@@ -79,7 +79,7 @@
             {% csrf_token %}
         <div class="popup-header">
             <span>Create New Post</span>
-            <button class="close-btn" onclick="closePopup()">×</button>
+            <button type="button" class="close-btn" onclick="closePopup()">×</button>
         </div>
 
         <div class="popup-content">
@@ -119,8 +119,8 @@
         <h3>Discard post?</h3>
         <p>If you leave, your post will not be saved.</p>
 
-        <button class="discard-btn" onclick="discardPost()">Discard</button>
-        <button class="cancel-btn" onclick="closeDiscard()">Cancel</button>
+        <button typr="button" class="discard-btn" onclick="discardPost()">Discard</button>
+        <button type="button" class="cancel-btn" onclick="closeDiscard()">Cancel</button>
 
     </div>
 </div>
@@ -134,4 +134,3 @@
         <p>© 2025–26 PixelAura • All Rights Reserved</p>
     </div>
 </footer>
-
