@@ -222,7 +222,9 @@ def add_post(request):
         un = request.session.get('user')
         cp = request.POST.get("txtarea")
 
-        image_r_p = None  # IMPORTANT
+         if not img:
+            # user clicked discard OR tried to submit without image
+            return redirect('home')
 
         if img:
             image_path = os.path.join(settings.MEDIA_ROOT, "posts", img.name)
