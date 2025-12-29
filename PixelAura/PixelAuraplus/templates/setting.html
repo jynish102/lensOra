@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}Setting{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/setting.css' %}">
+{% endblock %}
+
 {% block content %}
-{% block extra_css %}<link rel="stylesheet" href="{% static 'css/setting.css' %}">{% endblock %}
-
-
-
 <div class="app">
 <div class="settings-panel">
 
@@ -78,9 +78,9 @@
              src="{{ profile.image|default:'/static/images/default-user.png' }}"
              alt="Profile">
         <div>
-          {% for dt in datas %}
-          <strong>{{ dt.username }}</strong>
-          <p>{{ dt.name }}</p>
+          {% for login in datas %}
+          <strong>{{ login.username }}</strong>
+          <p>{{ login.name }}</p>
           {% endfor %}
         </div>
       </div>
@@ -141,7 +141,8 @@
 </div>
 </div>
 </div>
+{% endblock  %}
+
 {% block extra_js %}
 <script src="{% static 'js/setting.js' %}"></script>
 {% endblock %}
-{% endblock  %}
