@@ -25,7 +25,7 @@
         <div class="story-logos-row">
             {% for u in ulist %}
             <div class="logo-wrapper">
-                <a href="{% url 'suggested_profile' %}">
+                <a href="{% url 'suggested_user_profile' u.username %}">
                     <img src="https://i.pravatar.cc/100?img=11" class="logo-avatar">
                 </a>
                 <p class="logo-name">{{ u.username }}</p>
