@@ -1,5 +1,6 @@
 from django.shortcuts import render,redirect
 from django.db import connection
+from django.http import HttpResponse
 from django.conf import settings
 import os
 
@@ -208,7 +209,7 @@ def suggested_profile(request):
 #             with open(image_path,"wb") as f:
 #                 for chunk in img.chunks():
 #                     f.write(chunk)
-#             image_r_p = "/PixelAuraplus/static/images/posts/" +img.name
+#             image_r_p = "PixelAuraplus/static/images/posts/" +img.name
 
 #         with connection.cursor() as cursor:
 #             q = "insert into posts (image,username,caption) values (%s,%s, %s)"   
@@ -246,7 +247,25 @@ def add_post(request):
         return redirect('home')
 
     return render(request, "login.html")
+def suggested_user_profile(request, username):
+    with connection.cursor() as cursor:
+        cursor.execute(
+            "SELECT id, name, email, username  FROM register WHERE username = %s",
+            [username]
+        )
+        row = cursor.fetchone()
 
+    if not row:
+        return HttpResponse("User not found")
+
+    user = {
+        'id': row[0],
+        'name': row[1],
+        'email': row[2],
+        'username': row[3],
+    }
+
+    return render(request, 'suggested_profile.html', {'user': user})
 def viewpost(request):
     username = request.session.get('user')
 
