@@ -107,30 +107,66 @@ def account_sidebar(request):
 
 def setting(request):
     loginu = getloginuserdt(request)
-    if request.method == "POST":
-        un = request.session.get('user')
-        bio = request.POST.get("bio")
-        gen  = request.POST.get("gender")
-        pro_img =request.FILES.get("profile_image")
-        pro_image_r_p = None  # IMPORTANT
+    un = request.session.get('user')
 
-        if pro_img :
+    if request.method == "POST":
+        bio = request.POST.get("bio")
+        gen = request.POST.get("gender")
+        pro_img = request.FILES.get("profile_image")
+        pro_image_r_p = None
+
+        if pro_img:
             image_path = os.path.join(settings.MEDIA_ROOT, "profile", pro_img.name)
             os.makedirs(os.path.dirname(image_path), exist_ok=True)
-            with open(image_path,"wb") as f:
+
+            with open(image_path, "wb") as f:
                 for chunk in pro_img.chunks():
                     f.write(chunk)
+
             pro_image_r_p = settings.MEDIA_URL + "profile/" + pro_img.name
 
         with connection.cursor() as cursor:
-            q = """
-            insert into profile (username,bio,gender,image) 
-            values (%s, %s, %s, %s)
-            """
-            cursor.execute(q,[un,bio,gen,pro_image_r_p])
-            return redirect("profile")
-    profile = profiledata(request)     
-    return render(request,'setting.html',{'datas' :loginu , "profile" : profile})
+            # 🔍 Check if profile exists
+            cursor.execute(
+                "SELECT id FROM profile WHERE username = %s",
+                [un]
+            )
+            existing = cursor.fetchone()
+
+            if existing:
+                # ✅ UPDATE
+                if pro_image_r_p:
+                    cursor.execute("""
+                        UPDATE profile
+                        SET bio=%s, gender=%s, image=%s
+                        WHERE username=%s
+                    """, [bio, gen, pro_image_r_p, un])
+                else:
+                    cursor.execute("""
+                        UPDATE profile
+                        SET bio=%s, gender=%s
+                        WHERE username=%s
+                    """, [bio, gen, un])
+            else:
+                # ✅ INSERT
+                cursor.execute("""
+                    INSERT INTO profile (username, bio, gender, image)
+                    VALUES (%s, %s, %s, %s)
+                """, [un, bio, gen, pro_image_r_p])
+
+        return redirect("profile")
+
+    # GET request
+    profile = profiledata(request)   # should return None if not exists
+    return render(
+        request,
+        'setting.html',
+        {
+            'datas': loginu,
+            'profile': profile
+        }
+    )
+
 
 def base(request):
     return render(request,'base.html')  
@@ -196,7 +232,8 @@ def saved(request):
     return render(request,"saved.html")
 
 def suggested_profile(request):
-    return render(request,'suggested_profile.html')
+    profile=profiledata(request):
+    return render(request,'suggested_profile.html', {"profile" : profile})
 
 # def add_post(request):
 #     if request.method =="POST" :
