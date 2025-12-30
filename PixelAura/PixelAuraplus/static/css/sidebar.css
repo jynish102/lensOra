@@ -27,6 +27,7 @@ body.dark {
 
 .sidebar.close {
     width: 78px;
+    overflow: visible;
 }
 
 .sidebar header {
@@ -434,30 +435,6 @@ body:not(.dark) .dropdown-toggle {
     border-radius: 14px;
 }
 
-.post-actions-vertical {
-    position: absolute;
-    right: 12px;
-    bottom: 80px;
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-    color: white;
-}
-
-
-
-
-.action-btn {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    cursor: pointer;
-}
-
-.action-btn i {
-    font-size: 26px;
-}
-
 .action-btn span {
     font-size: 12px;
 }
@@ -604,28 +581,34 @@ body:not(.dark) .hover-menu {
 
 .hover-menu {
     position: absolute;
-    bottom: 110%;
-
+    bottom: 55px;
     left: 0;
-    background: #18191a;
-    border-radius: 14px;
-    min-width: 200px;
-    overflow: hidden;
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(10px);
-    transition: 0.25s ease;
-    z-index: 9999;
-    display: flex;
-    flex-direction: column;
+    width: 240px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    display: none;
+    z-index: 1000;
+}
+
+.sidebar.close .hover-dropdown {
+    position: static;
+}
+
+.sidebar.close .hover-menu {
+    position: fixed;
+    left: 50px;
+    /* icon sidebar width */
+    bottom: 30px;
+    /* aligns with More icon */
+    width: 260px;
+    max-height: 80vh;
+    overflow-y: auto;
 }
 
 
 .hover-dropdown:hover .hover-menu {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
+    display: block;
 }
 
 body:not(.dark) .hover-menu a {
@@ -1078,4 +1061,15 @@ body:not(.dark) .hover-menu .danger {
 story-logos-row > * {
     flex: 0 0 auto; /* VERY IMPORTANT */
 }
+
+
+.profile-sticky {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #fff;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #eee;
+}
+
 
