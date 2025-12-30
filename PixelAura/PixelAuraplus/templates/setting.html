@@ -97,7 +97,8 @@
 
   <div class="form-group">
   <label>Bio</label>
-  <textarea id="bioInput" name="bio" placeholder="Bio"></textarea>
+  <textarea id="bioInput" name="bio" placeholder="Bio">{{ profile.bio|defa
+    :''}}</textarea>
   <small id="bioCount">0 / 150</small>
   <small id="bioError" style="color: red; display: none;">Bio cannot exceed 150 characters</small>
 </div>
@@ -107,8 +108,8 @@
       <label>Gender</label>
       <select>
         <option>Prefer not to say</option>
-        <option>Male</option>
-        <option>Female</option>
+        <option value="Male" {% if profile.gender == "male" %}selected{% endif %}>Male</option>
+        <option value="femail" {% if profile.gender == "female" %}selected{% endif %}>Female</option>
       </select>
     </div>
 
