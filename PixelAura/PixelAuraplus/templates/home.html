@@ -37,14 +37,14 @@
 
         <!-- ✅ RIGHT SIDE: MAIN USER -->
         <div class="main-user-box">
-            <a href="" classs="profile-link">
-                <div class="logo-wrapper user-logo">
-
-                    <div class="default-avatar">
-
-                        <i class="bx bxs-user"></i>
-
-                    </div>
+            <a href="{% url 'profile' %}" classs="profile-link">
+             {% if profile.image %}
+                <img src="{{ profile.image }}" class="logo-wrapper user-logo">
+                {% else %}
+                <div class="default-avatar">
+                    <i class="bx bxs-user"></i>
+                </div>
+                {% endif %}
                 </div>
             </a>
 
