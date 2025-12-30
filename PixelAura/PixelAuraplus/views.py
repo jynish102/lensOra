@@ -120,7 +120,7 @@ def setting(request):
             with open(image_path,"wb") as f:
                 for chunk in pro_img.chunks():
                     f.write(chunk)
-            pro_image_r_p = "/PixelAuraplus/static/images/profile/" +pro_img.name
+            pro_image_r_p = settings.MEDIA_URL + "profile/" + pro_img.name
 
         with connection.cursor() as cursor:
             q = """
