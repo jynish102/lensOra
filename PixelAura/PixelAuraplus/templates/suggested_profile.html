@@ -1,15 +1,23 @@
-<link rel="stylesheet" href="css/suggested_profile.css" />
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}suggested_profile{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/suggested_profile.css' %}" />{% endblock %}
+{% block content %}
+
 
 <div class="profile-header">
 
     <div class="profile-left">
-        <img src="https://i.pravatar.cc/150?img=11" class="profile-photo">
+        <img src="{{ profile.image|default:'/static/images/xya.png' }}" class="profile-photo">
     </div>
 
     <div class="profile-right">
         <div class="top-row">
-            <h2 class="username">user_one</h2>
-            <button class="follow-btn">Follow</button>
+            
+            <h2 class="username">{{ user.username }}</h2>
+            
+           
+            <button class="follow-btn" id="followBtn" data-user-id="{{ user.id }}" data-follow-url="{% url 'follow_user' %}">Follow</button>
         </div>
 
         <ul class="profile-stats">
@@ -19,8 +27,10 @@
         </ul>
 
         <div class="user-bio">
-            <span class="name">John Doe</span>
-            <p>Photographer | Traveler | Food lover</p>
+           
+            <p>{{ profile.bio|default:''}}</p>
+            
+
         </div>
     </div>
 
@@ -28,10 +38,19 @@
 
 <hr>
 
-<!-- POST GRID -->
 <div class="posts-grid">
-    <div class="post"><img src="https://picsum.photos/300?1"></div>
-    <div class="post"><img src="https://picsum.photos/300?2"></div>
-    <div class="post"><img src="https://picsum.photos/300?3"></div>
-    <div class="post"><img src="https://picsum.photos/300?4"></div>
+    {% for post in posts %}
+        <div class="post">
+            <img src="{{ post.0 }}">
+        </div>
+    {% empty %}
+        <p>No posts yet</p>
+    {% endfor %}
 </div>
+
+
+{% endblock %}
+
+{% block extra_js%}
+<script src="{% static 'js/suggested_profile.js' %}"></script>
+{% endblock %}
