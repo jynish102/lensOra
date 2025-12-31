@@ -231,9 +231,77 @@ def profiledata(request):
 def saved(request):
     return render(request,"saved.html")
 
-def suggested_profile(request):
-    profile=profiledata(request):
-    return render(request,'suggested_profile.html', {"profile" : profile})
+def suggested_profile(request, username):
+    with connection.cursor() as cursor:
+
+        # USER
+        cursor.execute("""
+            SELECT id, username
+            FROM register
+            WHERE username = %s
+        """, [username])
+        user_row = cursor.fetchone()
+
+        if not user_row:
+            return redirect("home")
+
+        user = {
+            "id": user_row[0],
+            "username": user_row[1],
+        }
+
+        # PROFILE
+        cursor.execute("""
+            SELECT bio, image
+            FROM profile
+            WHERE username = %s
+        """, [username])
+        profile_row = cursor.fetchone()
+
+        profile = {
+            "bio": profile_row[0] if profile_row else "",
+            "image": profile_row[1] if profile_row else None,
+        }
+
+        # POSTS
+        cursor.execute("""
+            SELECT image
+            FROM posts
+            WHERE username = %s
+            ORDER BY id DESC
+        """, [username])
+        posts = cursor.fetchall()
+
+    return render(request, "suggested_profile.html", {
+        "user": user,
+        "profile": profile,
+        "posts": posts,
+    })
+
+
+
+def suggested_user_profile(request, username):
+    with connection.cursor() as cursor:
+        cursor.execute(
+            "SELECT id, name, email, username  FROM register WHERE username = %s",
+            [username]
+        )
+        row = cursor.fetchone()
+
+    if not row:
+        return HttpResponse("User not found")
+
+    user = {
+        'id': row[0],
+        'name': row[1],
+        'email': row[2],
+        'username': row[3],
+    }
+
+    return render(request, 'suggested_profile.html', {'user': user})
+
+
+
 
 # def add_post(request):
 #     if request.method =="POST" :
