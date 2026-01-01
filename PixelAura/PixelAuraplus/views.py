@@ -45,6 +45,7 @@ def home(request):
     with connection.cursor() as cursor:
         q = "select * from register where username=%s"
         cursor.execute(q,[username])
+        
         data = cursor.fetchone()
         datalist = {
                 'id' :data[0],
@@ -55,10 +56,38 @@ def home(request):
                 'birthdate':data[5],
                 'username': data[6]
         }
-       
-    suser=suggestuser(request)
+
+         # 🔹 Suggested users
+        cursor.execute("""
+            SELECT id, username
+            FROM register
+            WHERE username != %s
+        """, [username])
+        users = cursor.fetchall()
+
+
+        # 🔹 Profile images (NO JOIN)
+        cursor.execute("""
+            SELECT username, image
+            FROM profile
+            WHERE username != %s
+        """,[username])
+        profiles = dict(cursor.fetchall())
+
+        suggested_users = []
+        for uid, uname in users:
+            img = profiles.get(uname)
+
+            if img:
+                img = "" + img
+
+            suggested_users.append({
+                "id": uid,
+                "username": uname,
+                "image": img  # match by username
+            })
     profile = profiledata(request) 
-    return render(request,'home.html', {'datas' : datalist,'ulist':suser , "profile" : profile})
+    return render(request,'home.html', {'ulist' : suggested_users , 'datas' : datalist, "profile" : profile})
 
 def getloginuserdt(request):
     username=request.session.get("user")
