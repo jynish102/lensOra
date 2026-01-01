@@ -503,6 +503,18 @@ body:not(.dark) .dropdown-toggle {
     border-radius: 8px;
 }
 
+
+.suggest-img{
+        width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            object-fit: cover;
+            border-top-left-radius: 6px;
+            border-top-right-radius: 30%;
+            border-bottom-left-radius: 30%;
+            border-bottom-right-radius: 6px;
+}
+
 .dropdown-toggle:hover {
     background: rgba(255, 255, 255, 0.05);
 }
