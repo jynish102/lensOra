@@ -3,12 +3,18 @@
     padding: 30px;
 }
 
-.profile-photo {
+
+.profile-photo{
     width: 150px;
     height: 150px;
     border-radius: 50%;
     object-fit: cover;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 30%;
+    border-bottom-left-radius: 30%;
+    border-bottom-right-radius: 6px;
 }
+
 
 .profile-right {
     margin-left: 40px;
@@ -64,4 +70,5 @@
     width: 100%;
     height: 300px;
     object-fit: cover;
+
 }
