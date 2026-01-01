@@ -56,10 +56,15 @@ body {
     margin: 25px 0;
 }
 
-.profile-left {
-    display: flex;
-    align-items: center;
-    gap: 15px;
+.profile-left img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 30%;
+    border-bottom-left-radius: 30%;
+    border-bottom-right-radius: 6px;
 }
 
 .profile-left img {
