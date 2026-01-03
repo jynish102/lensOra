@@ -7,7 +7,7 @@ urlpatterns = [
     path('register/', views.register, name='register'),
     path('details/', views.details, name='details'),
     path('home/',views.home,name='home'),
-    path('sidebar/',views.sidebar,name='sidebar'),
+    path('sidebar/<str:username>/',views.sidebar,name='sidebar'),
     path('account_sidebar/', views.account_sidebar, name="account_sidebar"),
     path('setting/',views.setting,name='setting'),
     path('base/',views.base,name="base"),
@@ -18,8 +18,10 @@ urlpatterns = [
     path('reels/', views.reels, name='reels'),
     path('profile/', views.profile, name="profile"),
     path('saved/',views.saved, name="saved"),
-    path('profile/<str:username>/' , views.suggested_profile, name="suggested_user_profile"),
+    path('suggested_profile/<str:username>', views.suggested_profile, name="suggested_profile"),
     path('add_post/', views.add_post,name="add_post"),
-    path('logout/', views.logout, name="logout")
-
+    path('profile/<str:username>/' , views.suggested_profile, name="suggested_user_profile"),
+    path('notifications/', views.notifications, name='notifications'),
+    path('follow-user/', views.follow_user, name="follow_user"),
+    path('logout/', views.logout, name="logout"),
 ]
