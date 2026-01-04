@@ -16,8 +16,17 @@
             
             <h2 class="username">{{ user.username }}</h2>
             
-           
-            <button class="follow-btn" id="followBtn" data-user-id="{{ user.id }}" data-follow-url="{% url 'follow_user' %}">Follow</button>
+           <form method="post" action ="{% url 'follow_user' user.username %}">
+            {% csrf_token %}
+                <button class="follow-btn {% if is_following %}
+                        following {% endif %}"   type="submit">
+                    {% if is_following %}
+                        Following
+                    {% else %}
+                        Follow
+                   {% endif %}
+                </button>
+        </form>
         </div>
 
         <ul class="profile-stats">
@@ -51,6 +60,3 @@
 
 {% endblock %}
 
-{% block extra_js%}
-<script src="{% static 'js/suggested_profile.js' %}"></script>
-{% endblock %}
