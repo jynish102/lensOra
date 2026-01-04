@@ -261,6 +261,10 @@ def saved(request):
     return render(request,"saved.html")
 
 def suggested_profile(request, username):
+    if "user" not in request.session:
+        return  rediirect("login")
+
+    logged_in_user = request.session["user"]
     with connection.cursor() as cursor:
 
         # USER
@@ -301,10 +305,19 @@ def suggested_profile(request, username):
         """, [username])
         posts = cursor.fetchall()
 
+     # ✅ CHECK FOLLOW STATUS
+        cursor.execute("""
+            SELECT id FROM follows
+            WHERE follower_username=%s AND following_username=%s
+        """, [logged_in_user, username])
+
+        is_following = cursor.fetchone() is not None
+
     return render(request, "suggested_profile.html", {
         "user": user,
         "profile": profile,
         "posts": posts,
+        "is_following" : is_follwing
     })
 
 
