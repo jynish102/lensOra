@@ -39,6 +39,13 @@
     font-size: 14px;
     border-radius: 8px;
     cursor: pointer;
+     transition: all 0.2s ease;
+}
+
+.follow-btn.following {
+    background: #efefef;
+    color: #262626;
+    border: 1px solid #dbdbdb;
 }
 
 .profile-stats {
@@ -72,3 +79,4 @@
     object-fit: cover;
 
 }
+
