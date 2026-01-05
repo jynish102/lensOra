@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Notifications{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/notifications.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="notifications-page">
+  <h2>Notifications</h2>
+
+{% if notifications %}
+  {% for n in notifications %}
+    <a href="{% url 'suggested_user_profile' n.0 %}" class="notification-link">
+      <div class="notification-item">
+        
+        <img 
+          src="{{ n.1|default:'/static/images/default-user.png' }}" 
+          class="notification-avatar"
+        >
+
+        <div class="notification-text">
+          <strong>{{ n.0 }}</strong> started following you
+          <small>{{ n.2 }}</small>
+        </div>
+
+      </div>
+    </a>
+  {% endfor %}
+{% else %}
+  <p>No notifications yet</p>
+{% endif %}
+{% endblock %}
