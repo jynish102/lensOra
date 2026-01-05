@@ -18,14 +18,21 @@
             
            <form method="post" action ="{% url 'follow_user' user.username %}">
             {% csrf_token %}
-                <button class="follow-btn {% if is_following %}
-                        following {% endif %}"   type="submit">
-                    {% if is_following %}
-                        Following
-                    {% else %}
-                        Follow
-                   {% endif %}
-                </button>
+{% if is_following %}
+    <button class="follow-btn following" type="submit">
+      Following
+    </button>
+
+  {% elif follows_you %}
+    <button class="follow-btn follow-back" type="submit">
+      Follow Back
+    </button>
+
+  {% else %}
+    <button class="follow-btn" type="submit">
+      Follow
+    </button>
+  {% endif %}
         </form>
         </div>
 
@@ -59,4 +66,5 @@
 
 
 {% endblock %}
+
 
