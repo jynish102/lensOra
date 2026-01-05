@@ -309,42 +309,103 @@ def suggested_profile(request, username):
         cursor.execute("""
             SELECT id FROM follows
             WHERE follower_username=%s AND following_username=%s
-        """, [logged_in_user, username])
+        """, [logged_user, username])
 
         is_following = cursor.fetchone() is not None
+
+     cursor.execute("""
+            SELECT id FROM follows 
+            WHERE follower_username=%s AND following_username=%s
+        """, [username, logged_user])
+        follows_you = cursor.fetchone() is not None
 
     return render(request, "suggested_profile.html", {
         "user": user,
         "profile": profile,
         "posts": posts,
-        "is_following" : is_follwing
+        "is_following" : is_follwing,
+        "follows_you":follows_you
     })
 
 
 
-def suggested_user_profile(request, username):
+def notifications(request):
+    if "user" not in request.session:
+        return redirect("login")
+
+    logged_user = request.session["user"]  # username
+
     with connection.cursor() as cursor:
-        cursor.execute(
-            "SELECT id, name, email, username  FROM register WHERE username = %s",
-            [username]
-        )
-        row = cursor.fetchone()
+        cursor.execute("""
+            SELECT 
+                f.follower_username,
+                p.image,
+                f.created_at
+            FROM follows f
+            LEFT JOIN profile p 
+                ON p.username = f.follower_username
+            WHERE f.following_username = %s
+            ORDER BY f.created_at DESC
+        """, [logged_user])
 
-    if not row:
-        return HttpResponse("User not found")
+        notifications = cursor.fetchall()
 
-    user = {
-        'id': row[0],
-        'name': row[1],
-        'email': row[2],
-        'username': row[3],
-    }
+    return render(request, "notifications.html", {
+        "notifications": notifications
+    })
 
-    return render(request, 'suggested_profile.html', {'user': user})
+def follow_user(request, username):
+    if "user" not in request.session:
+        return redirect("login")
 
+    follower = request.session["user"]    # username
+    follower_id = request.session["user"][0]   # id
 
+    if follower == username:
+        return redirect("suggested_user_profile", username=username)
 
+    with connection.cursor() as cursor:
 
+        # check already following
+        cursor.execute("""
+            SELECT id FROM follows
+            WHERE follower_username=%s AND following_username=%s
+        """, [follower, username])
+
+        if cursor.fetchone():
+            # UNFOLLOW
+            cursor.execute("""
+                DELETE FROM follows
+                WHERE follower_username=%s AND following_username=%s
+            """, [follower, username])
+
+        else:
+            # FOLLOW
+            cursor.execute("""
+                INSERT INTO follows (follower_username, following_username)
+                VALUES (%s, %s)
+            """, [follower, username])
+
+            #  GET FOLLOWED USER ID
+            cursor.execute("""
+                SELECT id FROM register WHERE username=%s
+            """, [username])
+
+            followed_user = cursor.fetchone()
+
+            if followed_user:
+                followed_user_id = followed_user[0]
+
+                #  INSERT NOTIFICATION HERE ✅
+                cursor.execute("""
+                    INSERT INTO notifications (user_id, message)
+                    VALUES (%s, %s)
+                """, [
+                    followed_user_id,
+                    f"{follower} started following you"
+                ])
+
+    return redirect("suggested_user_profile", username=username)
 # def add_post(request):
 #     if request.method =="POST" :
 #         img = request.FILES.get('image')
