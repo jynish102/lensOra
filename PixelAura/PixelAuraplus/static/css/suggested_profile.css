@@ -48,6 +48,26 @@
     border: 1px solid #dbdbdb;
 }
 
+.follow-btn {
+    padding: 8px 18px;
+    border-radius: 8px;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    background: #0095f6;
+    color: white;
+}
+
+.follow-btn.following {
+    background: #efefef;
+    color: #000;
+}
+
+.follow-btn.follow-back {
+    background: #0095f6;
+    color: #fff;
+}
+
 .profile-stats {
     display: flex;
     gap: 20px;
@@ -79,4 +99,5 @@
     object-fit: cover;
 
 }
+
 
