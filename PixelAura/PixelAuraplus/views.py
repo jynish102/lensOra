@@ -227,7 +227,38 @@ def profile(request):
     posts=viewpost(request)
 
     profile = profiledata(request)  
-    return render(request,"profile.html",{'userlogin' :loginu, "posts": posts , "profile": profile})
+    with connection.cursor() as cursor:
+        # POSTS
+        cursor.execute("""
+            SELECT id, image, caption
+            FROM posts
+            WHERE username = %s
+        """, [username])
+        posts = cursor.fetchall()
+        post_count = len(posts)
+
+        # FOLLOWERS COUNT
+        cursor.execute("""
+            SELECT COUNT(*)
+            FROM follows
+            WHERE following_username = %s
+        """, [username])
+        followers_count = cursor.fetchone()[0]
+
+        # FOLLOWING COUNT
+        cursor.execute("""
+            SELECT COUNT(*)
+            FROM follows
+            WHERE follower_username = %s
+        """, [username])
+        following_count = cursor.fetchone()[0]
+        
+    return render(request,"profile.html",
+                  {'userlogin' :loginu,
+                   "posts": posts,
+                    "profile": profile,
+                  "following_count" : following_count,
+                 "followers_count":followers_count })
 
 
 def profiledata(request):
@@ -304,6 +335,7 @@ def suggested_profile(request, username):
             ORDER BY id DESC
         """, [username])
         posts = cursor.fetchall()
+        post_count=len(posts)
 
      # ✅ CHECK FOLLOW STATUS
         cursor.execute("""
@@ -324,7 +356,9 @@ def suggested_profile(request, username):
         "profile": profile,
         "posts": posts,
         "is_following" : is_follwing,
-        "follows_you":follows_you
+        "follows_you":follows_you,
+        "post_count" : post_count,
+        
     })
 
 
