@@ -24,7 +24,7 @@
           <img src="{% static 'images/default-user.png' %}" class="profile-img">
           {% endif %}
 
-          <label class="camera-icon"></label>
+        
         </div>
 
         <!-- ✅ USERNAME + NAME + SETTINGS ICON -->
@@ -43,15 +43,15 @@
           <!-- ✅ COUNTS ROW (UNCHANGED) -->
           <div class="counts">
             <div>
-              <b>12</b>
+              <b>{{ post_count }}</b>
               <span>Posts</span>
             </div>
             <div>
-              <b>150</b>
+              <b>{{ followers_count }}</b>
               <span>Followers</span>
             </div>
             <div>
-              <b>200</b>
+              <b>{{ following_count }}</b>
               <span>Following</span>
             </div>
           </div>
