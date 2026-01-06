@@ -133,6 +133,13 @@ body {
     overflow:hidden;
 }
 
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
 
 
 .default-user-icon {
