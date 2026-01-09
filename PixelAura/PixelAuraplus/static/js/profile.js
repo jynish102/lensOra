@@ -75,4 +75,16 @@ function togglePostMenu() {
 
 
 /*---------------------------editpost---------------------------------- */
+function openEditPost(imageSrc) {
+  document.getElementById("editPostPopup").style.display = "block";
+  document.getElementById("editPostImage").src = imageSrc;
+
+  // Close 3-dot menu only
+  document.getElementById("postMenu").style.display = "none";
+}
+
+function closeEditPost() {
+  document.getElementById("editPostPopup").style.display = "none";
+}
+
 
