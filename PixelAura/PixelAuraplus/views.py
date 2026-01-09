@@ -1,8 +1,13 @@
 from django.shortcuts import render,redirect
 from django.db import connection
-from django.http import HttpResponse
 from django.conf import settings
 import os
+
+from django.views.decorators.csrf import csrf_exempt
+import json
+
+
+
 
 def login(request):
     if "user" in request.session:
@@ -39,8 +44,16 @@ def details(request):
     return render(request,'more_detail.html')   
 
 def home(request):
+    
+    login_user = getloginuserdt(request)
+    login_profile = profiledata(request)
+    login_username = login_user[0]["username"]
+
+
+
     if "user" not in request.session:
         return redirect('login')
+    
     username=request.session.get("user")
     with connection.cursor() as cursor:
         q = "select * from register where username=%s"
@@ -86,8 +99,42 @@ def home(request):
                 "username": uname,
                 "image": img  # match by username
             })
+            
+            #postst dynamic
+            login_username = login_user[0]["username"]
+        cursor.execute("""
+            SELECT 
+                posts.image,
+                
+                posts.username,
+                profile.image AS profile_image
+            FROM posts
+            LEFT JOIN profile ON posts.username = profile.username
+            WHERE posts.username != %s
+            ORDER BY posts.id DESC
+            LIMIT 10
+        """, [login_username])
+
+        rows = cursor.fetchall()
+            
+    suggested_posts = []
+    for row in rows:
+        suggested_posts.append({
+            "image": row[0],
+            "username": row[1],
+            "profile_image": row[2]
+        })    
+    
     profile = profiledata(request) 
-    return render(request,'home.html', {'ulist' : suggested_users , 'datas' : datalist, "profile" : profile})
+    return render(request,'home.html', 
+                  {'ulist' : suggested_users , 
+                   'datas' : datalist, 
+                   "profile" : profile,
+                   "suggested_posts": suggested_posts,
+                   "suser" : login_user,
+                   "sp" : login_profile
+                   })
+
 
 def getloginuserdt(request):
     username=request.session.get("user")
@@ -109,6 +156,8 @@ def getloginuserdt(request):
         return datalist 
    
 
+
+
 def suggestuser(request):
      username=request.session.get("user")
      with connection.cursor() as cursor:
@@ -127,12 +176,41 @@ def suggestuser(request):
         return userlist
 
 
+
 def sidebar(request):
     profile = profiledata(request) 
-    return render(request,'sidebar.html', {"profile" : profile})
+    loginu = getloginuserdt(request)
+    return render(request,'sidebar.html', {"profile" : profile, "datas" : loginu})
 
 def account_sidebar(request):
     return render(request,'account_sidebar.html')
+
+# def setting(request):
+#     loginu = getloginuserdt(request)
+#     if request.method == "POST":
+#         un = request.session.get('user')
+#         bio = request.POST.get("bio")
+#         gen  = request.POST.get("gender")
+#         pro_img =request.FILES.get("profile_image")
+#         pro_image_r_p = None  # IMPORTANT
+
+#         if pro_img :
+#             image_path = os.path.join(settings.MEDIA_ROOT, "profile", pro_img.name)
+#             os.makedirs(os.path.dirname(image_path), exist_ok=True)
+#             with open(image_path,"wb") as f:
+#                 for chunk in pro_img.chunks():
+#                     f.write(chunk)
+#             pro_image_r_p = settings.MEDIA_URL + "profile/" + pro_img.name
+
+#         with connection.cursor() as cursor:
+#             q = """
+#             insert into profile (username,bio,gender,image) 
+#             values (%s, %s, %s, %s)
+#             """
+#             cursor.execute(q,[un,bio,gen,pro_image_r_p])
+#             return redirect("profile")
+#     profile = profiledata(request)     
+#     return render(request,'setting.html',{'datas' :loginu , "profile" : profile})
 
 def setting(request):
     loginu = getloginuserdt(request)
@@ -222,12 +300,17 @@ def reels(request):
 def profile(request):
     if 'user' not in request.session:
         return redirect('login')
+    
+    username=request.session.get("user")
+        
    
     loginu = getloginuserdt(request)
     posts=viewpost(request)
 
-    profile = profiledata(request)  
+    profile = profiledata(request) 
+    
     with connection.cursor() as cursor:
+
         # POSTS
         cursor.execute("""
             SELECT id, image, caption
@@ -252,13 +335,16 @@ def profile(request):
             WHERE follower_username = %s
         """, [username])
         following_count = cursor.fetchone()[0]
+
         
+    
     return render(request,"profile.html",
-                  {'userlogin' :loginu,
-                   "posts": posts,
-                    "profile": profile,
-                  "following_count" : following_count,
-                 "followers_count":followers_count })
+                  {'userlogin' :loginu, 
+                   "posts": posts , 
+                   "profile": profile, 
+                   "post_count" : post_count,
+                   "following_count" : following_count,
+                   "followers_count" : followers_count})
 
 
 def profiledata(request):
@@ -291,11 +377,15 @@ def profiledata(request):
 def saved(request):
     return render(request,"saved.html")
 
+
+
+
 def suggested_profile(request, username):
     if "user" not in request.session:
-        return  rediirect("login")
-
-    logged_in_user = request.session["user"]
+        return redirect("login")
+    
+    logged_user = request.session["user"]
+    
     with connection.cursor() as cursor:
 
         # USER
@@ -327,41 +417,185 @@ def suggested_profile(request, username):
             "image": profile_row[1] if profile_row else None,
         }
 
+
         # POSTS
         cursor.execute("""
-            SELECT image
+            SELECT id,image
             FROM posts
             WHERE username = %s
             ORDER BY id DESC
         """, [username])
         posts = cursor.fetchall()
-        post_count=len(posts)
+        post_count = len(posts)
 
-     # ✅ CHECK FOLLOW STATUS
+
+         # ✅ CHECK FOLLOW STATUS
         cursor.execute("""
             SELECT id FROM follows
             WHERE follower_username=%s AND following_username=%s
         """, [logged_user, username])
 
         is_following = cursor.fetchone() is not None
-
-     cursor.execute("""
+     
+        cursor.execute("""
             SELECT id FROM follows 
             WHERE follower_username=%s AND following_username=%s
         """, [username, logged_user])
         follows_you = cursor.fetchone() is not None
 
+         # FOLLOWERS COUNT
+        cursor.execute("""
+            SELECT COUNT(*)
+            FROM follows
+            WHERE following_username = %s
+        """, [username])
+        followers_count = cursor.fetchone()[0]
+
+        # FOLLOWING COUNT
+        cursor.execute("""
+            SELECT COUNT(*)
+            FROM follows
+            WHERE follower_username = %s
+        """, [username])
+        following_count = cursor.fetchone()[0]
+
+
     return render(request, "suggested_profile.html", {
         "user": user,
         "profile": profile,
         "posts": posts,
-        "is_following" : is_follwing,
+        "is_following" : is_following,
         "follows_you":follows_you,
         "post_count" : post_count,
+        "followers_count" : followers_count,
+        "following_count" : following_count
         
     })
 
 
+
+
+
+
+def suggested_user_profile(request, username):
+    with connection.cursor() as cursor:
+        cursor.execute(
+            "SELECT id, name, email, username  FROM register WHERE username = %s",
+            [username]
+        )
+        row = cursor.fetchone()
+
+    if not row:
+        return HttpResponse("User not found")
+
+    user = {
+        'id': row[0],
+        'name': row[1],
+        'email': row[2],
+        'username': row[3],
+    }
+
+    return render(request, 'suggested_profile.html', {'user': user})
+
+
+# def add_post(request):
+#     if request.method =="POST" :
+#         img = request.FILES.get('image')
+#         un = request.session.get('user')
+#         cp = request.POST.get("txtarea")
+#         if img :
+#             image_path = os.path.join(settings.MEDIA_ROOT, "posts", img.name)
+#             os.makedirs(os.path.dirname(image_path), exist_ok=True)
+#             with open(image_path,"wb") as f:
+#                 for chunk in img.chunks():
+#                     f.write(chunk)
+#             image_r_p = "/PixelAuraplus/static/images/posts/" +img.name
+
+#         with connection.cursor() as cursor:
+#             q = "insert into posts (image,username,caption) values (%s,%s, %s)"   
+#             cursor.execute(q,[image_r_p,un,cp])    
+#             return redirect('home') 
+#     return render(request,"login.html") 
+
+def add_post(request):
+    if request.method == "POST":
+        img = request.FILES.get('image')
+        un = request.session.get('user')
+        cp = request.POST.get("txtarea")
+
+        if not img:
+            # user clicked discard OR tried to submit without image
+            return redirect('home')
+
+        if img:
+            image_path = os.path.join(settings.MEDIA_ROOT, "posts", img.name)
+            os.makedirs(os.path.dirname(image_path), exist_ok=True)
+
+            with open(image_path, "wb") as f:
+                for chunk in img.chunks():
+                    f.write(chunk)
+
+            image_r_p = settings.MEDIA_URL + "posts/" + img.name
+       
+        with connection.cursor() as cursor:
+                q = """
+                INSERT INTO posts (image, username, caption)
+                VALUES (%s, %s, %s)
+                """
+                cursor.execute(q, [image_r_p, un, cp])
+
+        return redirect('home')
+
+    return render(request, "login.html")
+
+def viewpost(request):
+    username = request.session.get('user')
+
+    with connection.cursor() as cursor:
+        cursor.execute("""
+            SELECT id, image, username, caption
+            FROM posts
+            WHERE username = %s
+            ORDER BY id DESC
+        """, [username])
+        posts = cursor.fetchall()
+
+    return posts
+
+
+def edit_post(request,id):
+    if request.method == 'POST':
+        
+        cp = request.POST.get("txtarea")
+
+        
+        with connection.cursor() as cursor:
+            q="update posts set caption=%s where id=%s"
+            cursor.execute(q,[cp,id])
+            data = cursor.fetchone()
+            post={
+                'id':data[0],
+                'caption' : [3]
+                
+            }
+        return render(request, 'profile.html', {'post':post})
+
+
+
+def viewprofile(request):
+    username = request.session.get('user')
+
+    with connection.cursor() as cursor:
+        cursor.execute("""
+            SELECT id,username,bio,gender,image
+            FROM profile
+            WHERE username = %s
+        """, [username])
+        profile = cursor.fetchall()
+
+    return render(request, "profile.html", {
+        "profile": profile
+    })
 
 def notifications(request):
     if "user" not in request.session:
@@ -420,7 +654,7 @@ def follow_user(request, username):
                 VALUES (%s, %s)
             """, [follower, username])
 
-            #  GET FOLLOWED USER ID
+            # 🔔 GET FOLLOWED USER ID
             cursor.execute("""
                 SELECT id FROM register WHERE username=%s
             """, [username])
@@ -430,7 +664,7 @@ def follow_user(request, username):
             if followed_user:
                 followed_user_id = followed_user[0]
 
-                #  INSERT NOTIFICATION HERE ✅
+                # 🔔 INSERT NOTIFICATION HERE ✅
                 cursor.execute("""
                     INSERT INTO notifications (user_id, message)
                     VALUES (%s, %s)
@@ -440,102 +674,60 @@ def follow_user(request, username):
                 ])
 
     return redirect("suggested_user_profile", username=username)
-# def add_post(request):
-#     if request.method =="POST" :
-#         img = request.FILES.get('image')
-#         un = request.session.get('user')
-#         cp = request.POST.get("txtarea")
-#         if img :
-#             image_path = os.path.join(settings.MEDIA_ROOT, "posts", img.name)
-#             os.makedirs(os.path.dirname(image_path), exist_ok=True)
-#             with open(image_path,"wb") as f:
-#                 for chunk in img.chunks():
-#                     f.write(chunk)
-#             image_r_p = "PixelAuraplus/static/images/posts/" +img.name
 
-#         with connection.cursor() as cursor:
-#             q = "insert into posts (image,username,caption) values (%s,%s, %s)"   
-#             cursor.execute(q,[image_r_p,un,cp])    
-#             return redirect('home') 
-#     return render(request,"login.html") 
 
-def add_post(request):
-    if request.method == "POST":
-        img = request.FILES.get('image')
-        un = request.session.get('user')
-        cp = request.POST.get("txtarea")
+def add_comment(request, post_id):
+    if "user" not in request.session:
+        return redirect("login")
 
-         if not img:
-            # user clicked discard OR tried to submit without image
-            return redirect('home')
+    if request.method != "POST":
+        return redirect(request.META.get("HTTP_REFERER", "/"))
 
-        if img:
-            image_path = os.path.join(settings.MEDIA_ROOT, "posts", img.name)
-            os.makedirs(os.path.dirname(image_path), exist_ok=True)
+    text = request.POST.get("cmt")
+    print("COMMENT TEXT:", text)
+    if not text or not text.strip():
+        return redirect(request.META.get("HTTP_REFERER", "/"))
 
-            with open(image_path, "wb") as f:
-                for chunk in img.chunks():
-                    f.write(chunk)
-
-            image_r_p = settings.MEDIA_URL + "posts/" + img.name
-       
-        with connection.cursor() as cursor:
-                q = """
-                INSERT INTO posts (image, username, caption)
-                VALUES (%s, %s, %s)
-                """
-                cursor.execute(q, [image_r_p, un, cp])
-
-        return redirect('home')
-
-    return render(request, "login.html")
-def suggested_user_profile(request, username):
+    username = request.session['user']
     with connection.cursor() as cursor:
+
+        # 1️⃣ get user_id
         cursor.execute(
-            "SELECT id, name, email, username  FROM register WHERE username = %s",
+            "SELECT id FROM register WHERE username=%s",
             [username]
         )
-        row = cursor.fetchone()
+        user = cursor.fetchone()
+       
 
-    if not row:
-        return HttpResponse("User not found")
+        if not user:
+            return redirect("login")
 
-    user = {
-        'id': row[0],
-        'name': row[1],
-        'email': row[2],
-        'username': row[3],
-    }
+        user_id = int(user[0])  # ✅ INT
+        
+        
 
-    return render(request, 'suggested_profile.html', {'user': user})
-def viewpost(request):
-    username = request.session.get('user')
 
-    with connection.cursor() as cursor:
+        # 2️⃣ check post exists
+        cursor.execute(
+            "SELECT id FROM posts WHERE id=%s",
+            [post_id]
+        )
+
+       
+        if not cursor.fetchone():
+
+            return redirect(request.META.get("HTTP_REFERER", "/"))
+
+        # 3️⃣ insert comment
         cursor.execute("""
-            SELECT id, image, username, caption
-            FROM posts
-            WHERE username = %s
-            ORDER BY id DESC
-        """, [username])
-        posts = cursor.fetchall()
+            INSERT INTO comments (post_id, user_id, comment)
+            VALUES (%s, %s, %s)
+        """, [post_id, user_id, text.strip()])
+    return redirect(request.META.get("HTTP_REFERER", "/"))
 
-    return posts
+            
+                
 
-def viewprofile(request):
-    username = request.session.get('user')
-
-    with connection.cursor() as cursor:
-        cursor.execute("""
-            SELECT id,username,bio,gender,image
-            FROM profile
-            WHERE username = %s
-        """, [username])
-        profile = cursor.fetchall()
-
-    return render(request, "profile.html", {
-        "profile": profile
-    })
 
 
 
