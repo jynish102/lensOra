@@ -13,7 +13,7 @@ body {
 
 .profile-container {
     max-width: 920px;
-    padding: 55px;
+    padding: 15px;
     margin: auto;
 }
 
@@ -26,7 +26,7 @@ body {
 }
 
 .username {
-    font-size: 20px;
+    font-size: 35px;
     font-weight: bold;
 }
 
@@ -50,7 +50,7 @@ body {
 }
 
 .full-name {
-    font-size: 16px;
+    font-size: 20px;
     margin-bottom: 8px;
 }
 
@@ -61,16 +61,19 @@ body {
 }
 
 .counts div {
-    font-size: 13px;
+    font-size: 20px;
 }
 
 
 .edit-btn-container {
     margin: 14px 0;
+    display: flex;
+        justify-content: center;
+        
 }
 
 .edit-btn {
-    width: 100%;
+    width: 500px;
     padding: 8px;
     border-radius: 8px;
     border: none;
@@ -103,6 +106,14 @@ body {
     border-bottom: 2px solid white;
 }
 
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
 
 .content-grid {
     display: grid;
@@ -133,13 +144,6 @@ body {
     overflow:hidden;
 }
 
-.tab-content {
-  display: none;
-}
-
-.tab-content.active {
-  display: block;
-}
 
 
 .default-user-icon {
@@ -147,22 +151,9 @@ body {
     color: white;
 }
 
-.camera-icon {
-    position: absolute;
-    bottom: 5px;
-    right: 5px;
-   background: rgb(85, 84, 84);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-}
 
-.camera-icon i {
-    color: white;
-    font-size: 16px;
-}
+
+
 
 .user-top-row {
     display: flex;
@@ -237,10 +228,9 @@ body {
 }
 
 .profile-img{
-    width: 120px;
-    height: 120px;
+   height: 120px;
     object-fit: cover;
-    border-radius: 50%;
+    width: 120px;
     display: block;
 }
 
@@ -534,9 +524,7 @@ body {
   margin-right: 10px;
 }
 
-.username {
-  font-weight: bold;
-}
+
 
 .caption-box {
   width: 100%;
@@ -565,7 +553,7 @@ body {
 
 .posts-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Responsive square columns */
+  grid-template-columns: repeat(3,1fr); /* Responsive square columns */
   gap: 4px;
   width: 100%;
   max-width: 935px;
@@ -595,7 +583,7 @@ body {
 .view-post-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.7);
+  background: rgba(238, 233, 233, 0.7);
   display: none;
   justify-content: center;
   align-items: center;
@@ -603,15 +591,20 @@ body {
 }
 
 .view-post-box {
-  width: 900px;
-  height: 550px;
-  background: white;
-  display: flex;
+width: 90%;
+    max-width: 1100px;
+    height: 85vh;
+    background: #e9e5e5;
+    display: flex;
+    border-radius: 8px;
+    overflow: hidden;
 }
 
 .view-post-left {
   width: 55%;
-  background: black;
+  background: rgb(235, 230, 230);
+flex: 0.8;
+    background: #fff;
 }
 
 .view-post-left img {
@@ -635,8 +628,10 @@ body {
 
 .view-comments {
   flex: 1;
-  padding: 10px;
   overflow-y: auto;
+padding: 12px 16px;
+font-size: 14px;
+    
 }
 
 .view-actions {
@@ -663,8 +658,216 @@ body {
 }
 
 .bio-text {
-  font-size: 14px;
+  font-size: 20px;
   color: #555;
   line-height: 1.4;
 }
 
+.close-link {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #333;
+}
+
+
+
+
+/*edit-------------*/
+.post-menu-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.post-menu-btn {
+    font-size: 22px;
+    cursor: pointer;
+    padding: 6px;
+}
+
+/* Popup box */
+.post-menu {
+    top: 30px;
+    right: 0;
+    background: #ca3a3a;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(81, 13, 209, 0.15);
+    width: 160px;
+    display: none;
+    flex-direction: column;
+    z-index: 1000;
+   position: relative;
+   cursor: pointer;
+}
+
+/* Links */
+.menu-link {
+    padding: 12px 16px;
+    text-decoration: none;
+    color: #222;
+    font-size: 14px;
+    transition: background 0.2s;
+}
+
+.menu-link:hover {
+    background: #f4f4f4;
+}
+
+/* Delete (red) */
+.menu-link.danger {
+    color: #e63946;
+    font-weight: 600;
+}
+
+/* Cancel */
+.menu-link.cancel {
+    border-top: 1px solid #eee;
+}
+
+/* RIGHT PANEL */
+.view-post-right {
+    flex: 0.8;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+}
+
+/* HEADER */
+.view-post-header {
+    padding: 12px 16px;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.view-user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.view-user-pic {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* COMMENTS */
+
+
+/* ACTIONS */
+.view-actions {
+    padding: 10px 16px;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    font-size: 22px;
+}
+
+/* ADD COMMENT */
+.view-add-comment {
+    padding: 10px 16px;
+    display: flex;
+    gap: 10px;
+}
+
+.view-add-comment input[type="text"] {
+    flex: 1;
+    border: none;
+    outline: none;
+}
+
+.view-add-comment input[type="submit"] {
+    background: none;
+    border: none;
+    color: #0095f6;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+
+
+
+
+.post-menu i {
+    font-size: 200px;
+}
+
+.post-menu-dropdown {
+    position: absolute;
+    top: 28px;
+    left: 0;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: none;
+    min-width: 120px;
+    z-index: 1000;
+}
+
+.post-menu-dropdown a {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    color: #000;
+    font-size: 14px;
+}
+
+.post-menu-dropdown a:hover {
+    background: #f5f5f5;
+}
+
+/*-----------------------edit----------------------------------------------*/
+/* THIRD POPUP */
+.edit-post-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: none;
+    z-index: 3000;
+    /* HIGHER than view post popup */
+}
+
+.edit-post-box {
+    width: 900px;
+    max-width: 95%;
+    background: #fff;
+    border-radius: 12px;
+    margin: 50px auto;
+    overflow: hidden;
+}
+
+.edit-post-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-bottom: 1px solid #ddd;
+}
+
+.edit-post-body {
+    display: flex;
+}
+
+.edit-left img {
+    width: 450px;
+    height: 450px;
+    object-fit: cover;
+}
+
+.edit-right {
+    padding: 15px;
+    width: 100%;
+}
+
+.edit-right textarea {
+    width: 100%;
+    border: none;
+    resize: none;
+    height: 120px;
+    outline: none;
+}
