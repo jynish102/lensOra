@@ -3,6 +3,7 @@
 <link rel="stylesheet" href="{% static 'css/profile.css' %}">
 <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 </head>
+
 <body>
 
   <div class="profile-container">
@@ -13,7 +14,6 @@
       <!-- ✅ USER INFO ROW (Updated Layout) -->
       <div class="user-row">
 
-       
         <!-- ✅ PROFILE IMAGE WITH CAMERA & DEFAULT ICON -->
         <div class="profile-pic-wrapper">
 
@@ -23,9 +23,8 @@
           <i class="bx bxs-user default-user-icon"></i>
           <img src="{% static 'images/default-user.png' %}" class="profile-img">
           {% endif %}
-
-        
         </div>
+
 
         <!-- ✅ USERNAME + NAME + SETTINGS ICON -->
         <div class="user-right">
@@ -47,7 +46,7 @@
               <span>Posts</span>
             </div>
             <div>
-              <b>{{ followers_count }}</b>
+              <b>{{ followers_count}}</b>
               <span>Followers</span>
             </div>
             <div>
@@ -56,12 +55,12 @@
             </div>
           </div>
 
-           <div class="bio">
-          <p class="bio-text">
-            {{ profile.bio|default:"No bio added yet." }}
-          </p>
-        </div>
-          
+          <div class="bio">
+            <p class="bio-text">
+              {{ profile.bio|default:"No bio added yet." }}
+            </p>
+          </div>
+
 
         </div>
       </div>
@@ -94,6 +93,7 @@
 
       <!-- ✅ POSTS TAB CONTENT (IMPORTANT FIX ✅) -->
       <div class="tab-content active" id="posts">
+        
 
         <h2>All Posts</h2>
         <div class="posts-grid">
@@ -102,11 +102,11 @@
             {% if p.1 %}
             {% if p.1|lower|slice:"-4:" == ".mp4" %}
             <video controls>
-              <source src="{{ p.1 }}"  class="grid-post"  type="video/mp4" />
+              <source src="{{ p.1 }}" class="grid-post" type="video/mp4" />
               Your browser does not support the video tag.
             </video>
             {% else %}
-            <img src="{{ p.1 }}"  class="grid-post"  alt="post image" onclick="openPostView('{{ p.1 }}')" />
+            <img src="{{ p.1 }}" class="grid-post" alt="post image" onclick="openViewPost('{{ p.1 }}')" />
             {% endif %}
             {% endif %}
           </div>
@@ -116,27 +116,11 @@
           {% endfor %}
         </div>
       </div>
-        
-
-
+    </div>
    
 
 
-    </div>
-
-    <!-------------------------------------------------------------------------------------------------->
-    <!-- POST VIEW MODAL -->
-<div class="post-view-overlay" id="postViewModal">
-  <div class="post-view-box">
-
-    <!-- LEFT IMAGE -->
-    <div class="post-view-left">
-      <img id="postViewImage" src="">
-    </div>
-
-
-  </div>
-</div>
+    
 
 
 
@@ -152,148 +136,130 @@
       <h3 class="gs-title">Saved</h3>
       <p>This is your Saved posts section.</p>
     </div>
-
-
-
-
-
-
-
-
-
-
-
-
-    <!--popuo------------------------------------------>
-    <!-- ✅ CREATE POST MODAL -->
-    <div class="create-post-overlay" id="createPostModal">
-
-      <div class="create-post-box">
-
-        <!-- HEADER -->
-        <div class="create-post-header">
-          <span>Create new post</span>
-          <i class="bx bx-x" id="closePostModal"></i>
-        </div>
-
-        <!-- BODY -->
-        <div class="create-post-body">
-          <i class="bx bx-images post-big-icon"></i>
-          <p>Drag photos and videos here</p>
-
-          <button class="select-btn" id="selectFromComputer">
-            Select from computer
-          </button>
-
-          <input type="file" id="postFileInput" hidden accept="image/*,video/*">
-        </div>
-
-      </div>
-    </div>
-
-
-    <!-------------------------------------------------------------secomd popup-->
-
-    <!-- ✅ CROP MODAL -->
-    <div class="crop-overlay" id="cropModal">
-      <div class="crop-box">
-        <i class="bx bx-x close-crop" id="closeCrop"></i>
-
-        <!-- ✅ HEADER -->
-        <div class="crop-header">
-          <i class="bx bx-arrow-back crop-back" id="backToUpload"></i>
-          <button class="share-btn" id="sharepost">Share</button>
-        </div>
-
-        <div class="crop-body">
-          <!-- ✅ IMAGE PREVIEW -->
-          <div class="crop-left">
-            <img id="cropImage" src="">
-          </div>
-
-          <!-- RIGHT SIDE: USER + CAPTION -->
-          <div class="crop-right">
-
-            <div class="user-info">
-              <img src="user.jpg" class="user-pic">
-              <span class="username">your_username</span>
-            </div>
-            <textarea class="caption-box" placeholder="Write a caption..."></textarea>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!--3rd popup------------------------------------------------------->
-    <!-- ✅ DISCARD CONFIRM MODAL -->
-    <div class="discard-overlay" id="discardModal">
-
-      <div class="discard-box">
-        <h3>Discard post?</h3>
-        <p>If you leave, your edits won't be saved.</p>
-
-        <div class="discard-actions">
-          <button class="discard-btn" id="confirmDiscard">Discard</button>
-          <button class="cancel-btn" id="cancelDiscard">Cancel</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
+    
 
 
 
   <!-- VIEW POST POPUP (NEW) -->
-<div class="view-post-overlay" id="viewPostPopup">
+  <div class="view-post-overlay" id="viewPostPopup">
 
-  <div class="view-post-box">
+    <div class="view-post-box">
 
-    <!-- LEFT IMAGE -->
-    <div class="view-post-left">
-      <img id="viewPostImage" src="">
+      <!-- LEFT IMAGE -->
+      <div class="view-post-left">
+        <img id="viewPostImage" src=>
+        <a href="{% url 'home' %}" class="close-link">
+      
+    </a>
+      </div>
+
+      <!-- RIGHT CONTENT -->
+      <div class="view-post-right">
+       
+
+          <!-- HEADER -->
+          <div class="view-post-header">
+            <!-- 3 DOT MENU -->
+              <div class="post-menu">
+                <i class="bx bx-dots-horizontal-rounded" onclick="togglePostMenu()"></i>
+
+                <div class="post-menu-dropdown" id="postMenu">
+                  <a href="#"  onclick="openEditPost(document.getElementById('viewPostImage').src)">Edit</a>
+                  <a href="#">Delete</a>
+                  <a href="#" onclick="togglePostMenu()">Cancel</a>
+                </div>
+              </div>
+            <div class="view-user">
+                {% if profile.image %}
+                   <img src="{{ profile.image }}" class="view-user-pic">
+                {% else %}
+                  <i class="bx bxs-user default-user-icon"></i>
+                  <img src="{% static 'images/default-user.png' %}" class="view-user-pic">
+                {% endif %}
+               {% for login in userlogin %} 
+              <span>{{ login.username }}</span>
+              {% endfor %}
+            </div>
+
+            
+                        
+          </div>
+
+          <!-- COMMENTS -->
+          <div class="view-comments">
+            <p><b>hjhjh</b> Caption here</p>
+            <p><b>user1</b> Nice 🔥</p>
+          </div>
+
+          <!-- ACTIONS -->
+          <div class="view-actions">
+            <div>
+              <a>
+              <i class="bx bx-heart"></i>
+              </a>
+            </div>
+            <i class="bx bx-bookmark"></i>
+          </div>
+          {% for post in posts %}
+       <form method="post" action="{% url 'add_comment' post.0 %}">
+         {% endfor %}
+          {% csrf_token %}
+          <!-- ADD COMMENT -->
+          <div class="view-add-comment">
+            <textarea type="text" name="cmt" placeholder="Add a comment..." required></textarea>
+            <input type="submit" value="Post">
+          </div>
+
+        </form>
+       
+      </div>
+
+    </div>
+          
+          <!--editpost-->
+          
+          <!--End-->
+  </div>
+
+
+
+
+  <!-- EDIT POST POPUP -->
+<div class="edit-post-overlay" id="editPostPopup">
+
+  <div class="edit-post-box">
+
+    <div class="edit-post-header">
+      <span onclick="closeEditPost()" class="edit-cancel">Cancel</span>
+      <h3>Edit info</h3>
+      <span class="edit-done">Done</span>
     </div>
 
-    <!-- RIGHT CONTENT -->
-    <div class="view-post-right">
-      <form method="post">
-        {% csrf_token %}
+    <div class="edit-post-body">
+      <div class="edit-left">
+        <img id="editPostImage" src="">
+      </div>
 
-        <!-- HEADER -->
-        <div class="view-post-header">
-          <div class="view-user">
-            <img src="{{ request.user.profile.image.url }}" class="view-user-pic">
-            <span>{{ request.user.username }}</span>
-          </div>
-          <i class="bx bx-dots-horizontal-rounded"></i>
+      <div class="edit-right">
+        <div class="edit-user">
+          <img src="{{ profile.image|default:'static/images/default-user.png' }}">
+          {% for login in userlogin %}
+            <span>{{ login.username }}</span>
+          {% endfor %}
         </div>
 
-        <!-- COMMENTS -->
-        <div class="view-comments">
-          <p><b>{{ request.user.username }}</b> Caption here</p>
-          <p><b>user1</b> Nice 🔥</p>
-        </div>
+        <textarea placeholder="Edit caption..."></textarea>
 
-        <!-- ACTIONS -->
-        <div class="view-actions">
-          <div>
-            <i class="bx bx-heart"></i>
-            <i class="bx bx-comment"></i>
-          </div>
-          <i class="bx bx-bookmark"></i>
+        <div class="edit-options">
+          <p>Add location</p>
+          <p>Accessibility</p>
         </div>
-
-        <!-- ADD COMMENT -->
-        <div class="view-add-comment">
-          <input type="text" name="comment" placeholder="Add a comment...">
-          <button type="submit">Post</button>
-        </div>
-
-      </form>
+      </div>
     </div>
 
   </div>
 </div>
+
 
 </body>
 <script src="{% static 'js/profile.js' %}"></script>
