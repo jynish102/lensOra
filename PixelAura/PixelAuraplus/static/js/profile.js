@@ -1,3 +1,4 @@
+
 // ---------------- TAB SWITCH LOGIC ------------------------------------------
 const tabs = document.querySelectorAll(".tab");
 const tabContents = document.querySelectorAll(".tab-content");
@@ -20,17 +21,58 @@ tabs.forEach(tab => {
   });
 });
 
-/*------------------------edit-------------------------------*/
-const viewPostPopup = document.getElementById("viewPostPopup");
-const viewPostImage = document.getElementById("viewPostImage");
+/*------------------------cmt-------------------------------*/
+document.addEventListener("DOMContentLoaded", () => {
+  const viewPostPopup = document.getElementById("viewPostPopup");
+  const viewPostImage = document.getElementById("viewPostImage");
 
-function openViewPost(src) {
-  viewPostImage.src = src;
-  viewPostPopup.style.display = "flex";
+  window.openViewPost = function (src) {
+    viewPostImage.src = src;
+    viewPostPopup.style.display = "flex";
+    document.body.style.overflow = "hidden";
+  };
+
+  viewPostPopup.addEventListener("click", function (e) {
+    if (e.target === viewPostPopup) {
+      viewPostPopup.style.display = "none";
+      viewPostImage.src = "";
+      document.body.style.overflow = "auto";
+    }
+  });
+});
+
+
+
+/*cmt post-------------------------------- */
+function openPostMenu() {
+  document.getElementById("postMenuOverlay").style.display = "flex";
 }
 
-viewPostPopup.addEventListener("click", function (e) {
-  if (e.target === viewPostPopup) {
-    viewPostPopup.style.display = "none";
-  }
-});
+function closePostMenu() {
+  document.getElementById("postMenuOverlay").style.display = "none";
+}
+
+function openEditPost() {
+  closePostMenu();
+
+  // copy image from view popup
+  document.getElementById("editPostImage").src =
+    document.getElementById("viewPostImage").src;
+
+  document.getElementById("editPostPopup").style.display = "flex";
+}
+
+function closeEditPost() {
+  document.getElementById("editPostPopup").style.display = "none";
+}
+
+
+/*3dot */
+function togglePostMenu() {
+  const menu = document.getElementById("postMenu");
+  menu.style.display = menu.style.display === "block" ? "none" : "block";
+}
+
+
+/*---------------------------editpost---------------------------------- */
+
