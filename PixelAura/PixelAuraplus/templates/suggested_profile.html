@@ -18,28 +18,29 @@
             
            <form method="post" action ="{% url 'follow_user' user.username %}">
             {% csrf_token %}
-{% if is_following %}
-    <button class="follow-btn following" type="submit">
-      Following
-    </button>
+                 {% if is_following %}
+              <button class="follow-btn following" type="submit">
+                Following
+              </button>
 
-  {% elif follows_you %}
-    <button class="follow-btn follow-back" type="submit">
-      Follow Back
-    </button>
+            {% elif follows_you %}
+              <button class="follow-btn follow-back" type="submit">
+                Follow Back
+              </button>
 
-  {% else %}
-    <button class="follow-btn" type="submit">
-      Follow
-    </button>
-  {% endif %}
+            {% else %}
+              <button class="follow-btn" type="submit">
+                Follow
+              </button>
+            {% endif %}
+
         </form>
         </div>
 
         <ul class="profile-stats">
-            <li><span>12</span> posts</li>
-            <li><span>850</span> followers</li>
-            <li><span>210</span> following</li>
+            <li><span>{{ post_count }}</span> posts</li>
+            <li><span>{{ followers_count }}</span> followers</li>
+            <li><span>{{ following_count }}</span> following</li>
         </ul>
 
         <div class="user-bio">
@@ -57,7 +58,9 @@
 <div class="posts-grid">
     {% for post in posts %}
         <div class="post">
-            <img src="{{ post.0 }}">
+            <img src="{{ post.1 }}"  onclick="openViewPost('{{ post.1 }}')"
+           class="grid-post">
+           <p>{{ post.0 }}</p>
         </div>
     {% empty %}
         <p>No posts yet</p>
@@ -65,6 +68,67 @@
 </div>
 
 
+<!-- VIEW POST POPUP -->
+<div class="view-post-overlay" id="viewPostPopup">
+
+  <div class="view-post-box">
+
+    <!-- LEFT IMAGE -->
+    <div class="view-post-left">
+      <img id="viewPostImage" src="" />
+    </div>
+
+    <!-- RIGHT CONTENT -->
+    <div class="view-post-right">
+
+      <!-- HEADER -->
+      <div class="view-post-header">
+        <div class="view-user">
+          <img src="{{ profile.image|default:'/static/images/xya.png' }}"
+               class="view-user-pic">
+          <span>{{ user.username }}</span>
+        </div>
+        <i class="bx bx-x close-popup"></i>
+      </div>
+
+      <!-- CAPTION / COMMENTS -->
+      <div class="view-comments">
+        <p><b>{{ user.username }}</b> {{ post.caption|default:"" }}</p>
+        <p style="color:#888">No comments yet.</p>
+      </div>
+
+      <!-- ACTIONS -->
+      <div class="view-actions">
+        <div>
+          <a>
+          <i class="bx bx-heart"></i>
+          </a>
+        </div>
+        <i class="bx bx-bookmark"></i>
+      </div>
+      
+      {% for post in posts %}
+      <!-- ADD COMMENT -->
+       <form method="POST" action="{% url 'add_comment' post.0 %}">
+        {% endfor %}
+          {% csrf_token %}
+      <div class="view-add-comment">
+        <textarea name="cmt" type="text" placeholder="Add a comment…" required></textarea>
+        <input type="submit" value="Post">
+      </div>
+    </form>
+    
+
+    </div>
+  </div>
+</div>
+
+
+
 {% endblock %}
 
+{% block extra_js %}
+<script src="{% static 'js/suggested_profile.js' %}"></script>
+
+{% endblock %}
 
