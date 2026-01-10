@@ -26,11 +26,11 @@
 
   <div class="profile-card">
     <div class="profile-left">
-      <div class="profile-img"></div>
+      <img src="{{ profile.image|default:'/static/images/default-user.png' }}" class="profile-img">
       <div>
-        {% for dt in datas %}
-        <strong>{{ dt.username }}</strong>
-        {% end for %}
+        {% for login in datas %}
+        <strong>{{ login.username }}</strong>
+        {% endfor %}
         <p>Pixelaura</p>
       </div>
     </div>
@@ -42,43 +42,53 @@
 <!-- Popup -->
 <div id="popup" class="popup-overlay">
     <div class="popup-box">
-
        <!-- Close Icon -->
         <i class='bx bx-x close-icon' id="closePopup"></i>
 
         <!-- Profile Section -->
-        <img src"{{ profile.image|default:'/static/images/default-user.png' }}" class="profile-pic" alt="Profile">
-      {% for dt in datas %}
-        <h2 class="username">{{ dt.name }}</h2>
-      {% endfor %}
-      
- <!-- Form Start -->
+        <img src="{{ profile.image|default:'/static/images/default-user.png' }}" class="profile-pic" alt="Profile">
+        <h2 class="username">{{ profile.username }}</h2>
+          
+         <!-- Form Start -->
         <form action="#" method="post">
-        <!-- Form Fields -->
+          {% csrf_token %}
+        
         <div class="form-group">
-            <label>Name</label>
-            <input type="text" placeholder="Enter user name">
+          
+            <label>User Name</label>
+            {% for login in datas %}
+            <input type="text" placeholder="Enter user name" value="{{ login.username }}">
+            {% endfor %}
         </div>
 
         <div class="form-group">
-            <label>username</label>
-            <input type="text" placeholder="Enter username">
+            <label>Email</label>
+            {% for login in datas %}
+            <input type="text" placeholder="Enter email" value="{{ login.email }}">
+            {% endfor %}
         </div>
-<!-- Close Button -->
+
+        <div class="form-group">
+            <label>Phone</label>
+            {% for login in datas %}
+            <input type="text" placeholder="Enter phone" value="{{ login.mobile }}">
+            {% endfor %}
+        </div>
+
+        <!-- Close Button -->
         <button  class="submit-btn">Submit</button>
-        </form>
+         <!-- Form Start -->
+      </form> 
     </div>
 </div>
 
   </div>
 
-  <a class="add-accounts">Add accounts</a>
+  <a href="{% url 'login' %}" class="add-accounts">Add accounts</a>
 
 </div>
-
 {% block extra_js %}
 <script src="{% static 'js/personal_detail_s.js' %}"></script>
 {% endblock %}
-
 
 {% endblock %}
