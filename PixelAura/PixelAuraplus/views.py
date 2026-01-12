@@ -725,6 +725,30 @@ def add_comment(request, post_id):
         """, [post_id, user_id, text.strip()])
     return redirect(request.META.get("HTTP_REFERER", "/"))
 
+def post_crud(request):
+    if 'user' not in request.session:
+        return redirect('login')
+    username = request.session['user']
+
+    
+    posts = viewpost(request)
+
+    profile = profiledata(request)
+       
+    
+    return render(request,"post_crud.html",{'username' :username, 'posts':posts, 'profile' : profile})
+
+def delete_post(request, post_id):
+    username = request.session.get('user')
+
+    with connection.cursor() as cursor:
+        cursor.execute(
+            "DELETE FROM posts WHERE id=%s AND username=%s",
+            [post_id, username]
+        )
+
+    return redirect('profile')
+
             
                 
 
