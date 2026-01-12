@@ -23,5 +23,7 @@ urlpatterns = [
     path('profile/<str:username>/' , views.suggested_profile, name="suggested_user_profile"),
     path('notifications/', views.notifications, name='notifications'),
     path('follow/<str:username>/', views.follow_user, name="follow_user"),
+    path('post_crud/',views.post_crud, name="post_crud"),
+    path('delete-post/<int:post_id>/', views.delete_post,name="delete_post"),
     path('logout/', views.logout, name="logout"),
 ]
