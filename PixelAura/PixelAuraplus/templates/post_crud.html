@@ -1,0 +1,129 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Post</title>
+    <link rel="stylesheet" href="{% static 'css/post_crud.css' %}">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+</head>
+<body>
+
+    <!-- CLOSE ICON -->
+    <a href="{% url 'profile' %}" class="close-btn">
+        <i class="bx bx-x"></i>
+    </a>
+
+    <div class="top-card">
+        <div class="top-card-content">
+
+            <div class="user-row">
+                <!-- PROFILE IMAGE -->
+                <img src="{{ profile.image }}" class="top-user-img">
+
+                <!-- USER TEXT -->
+                <div class="user-text">
+                    <h3 class="username">{{ username }}</h3>
+                    <p class="info-text">
+                        You can edit or delete your post here.
+                        Select an image below to continue.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div> 
+    
+    <div class="edit-post-container">
+
+        <div class="image-grid">
+            {% for post in posts %}
+            <div class="image-item" data-post-id="{{ post.0 }}">
+                <img src="{{ post.1 }}" alt="Post image">
+                <span class="check-icon">✓</span>
+            </div>
+            {% endfor %}
+           
+        </div>
+
+        <div class="post-actions" id="postActions">
+            <button class="edit-btn" disabled>Edit Post</button>
+            <button class="delete-btn" disabled>Delete Post</button>
+        </div>
+    </div>
+
+    <!-- DELETE MODAL -->
+        <div class="delete-modal-overlay" id="deleteModal">
+            <div class="delete-modal">
+                <h3>Delete post?</h3>
+                <p>This action cannot be undone.</p>
+                <div class="delete-actions">
+
+                       
+                        <a href="" id="deleteLink" class="delete-link">Delete</a>
+                        
+                        <button type="button" class="cancel-delete" onclick="closeDeleteModal()" >Cancel</button>
+                    </div>
+                
+
+                
+            </div>
+
+            
+        </div>
+
+
+
+
+</body>
+<script>
+
+let selectedPostId = null;
+
+const items = document.querySelectorAll('.image-item');
+const actionBar = document.getElementById('postActions');
+const editBtn = document.querySelector('.edit-btn');
+const deleteBtn = document.querySelector('.delete-btn');
+const deleteModal = document.getElementById('deleteModal');
+const deleteLink = document.getElementById('deleteLink');
+
+items.forEach(item => {
+    item.addEventListener('click', () => {
+        items.forEach(i => i.classList.remove('selected'));
+        item.classList.add('selected');
+
+        selectedPostId = item.dataset.postId;
+
+        actionBar.classList.add('active');
+        editBtn.disabled = false;
+        deleteBtn.disabled = false;
+    });
+});
+
+/* EDIT */
+editBtn.addEventListener('click', () => {
+    if (!selectedPostId) return;
+    window.location.href = `/edit-post/${selectedPostId}/`;
+});
+
+/* DELETE */
+deleteBtn.addEventListener('click', () => {
+    if (!selectedPostId) return;
+
+    // ✅ set delete link dynamically
+    deleteLink.href = `/PixelAuraplus/delete-post/${selectedPostId}/`;
+
+    deleteModal.classList.add('active');
+});
+
+function closeDeleteModal() {
+    deleteModal.classList.remove('active');
+}
+
+
+
+
+
+</script>
+
+
+</html>
