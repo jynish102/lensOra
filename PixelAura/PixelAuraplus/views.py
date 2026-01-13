@@ -749,6 +749,20 @@ def delete_post(request, post_id):
 
     return redirect('profile')
 
+def update_post(request):
+    if request.method == "POST":
+        post_id = request.POST.get('post_id')
+        caption = request.POST.get('caption')
+        username = request.session.get('user')
+
+        with connection.cursor() as cursor:
+            cursor.execute(
+                "UPDATE posts SET caption=%s WHERE id=%s AND username=%s",
+                [caption, post_id, username]
+            )
+
+    return redirect('post_crud')
+
             
                 
 
