@@ -26,27 +26,21 @@
     <!-- Profile Item 1 -->
     <div class="profile-card" id="openChangePass1">
         <div class="profile-left">
-            <div class="profile-img"></div>
+            {% if profile.image %}
+          <img src="{{ profile.image }}" class="profile-img">
+          {% else %}
+          <i class="bx bxs-user default-user-icon"></i>
+          <img src="{% static 'images/default-user.png' %}" class="profile-img">
+          {% endif %}
             <div>
-                <strong>{{ user.username }}</strong>
+               
+                <strong>{{ username }}</strong>
+               
                 <p>Pixelaura</p>
             </div>
         </div>
         <i class='bx bx-chevron-right'></i>
     </div>
-
-    <!-- Profile Item 2 -->
-    <div class="profile-card" id="openChangePass2">
-        <div class="profile-left">
-            <div class="profile-img"></div>
-            <div>
-                <strong>{{ user.username }}</strong>
-                <p>Pixelaura</p>
-            </div>
-        </div>
-        <i class='bx bx-chevron-right'></i>
-    </div>
-
 </div>
 
 
@@ -59,19 +53,32 @@
             <i class='bx bx-x cp-close'></i>
         </div>
 
-        <p class="cp-user">{{ user.username }} · Pixelaura</p>
+        <p class="cp-user">{{ user.username }}Pixelaura</p>
         <h2>Change password</h2>
+        <form method="post">
+            {% csrf_token %}
 
-        <input type="password" placeholder="Current password">
-        <input type="password" placeholder="New password">
-        <input type="password" placeholder="Re-type new password">
+        <input type="password" name="crntpwd" placeholder="Current password" autofocus>
+        <input type="password" name="npwd" placeholder="New password">
+        <input type="password" name="cnfmpwd" placeholder="Re-type new password">
 
         <a href="#" class="cp-forgot">Forgot your password?</a>
 
         <button class="cp-btn">Change password</button>
+        </form>
 
     </div>
 </div>
+
+
+{% if messages %}
+<div class="toast-container">
+    {% for message in messages %}
+        <div class="toast success">{{ message }}</div>
+    {% endfor %}
+</div>
+{% endif %}
+
 {% block extra_js %}
 
 <script src="{% static 'js/change_pass.js' %}"></script>
