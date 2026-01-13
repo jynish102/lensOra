@@ -23,3 +23,8 @@ openBtn.addEventListener("click", () => {
 closeBtn.addEventListener("click", () => {
     popup.style.display = "none";
 });
+
+setTimeout(() => {
+  document.querySelectorAll(".toast").forEach(t => t.remove());
+}, 3000);
+
