@@ -20,11 +20,6 @@ items.forEach((item) => {
   });
 });
 
-/* EDIT */
-editBtn.addEventListener("click", () => {
-  if (!selectedPostId) return;
-  window.location.href = `/edit-post/${selectedPostId}/`;
-});
 
 /* DELETE */
 deleteBtn.addEventListener("click", () => {
@@ -38,4 +33,29 @@ deleteBtn.addEventListener("click", () => {
 
 function closeDeleteModal() {
   deleteModal.classList.remove("active");
+}
+
+
+const editModal = document.getElementById("editPostModal");
+const editPostImage = document.getElementById("editPostImage");
+const editPostId = document.getElementById("editPostId");
+const editCaption = document.getElementById("editCaption");
+
+/* OPEN EDIT MODAL */
+editBtn.addEventListener("click", () => {
+  if (!selectedPostId) return;
+
+  const selectedItem = document.querySelector(".image-item.selected");
+  const selectedImg = selectedItem.querySelector("img");
+
+  editPostImage.src = selectedImg.src;
+  editPostId.value = selectedPostId;
+  editCaption.value = selectedItem.dataset.caption || ""; // can load caption later
+
+  editModal.classList.add("active");
+});
+
+/* CLOSE EDIT MODAL */
+function closeEditModal() {
+  editModal.classList.remove("active");
 }
