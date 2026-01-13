@@ -56,24 +56,29 @@
         <div class="form-group">
           
             <label>User Name</label>
-            {% for login in datas %}
-            <input type="text" placeholder="Enter user name" value="{{ login.username }}">
-            {% endfor %}
+            
+            <input type="text" name="username" placeholder="Enter user name" value="{{ username }}">
+            
         </div>
 
         <div class="form-group">
             <label>Email</label>
             {% for login in datas %}
-            <input type="text" placeholder="Enter email" value="{{ login.email }}">
-            {% endfor %}
+            <input type="text"  name="email" placeholder="Enter email" value="{{ login.email }}">
+            
         </div>
 
         <div class="form-group">
             <label>Phone</label>
-            {% for login in datas %}
-            <input type="text" placeholder="Enter phone" value="{{ login.mobile }}">
-            {% endfor %}
+           
+            <input type="text" name="phone" placeholder="Enter phone" value="{{ login.mobile }}">
+            
         </div>
+         <div class="form-group">
+            <label>Birthdate</label>
+            <input type="text" name="dob" placeholder="Enter birthdate" value="{{ login.birthdate }}">
+          </div>
+          {% endfor %}
 
         <!-- Close Button -->
         <button  class="submit-btn">Submit</button>
@@ -85,6 +90,15 @@
   </div>
 
   <a href="{% url 'login' %}" class="add-accounts">Add accounts</a>
+
+  {% if messages %}
+<div class="toast-container">
+    {% for message in messages %}
+        <div class="toast success">{{ message }}</div>
+    {% endfor %}
+</div>
+{% endif %}
+
 
 </div>
 {% block extra_js %}
