@@ -2,9 +2,9 @@ from django.shortcuts import render,redirect
 from django.db import connection
 from django.conf import settings
 import os
-
+from django.http import HttpResponse,JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-import json
+from django.contrib import messages
 
 
 
@@ -282,9 +282,32 @@ def account_center(request):
     return render(request, 'account_center.html')
 
 def personal_detail_s(request):
+    username = request.session.get('user')
     loginu = getloginuserdt(request)
     profile = profiledata(request) 
-    return render(request,"personal_detail_s.html",{'datas' :loginu , "profile" : profile})
+
+    if request.method == "POST":
+        uname = request.POST.get("username")
+        email = request.POST.get("email")
+        mobile = request.POST.get("phone")
+        dob = request.POST.get("dob")
+
+        with connection.cursor() as cursor:
+            cursor.execute(
+                """
+                UPDATE register
+                SET  email=%s, 
+                    mobile=%s,
+                    birthdate=%s,
+                    username=%s
+                WHERE username=%s
+                """,
+                [email,mobile,dob,uname,username]
+            )
+
+        messages.success(request, "Profile updated successfully")
+        return redirect("personal_detail_s")
+    return render(request,"personal_detail_s.html",{'username' : username, 'datas' :loginu , "profile" : profile})
 
 def change_pass(request):
     return render(request,'change_pass.html')
