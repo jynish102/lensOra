@@ -32,98 +32,71 @@
             </div>
         </div>
     </div> 
-    
     <div class="edit-post-container">
-
         <div class="image-grid">
             {% for post in posts %}
-            <div class="image-item" data-post-id="{{ post.0 }}">
+            <div class="image-item" data-post-id="{{ post.0 }}" 
+                              data-caption="{{ post.3 |default:'' }}">
                 <img src="{{ post.1 }}" alt="Post image">
                 <span class="check-icon">✓</span>
             </div>
             {% endfor %}
-           
-        </div>
-
-        <div class="post-actions" id="postActions">
+           </div>
+<div class="post-actions" id="postActions">
             <button class="edit-btn" disabled>Edit Post</button>
             <button class="delete-btn" disabled>Delete Post</button>
         </div>
     </div>
 
+    <!-- EDIT POST MODAL -->
+        <div class="edit-modal-overlay" id="editPostModal">
+            <div class="edit-modal">
+
+                <!-- HEADER -->
+                <div class="edit-modal-header">
+                    <button type="button" class="cancel-btn" onclick="closeEditModal()">Cancel</button>
+                    <h3>Edit info</h3>
+                    <button type="submit" form="editPostForm" class="done-btn">Done</button>
+                </div>
+
+                <!-- BODY -->
+                
+                <form method="post" action="{% url 'update_post' %}" id="editPostForm">
+                    {% csrf_token %}
+                    <input type="hidden" name="post_id" id="editPostId">
+                    <div class="edit-modal-body">
+
+                        <!-- LEFT -->
+                        <div class="edit-image-box">
+                            <img id="editPostImage">
+                        </div>
+
+                        <!-- RIGHT -->
+                        <div class="edit-form-box">
+                            <div class="edit-user-row">
+                                <img src="{{ profile.image }}" class="edit-user-img">
+                                <span class="edit-username">{{ username }}</span>
+                            </div>
+                               
+                            <textarea name="caption"
+                                    id="editCaption"
+                                    placeholder="Write a caption..."></textarea>
+                     </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     <!-- DELETE MODAL -->
         <div class="delete-modal-overlay" id="deleteModal">
             <div class="delete-modal">
                 <h3>Delete post?</h3>
                 <p>This action cannot be undone.</p>
                 <div class="delete-actions">
-
-                       
-                        <a href="" id="deleteLink" class="delete-link">Delete</a>
-                        
-                        <button type="button" class="cancel-delete" onclick="closeDeleteModal()" >Cancel</button>
+                    <a href="" id="deleteLink" class="delete-link">Delete</a>
+                    <button type="button" class="cancel-delete" onclick="closeDeleteModal()" >Cancel</button>
                     </div>
-                
-
-                
-            </div>
-
-            
+                </div>
         </div>
-
-
-
-
 </body>
-<script>
-
-let selectedPostId = null;
-
-const items = document.querySelectorAll('.image-item');
-const actionBar = document.getElementById('postActions');
-const editBtn = document.querySelector('.edit-btn');
-const deleteBtn = document.querySelector('.delete-btn');
-const deleteModal = document.getElementById('deleteModal');
-const deleteLink = document.getElementById('deleteLink');
-
-items.forEach(item => {
-    item.addEventListener('click', () => {
-        items.forEach(i => i.classList.remove('selected'));
-        item.classList.add('selected');
-
-        selectedPostId = item.dataset.postId;
-
-        actionBar.classList.add('active');
-        editBtn.disabled = false;
-        deleteBtn.disabled = false;
-    });
-});
-
-/* EDIT */
-editBtn.addEventListener('click', () => {
-    if (!selectedPostId) return;
-    window.location.href = `/edit-post/${selectedPostId}/`;
-});
-
-/* DELETE */
-deleteBtn.addEventListener('click', () => {
-    if (!selectedPostId) return;
-
-    // ✅ set delete link dynamically
-    deleteLink.href = `/PixelAuraplus/delete-post/${selectedPostId}/`;
-
-    deleteModal.classList.add('active');
-});
-
-function closeDeleteModal() {
-    deleteModal.classList.remove('active');
-}
-
-
-
-
-
-</script>
-
-
+<script src="{% static 'js/post_crud.js' %}"></script>
 </html>
