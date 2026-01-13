@@ -5,10 +5,6 @@ import os
 from django.http import HttpResponse,JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
-
-
-
-
 def login(request):
     if "user" in request.session:
         return redirect('home')
@@ -310,7 +306,54 @@ def personal_detail_s(request):
     return render(request,"personal_detail_s.html",{'username' : username, 'datas' :loginu , "profile" : profile})
 
 def change_pass(request):
-    return render(request,'change_pass.html')
+    if "user" not in request.session:
+        return redirect('login')
+
+    username = request.session.get("user")
+    profile = profiledata(request)
+
+    if request.method == "POST":
+        current = request.POST.get("crntpwd")
+        new = request.POST.get("npwd")
+        confirm = request.POST.get("cnfmpwd")
+
+        # 1️⃣ Password match check
+        if new != confirm:
+            messages.error(request, "New passwords do not match")
+            return redirect("change_pass")
+        
+        current_hashed = current
+        new_hashed = new
+
+
+        with connection.cursor() as cursor:
+            # 2️⃣ Verify current password
+            cursor.execute(
+                "SELECT id FROM register WHERE username=%s AND password=%s",
+                [username, current_hashed]
+            )
+            user = cursor.fetchone()
+
+            if not user:
+                messages.error(request, "Current password is incorrect")
+                return redirect("change_pass")
+
+            # 3️⃣ Update password
+            cursor.execute(
+                "UPDATE register SET password=%s WHERE username=%s",
+                [new_hashed, username]
+            )
+
+        messages.success(request, "Password changed successfully")
+        return redirect("change_pass")
+    return render(
+        request,
+        "change_pass.html",
+        {
+            "profile": profile,
+            "username": username
+        }
+    )
 
 def personal_detail_ss(request):
     loginu = getloginuserdt(request)
