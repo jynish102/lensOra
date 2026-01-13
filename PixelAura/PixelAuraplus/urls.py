@@ -25,5 +25,6 @@ urlpatterns = [
     path('follow/<str:username>/', views.follow_user, name="follow_user"),
     path('post_crud/',views.post_crud, name="post_crud"),
     path('delete-post/<int:post_id>/', views.delete_post,name="delete_post"),
+     path('update_post/', views.update_post, name='update_post'),
     path('logout/', views.logout, name="logout"),
 ]
