@@ -5,6 +5,7 @@ import os
 from django.http import HttpResponse,JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
+
 def login(request):
     if "user" in request.session:
         return redirect('home')
@@ -742,54 +743,51 @@ def follow_user(request, username):
     return redirect("suggested_user_profile", username=username)
 
 
-def add_comment(request, post_id):
+def add_comment(request):
+    if request.method != "POST":
+        return redirect("home")
+
     if "user" not in request.session:
         return redirect("login")
 
-    if request.method != "POST":
-        return redirect(request.META.get("HTTP_REFERER", "/"))
+    post_id = request.POST.get("post_id")
+    comment = request.POST.get("comment")
+    username = request.session.get("user")
 
-    text = request.POST.get("cmt")
-    print("COMMENT TEXT:", text)
-    if not text or not text.strip():
-        return redirect(request.META.get("HTTP_REFERER", "/"))
+    print("POST_ID:", post_id)
+    print("COMMENT:", comment)
+    print(username)
 
-    username = request.session['user']
+    if not post_id or not comment:
+        print("❌ Missing post_id or comment")
+        return redirect(request.META.get("HTTP_REFERER"))
+
     with connection.cursor() as cursor:
 
-        # 1️⃣ get user_id
         cursor.execute(
             "SELECT id FROM register WHERE username=%s",
             [username]
         )
         user = cursor.fetchone()
-       
 
         if not user:
-            return redirect("login")
+            print("❌ User not found")
+            return redirect(request.META.get("HTTP_REFERER"))
 
-        user_id = int(user[0])  # ✅ INT
+        user_id = user[0]
         
-        
 
-
-        # 2️⃣ check post exists
         cursor.execute(
-            "SELECT id FROM posts WHERE id=%s",
-            [post_id]
-        )
-
-       
-        if not cursor.fetchone():
-
-            return redirect(request.META.get("HTTP_REFERER", "/"))
-
-        # 3️⃣ insert comment
-        cursor.execute("""
+            """
             INSERT INTO comments (post_id, user_id, comment)
             VALUES (%s, %s, %s)
-        """, [post_id, user_id, text.strip()])
-    return redirect(request.META.get("HTTP_REFERER", "/"))
+            """,
+            [int(post_id), user_id, comment]
+        )
+
+        print("✅ COMMENT INSERTED")
+
+    return redirect(request.META.get("HTTP_REFERER"))
 
 def post_crud(request):
     if 'user' not in request.session:
