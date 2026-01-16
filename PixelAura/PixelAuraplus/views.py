@@ -361,8 +361,36 @@ def personal_detail_ss(request):
     return render (request,"personal_detail_ss.html",{'datas' :loginu})
 
 def reels(request):
+    login_user = getloginuserdt(request)
+    login_username = login_user[0]["username"]
     profile = profiledata(request)
-    return render(request,"reels.html" , {"profile" : profile})
+    with connection.cursor() as cursor:
+        cursor.execute("""
+                SELECT 
+                    posts.id,
+                    posts.image,
+                    posts.username,
+                    profile.image AS profile_image
+                FROM posts
+                LEFT JOIN profile ON posts.username = profile.username
+                WHERE posts.username != %s
+                ORDER BY posts.id DESC
+                LIMIT 10
+            """, [login_username])
+
+        rows = cursor.fetchall()
+            
+    suggested_posts = []
+    for row in rows:
+        suggested_posts.append({
+            "id" :row[0],
+            "image": row[1],
+            "username": row[2],
+            "profile_image": row[3]
+        })
+    return render(request,"reels.html" , 
+                  {"profile" : profile,
+                   "sposts" : suggested_posts})
 
 def profile(request):
     if 'user' not in request.session:
