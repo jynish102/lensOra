@@ -27,4 +27,5 @@ urlpatterns = [
     path('delete-post/<int:post_id>/', views.delete_post,name="delete_post"),
      path('update_post/', views.update_post, name='update_post'),
     path('logout/', views.logout, name="logout"),
+    path('add_comment/' , views.add_comment, name="add_comment"),
 ]
