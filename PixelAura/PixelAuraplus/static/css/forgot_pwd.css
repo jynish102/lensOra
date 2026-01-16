@@ -1,0 +1,253 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", sans-serif;
+}
+
+/* BACKGROUND */
+body {
+    min-height: 100vh;
+    background-image: url("https://images.unsplash.com/photo-1522202176988-66273c2fd55f");
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+.profile-img {
+    height: 70px;
+    width: 70px;
+    object-fit: cover;
+    
+    display: block;
+}
+
+/* CLOSE ICON */
+.close-page {
+    position: absolute;
+    top: 25px;
+    right: 35px;
+    font-size: 38px;
+    color: #fff;
+    text-decoration: none;
+    z-index: 10;
+}
+
+/* PROFILE CARD */
+.profile-card {
+    width: 90%;
+    max-width: 1000px;
+    margin: 20px auto 0;
+    padding: 25px 35px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    display: flex;
+    align-items: center;
+}
+
+/* LEFT SIDE */
+.profile-left {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+/* AVATAR */
+.avatar {
+    width: 70px;
+    height: 70px;
+    background: rgba(255,255,255,0.25);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    color: #fff;
+}
+
+/* PROFILE TEXT */
+.profile-info p {
+    color: #fff;
+    font-size: 16px;
+    margin-bottom: 6px;
+}
+
+.profile-info i {
+    margin-right: 8px;
+}
+
+/* FORGOT CARD */
+.forgot-card {
+    width: 420px;
+    margin: 100px auto 0;
+    background: #fff;
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+}
+
+.forgot-card h2 {
+    margin-bottom: 12px;
+}
+
+.forgot-card p {
+    color: #666;
+}
+.forgot-card {
+    width: 420px;
+    padding: 30px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+    color: #fff;
+}
+
+.forgot-card h2 {
+    margin-bottom: 5px;
+}
+
+.forgot-card p {
+    font-size: 14px;
+    opacity: 0.85;
+    margin-bottom: 25px;
+}
+
+/* Inputs */
+.input-box {
+    position: relative;
+    margin-bottom: 18px;
+}
+
+.input-box i {
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    transform: translateY(-50%);
+    font-size: 20px;
+    color: #fff;
+}
+
+.input-box input {
+    width: 100%;
+    padding: 12px 14px 12px 42px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
+.input-box input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* Button */
+.reset-btn {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    border-radius: 12px;
+    border: none;
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    color: #fff;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.reset-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* POPUP OVERLAY */
+.pwd-popup-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(6px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+/* ACTIVE */
+.pwd-popup-overlay.active {
+    display: flex;
+}
+
+/* POPUP CARD */
+.pwd-popup-card {
+    width: 340px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(18px);
+    border-radius: 18px;
+    padding: 25px;
+    text-align: center;
+    color: #fff;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
+    position: relative;
+    animation: popupScale .3s ease;
+}
+
+/* CLOSE ICON */
+.pwd-close {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+/* TEXT */
+.pwd-popup-card h3 {
+    margin-bottom: 5px;
+}
+
+.pwd-info {
+    font-size: 13px;
+    opacity: .8;
+    margin-bottom: 18px;
+}
+
+/* PASSWORD BOX */
+.pwd-box {
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 12px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 16px;
+    letter-spacing: 1px;
+}
+
+/* BUTTON */
+.pwd-ok-btn {
+    margin-top: 18px;
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    background: linear-gradient(135deg, #00ffb3, #00c6ff);
+    color: #000;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* ANIMATION */
+@keyframes popupScale {
+    from {
+        transform: scale(.85);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
