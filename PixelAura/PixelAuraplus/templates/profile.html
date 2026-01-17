@@ -113,7 +113,7 @@
               Your browser does not support the video tag.
             </video>
             {% else %}
-            <img src="{{ p.1 }}" class="grid-post" alt="post image" onclick="openViewPost('{{ p.1 }}', '{{ p.0 }}')" />
+            <img src="{{ p.1 }}" class="grid-post" alt="post image" onclick="openViewPost('{{ p.1 }}', '{{ p.0 }}','{{ p.3|escapejs }}')" />
             
             {% endif %}
             <p>{{ p.0 }}</p>
@@ -181,9 +181,8 @@
           <!-- COMMENTS -->
           <div class="view-comments">
             <p>
-              {% for login in userlogin %}
-              <b>{{ login.username }}</b>
-              {% endfor %}
+              <b id="popupUsername"></b>
+              <span id="popupCaption"></span>
               
           
           
