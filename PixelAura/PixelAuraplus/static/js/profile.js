@@ -21,50 +21,11 @@ tabs.forEach(tab => {
   });
 });
 
-/*------------------------cmt-------------------------------*/
-document.addEventListener("DOMContentLoaded", () => {
-  const viewPostPopup = document.getElementById("viewPostPopup");
-  const viewPostImage = document.getElementById("viewPostImage");
-
-  window.openViewPost = function (src) {
-    viewPostImage.src = src;
-    viewPostPopup.style.display = "flex";
-    document.body.style.overflow = "hidden";
-  };
-
-  viewPostPopup.addEventListener("click", function (e) {
-    if (e.target === viewPostPopup) {
-      viewPostPopup.style.display = "none";
-      viewPostImage.src = "";
-      document.body.style.overflow = "auto";
-    }
-  });
-});
 
 
 
-/*cmt post-------------------------------- */
-function openPostMenu() {
-  document.getElementById("postMenuOverlay").style.display = "flex";
-}
 
-function closePostMenu() {
-  document.getElementById("postMenuOverlay").style.display = "none";
-}
 
-function openEditPost() {
-  closePostMenu();
-
-  // copy image from view popup
-  document.getElementById("editPostImage").src =
-    document.getElementById("viewPostImage").src;
-
-  document.getElementById("editPostPopup").style.display = "flex";
-}
-
-function closeEditPost() {
-  document.getElementById("editPostPopup").style.display = "none";
-}
 
 
 /*3dot */
@@ -73,18 +34,27 @@ function togglePostMenu() {
   menu.style.display = menu.style.display === "block" ? "none" : "block";
 }
 
+/*------------------------ VIEW POST + COMMENT -------------------------------*/
+document.addEventListener("DOMContentLoaded", () => {
+  const viewPostPopup = document.getElementById("viewPostPopup");
+  const viewPostImage = document.getElementById("viewPostImage");
+  const commentPostId = document.getElementById("commentPostId");
 
-/*---------------------------editpost---------------------------------- */
-function openEditPost(imageSrc) {
-  document.getElementById("editPostPopup").style.display = "block";
-  document.getElementById("editPostImage").src = imageSrc;
+  // OPEN POST POPUP
+  window.openViewPost = function (src, postId) {
+    viewPostImage.src = src;
+    commentPostId.value = postId;   // ✅ THIS WAS MISSING
+    viewPostPopup.style.display = "flex";
+    document.body.style.overflow = "hidden";
+  };
 
-  // Close 3-dot menu only
-  document.getElementById("postMenu").style.display = "none";
-}
-
-function closeEditPost() {
-  document.getElementById("editPostPopup").style.display = "none";
-}
-
-
+  // CLOSE POPUP
+  viewPostPopup.addEventListener("click", function (e) {
+    if (e.target === viewPostPopup) {
+      viewPostPopup.style.display = "none";
+      viewPostImage.src = "";
+      commentPostId.value = "";     // optional cleanup
+      document.body.style.overflow = "auto";
+    }
+  });
+});
