@@ -10,6 +10,10 @@
     <a href="{% url 'home' %}" class="close-link">
       <i class='bx bx-x ac-close'></i>
     </a>
+    <a href="{% url 'post_crud' %}">
+    <i class="bx bx-dots-vertical more-icon"></i>
+    </a>
+   
     <div class="profile-sticky">
       <!-- ✅ USER INFO ROW (Updated Layout) -->
       <div class="user-row">
@@ -20,7 +24,7 @@
           {% if profile.image %}
           <img src="{{ profile.image }}" class="profile-img">
           {% else %}
-          <i class="bx bxs-user default-user-icon"></i>
+          
           <img src="{% static 'images/default-user.png' %}" class="profile-img">
           {% endif %}
         </div>
@@ -98,7 +102,10 @@
         <h2>All Posts</h2>
         <div class="posts-grid">
           {% for p in posts %}
-          <div class="post-item">
+          <div class="post-item"
+          data-post-id="{{ p.0 }}"
+          data-post-src="{{ p.1 }}">
+
             {% if p.1 %}
             {% if p.1|lower|slice:"-4:" == ".mp4" %}
             <video controls>
@@ -106,8 +113,10 @@
               Your browser does not support the video tag.
             </video>
             {% else %}
-            <img src="{{ p.1 }}" class="grid-post" alt="post image" onclick="openViewPost('{{ p.1 }}')" />
+            <img src="{{ p.1 }}" class="grid-post" alt="post image" onclick="openViewPost('{{ p.1 }}', '{{ p.0 }}')" />
+            
             {% endif %}
+            <p>{{ p.0 }}</p>
             {% endif %}
           </div>
 
@@ -117,14 +126,7 @@
         </div>
       </div>
     </div>
-   
-
-
-    
-
-
-
-    <!-- ✅ REELS TAB CONTENT -->
+<!-- ✅ REELS TAB CONTENT -->
     <div class="tab-content" id="reels">
       <h3 class="gs-title">Reels</h3>
       <p>This is your Reels section.</p>
@@ -159,16 +161,7 @@
 
           <!-- HEADER -->
           <div class="view-post-header">
-            <!-- 3 DOT MENU -->
-              <div class="post-menu">
-                <i class="bx bx-dots-horizontal-rounded" onclick="togglePostMenu()"></i>
-
-                <div class="post-menu-dropdown" id="postMenu">
-                  <a href="#"  onclick="openEditPost(document.getElementById('viewPostImage').src)">Edit</a>
-                  <a href="#">Delete</a>
-                  <a href="#" onclick="togglePostMenu()">Cancel</a>
-                </div>
-              </div>
+           
             <div class="view-user">
                 {% if profile.image %}
                    <img src="{{ profile.image }}" class="view-user-pic">
@@ -187,7 +180,15 @@
 
           <!-- COMMENTS -->
           <div class="view-comments">
-            <p><b>hjhjh</b> Caption here</p>
+            <p>
+              {% for login in userlogin %}
+              <b>{{ login.username }}</b>
+              {% endfor %}
+              
+          
+          
+          
+          </p>
             <p><b>user1</b> Nice 🔥</p>
           </div>
 
@@ -200,13 +201,14 @@
             </div>
             <i class="bx bx-bookmark"></i>
           </div>
-          {% for post in posts %}
-       <form method="post" action="{% url 'add_comment' post.0 %}">
-         {% endfor %}
+          
+       <form method="post" action="{% url 'add_comment' %}" id=>
+         
           {% csrf_token %}
           <!-- ADD COMMENT -->
+           <input type="hidden" name="post_id" id="commentPostId" />
           <div class="view-add-comment">
-            <textarea type="text" name="cmt" placeholder="Add a comment..." required></textarea>
+            <textarea type="text" name="comment" placeholder="Add a comment..." required></textarea>
             <input type="submit" value="Post">
           </div>
 
@@ -215,49 +217,8 @@
       </div>
 
     </div>
-          
-          <!--editpost-->
-          
-          <!--End-->
   </div>
-
-
-
-
-  <!-- EDIT POST POPUP -->
-<div class="edit-post-overlay" id="editPostPopup">
-
-  <div class="edit-post-box">
-
-    <div class="edit-post-header">
-      <span onclick="closeEditPost()" class="edit-cancel">Cancel</span>
-      <h3>Edit info</h3>
-      <span class="edit-done">Done</span>
-    </div>
-
-    <div class="edit-post-body">
-      <div class="edit-left">
-        <img id="editPostImage" src="">
-      </div>
-
-      <div class="edit-right">
-        <div class="edit-user">
-          <img src="{{ profile.image|default:'static/images/default-user.png' }}">
-          {% for login in userlogin %}
-            <span>{{ login.username }}</span>
-          {% endfor %}
-        </div>
-
-        <textarea placeholder="Edit caption..."></textarea>
-
-        <div class="edit-options">
-          <p>Add location</p>
-          <p>Accessibility</p>
-        </div>
-      </div>
-    </div>
-
-  </div>
+</div>
 </div>
 
 
