@@ -58,7 +58,7 @@
 <div class="posts-grid">
     {% for post in posts %}
         <div class="post">
-            <img src="{{ post.1 }}"  onclick="openViewPost('{{ post.1 }}')"
+            <img src="{{ post.1 }}"  onclick="openViewPost('{{ post.1 }}', '{{ post.0 }}')"
            class="grid-post">
            <p>{{ post.0 }}</p>
         </div>
@@ -107,16 +107,24 @@
         <i class="bx bx-bookmark"></i>
       </div>
       
-      {% for post in posts %}
+      
       <!-- ADD COMMENT -->
-       <form method="POST" action="{% url 'add_comment' post.0 %}">
-        {% endfor %}
+       <form method="POST" action="{% url 'add_comment' %}">
+        
+        
           {% csrf_token %}
+          <!-- IMPORTANT -->
+          
+                <input type="hidden" name="post_id" id="commentPostId" />
+                
+                
       <div class="view-add-comment">
-        <textarea name="cmt" type="text" placeholder="Add a comment…" required></textarea>
+        <textarea name="comment" type="text" placeholder="Add a comment…" required></textarea>
         <input type="submit" value="Post">
       </div>
     </form>
+    
+    
     
 
     </div>
