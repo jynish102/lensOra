@@ -61,8 +61,8 @@ def home(request):
                 'id' :data[0],
                 'name':data[1],
                 'email':data[2],
-                'password':  data[3],
-                'mobile':  data[4],
+                 'mobile':  data[3],
+                'password':  data[4],
                 'birthdate':data[5],
                 'username': data[6]
         }
@@ -143,9 +143,9 @@ def getloginuserdt(request):
                 'id' :row[0],
                 'name':row[1],
                 'email':row[2],
-                'password':row[3],
-                'mobile':  row[4],
-                'birthdate':row[5],
+                 'mobile':  data[3],
+                'password':  data[4],
+               'birthdate':row[5],
                 'username': row[6]
             }
             for row in data
