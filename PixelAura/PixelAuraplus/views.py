@@ -898,6 +898,9 @@ def toggle_like(request):
             "likes": likes_count
         })
 
+def forgot_password(request):
+    return render(request,"forgot_password.html")
+
             
                 
 
