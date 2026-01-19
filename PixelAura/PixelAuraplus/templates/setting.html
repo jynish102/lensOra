@@ -52,7 +52,7 @@
   <p class="section-title">Who can see your content</p>
   <ul class="settings-list">
     <li>
-      <a href="#">
+      <a href="{% url 'acc_private' %}">
         <i class='bx bx-lock'></i>
         Account privacy
       </a>
@@ -97,7 +97,7 @@
 
   <div class="form-group">
   <label>Bio</label>
-  <textarea id="bioInput" name="bio" placeholder="Bio">{{ profile.bio|defa
+  <textarea id="bioInput" name="bio" placeholder="Bio">{{ profile.bio|default
     :''}}</textarea>
   <small id="bioCount">0 / 150</small>
   <small id="bioError" style="color: red; display: none;">Bio cannot exceed 150 characters</small>
@@ -106,7 +106,7 @@
 
     <div class="form-group">
       <label>Gender</label>
-      <select>
+      <select name="gender">
         <option>Prefer not to say</option>
         <option value="Male" {% if profile.gender == "male" %}selected{% endif %}>Male</option>
         <option value="femail" {% if profile.gender == "female" %}selected{% endif %}>Female</option>
