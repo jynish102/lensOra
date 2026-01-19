@@ -3,8 +3,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const openBtn = document.getElementById("openPhotoModal");
   const modal = document.getElementById("photoModal");
   const closeBtn = document.getElementById("closePhotoModal");
-  const uploadBtn = document.getElementById("uploadBtn");
-  const removeBtn = document.getElementById("removeBtn");
+  const uploadBtn = document.querySelector(".uploadBtn");
+  const removeBtn = document.querySelector(".removeBtn");
 
   const fileInput = document.getElementById("profileImageInput");
   const profileImg = document.getElementById("profilePreview");
