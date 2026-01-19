@@ -899,7 +899,10 @@ def toggle_like(request):
         })
 
 def forgot_password(request):
-    return render(request,"forgot_password.html")
+    profile = viewprofile(request)
+   
+    login = getloginuserdt(request)
+    return render(request,"forgot_password.html",{'profile':profile,'login':login})
 
             
                 
