@@ -15,6 +15,7 @@ urlpatterns = [
     path('personal_detail_s/',views.personal_detail_s, name='personal_detail_s'),
     path('personal_detail_ss/',views.personal_detail_ss, name='personal_detail_ss'),
     path('change_pass/', views.change_pass, name='change_pass'),
+    path('forgot_password/',views.forgot_password, name="forgot_password"),
     path('reels/', views.reels, name='reels'),
     path('profile/', views.profile, name="profile"),
     path('saved/',views.saved, name="saved"),
