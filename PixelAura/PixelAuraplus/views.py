@@ -855,6 +855,49 @@ def update_post(request):
 
     return redirect('post_crud')
 
+
+def toggle_like(request):
+    if request.method == "POST":
+        post_id = request.POST.get("post_id")
+        user_id = request.session.get("user_id")
+
+        with connection.cursor() as cursor:
+            # Check if already liked
+            cursor.execute("""
+                SELECT id FROM post_likes
+                WHERE post_id=%s AND user_id=%s
+            """, [post_id, user_id])
+
+            liked = cursor.fetchone()
+
+            if liked:
+                # Unlike
+                cursor.execute("""
+                    DELETE FROM post_likes
+                    WHERE post_id=%s AND user_id=%s
+                """, [post_id, user_id])
+                is_liked = False
+            else:
+                # Like
+                cursor.execute("""
+                    INSERT INTO post_likes (post_id, user_id)
+                    VALUES (%s, %s)
+                """, [post_id, user_id])
+                is_liked = True
+
+            # Count likes
+            cursor.execute("""
+                SELECT COUNT(*) FROM post_likes
+                WHERE post_id=%s
+            """, [post_id])
+
+            likes_count = cursor.fetchone()[0]
+
+        return JsonResponse({
+            "liked": is_liked,
+            "likes": likes_count
+        })
+
             
                 
 
