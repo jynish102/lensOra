@@ -57,7 +57,10 @@ editBtn.addEventListener("click", () => {
   editCaption.value = caption;
   charCount.innerText = caption.length; // ✅ FIX
 
-  editModal.classList.add("active");
+  editBtn.addEventListener("click", () => {
+    document.body.style.overflow = "hidden";
+    editModal.classList.add("active");
+  });
 });
 
 editCaption.addEventListener("input", () => {
@@ -67,5 +70,6 @@ editCaption.addEventListener("input", () => {
 
 /* CLOSE EDIT MODAL */
 function closeEditModal() {
+  document.body.style.overflow = "auto";
   editModal.classList.remove("active");
 }
