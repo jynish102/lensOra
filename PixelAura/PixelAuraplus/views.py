@@ -407,12 +407,12 @@ def profile(request):
     with connection.cursor() as cursor:
 
         # POSTS
-        cursor.execute("""
-            SELECT id, image, caption
-            FROM posts
-            WHERE username = %s
-        """, [username])
-        posts = cursor.fetchall()
+        # cursor.execute("""
+        #     SELECT id, image, caption
+        #     FROM posts
+        #     WHERE username = %s
+        # """, [username])
+        # posts = cursor.fetchall()
         post_count = len(posts)
 
         # FOLLOWERS COUNT
