@@ -74,6 +74,17 @@ body {
     padding: 20px;
 }
 
+.edit-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    
+}
+
 
 .image-grid {
     display: grid;
@@ -158,6 +169,49 @@ body {
 .edit-btn:disabled {
     background: #b2dffc;
     cursor: not-allowed;
+}
+
+.edit-image-box {
+    display: none;
+}
+
+.edit-modal.active .edit-image-box {
+    display: block;
+}
+
+.edit-modal-overlay.active {
+    display: flex;
+}
+
+.edit-modal {
+    background: #fff;
+    width: 900px;
+    max-width: 95%;
+    border-radius: 14px;
+    overflow: hidden;
+    position: relative;
+    z-index: 10000;
+}
+
+.edit-user-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.edit-user-img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.edit-username {
+    font-size: 14px;
+    font-weight: 600;
+    color: #262626;
 }
 
 
@@ -260,7 +314,7 @@ body {
     font-weight: 600;
     font-size: 15px;
     cursor: pointer;
-}
+}    
 
 .caption-counter {
     text-align: right;
@@ -273,3 +327,5 @@ body {
 .delete-link:hover {
     opacity: 0.8;
 }
+
+
