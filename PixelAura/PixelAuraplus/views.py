@@ -101,8 +101,8 @@ def home(request):
             login_username = login_user[0]["username"]
         cursor.execute("""
             SELECT 
+                posts.id,
                 posts.image,
-                
                 posts.username,
                 profile.image AS profile_image
             FROM posts
@@ -117,9 +117,10 @@ def home(request):
     suggested_posts = []
     for row in rows:
         suggested_posts.append({
-            "image": row[0],
-            "username": row[1],
-            "profile_image": row[2]
+            "id" : row[0],
+            "image": row[1],
+            "username": row[2],
+            "profile_image": row[3]
         })    
     
     profile = profiledata(request) 
