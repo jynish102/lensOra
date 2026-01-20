@@ -6,6 +6,8 @@ const editBtn = document.querySelector(".edit-btn");
 const deleteBtn = document.querySelector(".delete-btn");
 const deleteModal = document.getElementById("deleteModal");
 const deleteLink = document.getElementById("deleteLink");
+const charCount = document.getElementById("charCount");
+
 
 items.forEach((item) => {
   item.addEventListener("click", () => {
@@ -50,10 +52,18 @@ editBtn.addEventListener("click", () => {
 
   editPostImage.src = selectedImg.src;
   editPostId.value = selectedPostId;
-  editCaption.value = selectedItem.dataset.caption || ""; // can load caption later
+
+  const caption = selectedItem.dataset.caption || "";
+  editCaption.value = caption;
+  charCount.innerText = caption.length; // ✅ FIX
 
   editModal.classList.add("active");
 });
+
+editCaption.addEventListener("input", () => {
+  charCount.innerText = editCaption.value.length;
+});
+
 
 /* CLOSE EDIT MODAL */
 function closeEditModal() {
