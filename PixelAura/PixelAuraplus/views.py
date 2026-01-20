@@ -61,8 +61,8 @@ def home(request):
                 'id' :data[0],
                 'name':data[1],
                 'email':data[2],
-                 'mobile':  data[3],
-                'password':  data[4],
+                'password':  data[3],
+                'mobile':  data[4],
                 'birthdate':data[5],
                 'username': data[6]
         }
@@ -113,15 +113,43 @@ def home(request):
         """, [login_username])
 
         rows = cursor.fetchall()
+
+        #Fetch comments with username + profile image
+        cursor.execute("""
+            SELECT 
+                c.post_id,
+                r.username,
+                p.image,
+                c.comment
+            FROM comments c
+            JOIN register r ON c.user_id = r.id
+            LEFT JOIN profile p ON r.username = p.username
+        """)
+
+        comment_rows = cursor.fetchall()
+        comments_by_post = {}
+
+        for post_id, uname, image, comment in comment_rows:
+            comments_by_post.setdefault(post_id, []).append({
+                "username": uname,
+                "image": image,
+                "comment": comment
+            })
             
-    suggested_posts = []
-    for row in rows:
-        suggested_posts.append({
-            "id" : row[0],
-            "image": row[1],
-            "username": row[2],
-            "profile_image": row[3]
-        })    
+        suggested_posts = []
+        for row in rows:
+            post_id = row[0]
+            suggested_posts.append({
+                "id" : post_id,
+                "image": row[1],
+                "username": row[2],
+                "profile_image": row[3],
+                "comments": comments_by_post.get(post_id, [])
+            })  
+
+        
+
+  
     
     profile = profiledata(request) 
     return render(request,'home.html', 
@@ -130,8 +158,10 @@ def home(request):
                    "profile" : profile,
                    "suggested_posts": suggested_posts,
                    "suser" : login_user,
-                   "sp" : login_profile
+                   "sp" : login_profile,
+                   "comments": comments_by_post, 
                    })
+
 
 
 def getloginuserdt(request):
