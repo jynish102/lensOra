@@ -125,9 +125,10 @@
 
               <!-- COMMENT LIST -->
               <div class="comment-body">
+                {% for c in post.comments %}
                 <div class="comment-item">
-                  {% if u.image %}
-                  <img src="{{ u.image }}" class="comment-user-img" />
+                  {% if c.image %}
+                  <img src="{{ c.image }}" class="comment-user-img" />
                   {% else %}
                   <img
                     src="{% static 'images/default-user.png' %}"
@@ -135,12 +136,13 @@
                   />
                   {% endif %}
                   <div class="comment-text">
-                    <b>{{ u.username }} </b>
-                    
-
-                    <span>Beautiful outfit 😍</span>
+                    <b>{{ c.username }} </b>
+                    <span>{{ c.comment }}</span>
                   </div>
                 </div>
+                {% empty %}
+                <p class="no-comments">No comments yet</p>
+                {% endfor %}
               </div>
 
               <form class="comment-form" method="post" action="{% url 'add_comment' %}">
