@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // GLOBAL function (called from onclick)
-  window.openViewPost = function (imageUrl, postId) {
+  window.openViewPost = function (imageUrl, postId, caption) {
     viewPostImage.src = imageUrl;
 
     const postIdInput = document.getElementById("commentPostId");
@@ -17,16 +17,16 @@ document.addEventListener("DOMContentLoaded", () => {
       postIdInput.value = postId;
     }
 
+    // ✅ SET CAPTION
+    const captionEl = document.getElementById("popupCaption");
+    if (captionEl) {
+      captionEl.innerText = caption || "";
+    }
+
     viewPostPopup.style.display = "flex";
     document.body.style.overflow = "hidden";
   };
 
-  // Close when clicking outside popup
-  viewPostPopup.addEventListener("click", (e) => {
-    if (e.target === viewPostPopup) {
-      closePopup();
-    }
-  });
 
   // Close button (X)
   const closeBtn = document.querySelector(".close-popup");
@@ -39,4 +39,8 @@ document.addEventListener("DOMContentLoaded", () => {
     viewPostImage.src = "";
     document.body.style.overflow = "auto";
   }
+
+  document.getElementById("popupCaption").innerText = caption;
+  console.log(caption)
+
 });
