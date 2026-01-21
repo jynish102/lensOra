@@ -103,16 +103,16 @@
         </div>
 
         <!-- ❤️ POST ACTIONS -->
-        <div class="post-actions-vertical">
-          <div class="action-btn likeBtn">
-            <i class="bx bx-heart"></i>
-            <span>1.2k</span>
+       <div class="post-actions-vertical">
+          <div class="action-btn likeBtn {% if post.liked %}liked{% endif %}" data-post-id="{{ post.id }}">
+            <i class="bx {% if post.liked %}bxs-heart{% else %}bx-heart{% endif %}"></i>
+            <span>{{ post.like_count }}</span>
           </div>
 
           <!-- COMMENT ACTION -->
           <div class="action-btn comment-wrapper">
             <i class="bx bx-comment"></i>
-            <span>245</span>
+            <span>{{ post.comments|length }}</span>
 
             <!-- RIGHT COMMENT PANEL -->
 
