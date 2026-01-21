@@ -34,6 +34,12 @@
                         <span class="text nav-text">Reels</span>
                     </a>
                 </li>
+                <li class="nav-link">
+                    <a href="{% url 'notifications' %}">
+                        <i class="bx bxs-heart"></i>
+                        <span class="text nav-text">Notifications</span>
+                    </a>
+                </li>
                 <li class="profile-box">
                     <a href="{% url 'profile' %}">
                         <img src="{{ profile.image|default:'/static/images/default-user.png' }}" alt="profile">
