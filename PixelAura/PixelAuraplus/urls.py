@@ -27,6 +27,8 @@ urlpatterns = [
     path('post_crud/',views.post_crud, name="post_crud"),
     path('delete-post/<int:post_id>/', views.delete_post,name="delete_post"),
      path('update_post/', views.update_post, name='update_post'),
+     path('add_comment/' , views.add_comment, name="add_comment"),
+    path("toggle-like/", views.toggle_like, name="toggle_like"),
     path('logout/', views.logout, name="logout"),
-    path('add_comment/' , views.add_comment, name="add_comment"),
+   
 ]
