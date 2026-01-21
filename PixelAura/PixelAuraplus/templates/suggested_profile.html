@@ -8,7 +8,7 @@
 <div class="profile-header">
 
     <div class="profile-left">
-        <img src="{{ profile.image|default:'/static/images/xya.png' }}" class="profile-photo">
+        <img src="{{ profile.image|default:'/static/images/default-user.webp' }}" class="profile-photo">
     </div>
 
     <div class="profile-right">
@@ -58,7 +58,7 @@
 <div class="posts-grid">
     {% for post in posts %}
         <div class="post">
-            <img src="{{ post.1 }}"  onclick="openViewPost('{{ post.1 }}', '{{ post.0 }}')"
+            <img src="{{ post.1 }}"  onclick="openViewPost('{{ post.1 }}', '{{ post.0 }}', '{{ post.2|escapejs }}')"
            class="grid-post">
            <p>{{ post.0 }}</p>
         </div>
@@ -93,11 +93,11 @@
 
       <!-- CAPTION / COMMENTS -->
       <div class="view-comments">
-        <p><b>{{ user.username }}</b> {{ post.caption|default:"" }}</p>
-        <p style="color:#888">No comments yet.</p>
-      </div>
-
-      <!-- ACTIONS -->
+    <p><b>{{ user.username }}</b> 
+         <span id="popupCaption"></span> 
+        </p>
+        </div>
+        <!-- ACTIONS -->
       <div class="view-actions">
         <div>
           <a>
@@ -106,37 +106,22 @@
         </div>
         <i class="bx bx-bookmark"></i>
       </div>
-      
-      
       <!-- ADD COMMENT -->
        <form method="POST" action="{% url 'add_comment' %}">
-        
-        
-          {% csrf_token %}
+    {% csrf_token %}
           <!-- IMPORTANT -->
           
                 <input type="hidden" name="post_id" id="commentPostId" />
-                
-                
-      <div class="view-add-comment">
+                <div class="view-add-comment">
         <textarea name="comment" type="text" placeholder="Add a comment…" required></textarea>
         <input type="submit" value="Post">
       </div>
     </form>
-    
-    
-    
-
     </div>
   </div>
 </div>
-
-
-
 {% endblock %}
 
 {% block extra_js %}
 <script src="{% static 'js/suggested_profile.js' %}"></script>
-
 {% endblock %}
-
