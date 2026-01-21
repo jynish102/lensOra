@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect
 from django.db import connection
 from django.conf import settings
 import os
+import json
 from django.http import HttpResponse,JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
@@ -45,8 +46,6 @@ def home(request):
     login_user = getloginuserdt(request)
     login_profile = profiledata(request)
     login_username = login_user[0]["username"]
-
-
 
     if "user" not in request.session:
         return redirect('login')
@@ -135,7 +134,23 @@ def home(request):
                 "image": image,
                 "comment": comment
             })
-            
+
+        cursor.execute("""
+            SELECT post_id, COUNT(*) 
+            FROM likes 
+            GROUP BY post_id
+        """)
+        like_counts = dict(cursor.fetchall())
+    
+        cursor.execute("""
+                SELECT l.post_id
+                FROM likes l
+                JOIN register r ON l.user_id = r.id
+                WHERE r.username = %s
+            """, [username])
+
+        liked_posts = {row[0] for row in cursor.fetchall()}
+
         suggested_posts = []
         for row in rows:
             post_id = row[0]
@@ -144,13 +159,11 @@ def home(request):
                 "image": row[1],
                 "username": row[2],
                 "profile_image": row[3],
-                "comments": comments_by_post.get(post_id, [])
+                "comments": comments_by_post.get(post_id, []),
+                 "like_count": like_counts.get(post_id, 0),
+                 "liked": post_id in liked_posts
             })  
 
-        
-
-  
-    
     profile = profiledata(request) 
     return render(request,'home.html', 
                   {'ulist' : suggested_users , 
@@ -934,6 +947,72 @@ def forgot_password(request):
    
     login = getloginuserdt(request)
     return render(request,"forgot_password.html",{'profile':profile,'login':login})
+
+def toggle_like(request):
+    if request.method != "POST":
+        return JsonResponse({"error": "Invalid request"}, status=400)
+
+    username = request.session.get("user")
+    if not username:
+        return JsonResponse({"error": "Not logged in"}, status=401)
+
+    try:
+        data = json.loads(request.body)
+        post_id = data.get("post_id")
+    except json.JSONDecodeError:
+        return JsonResponse({"error": "Invalid JSON"}, status=400)
+
+    print("SESSION USER:", username)
+    print("POST ID:", post_id)
+
+    if not post_id:
+        return JsonResponse({"error": "post_id missing"}, status=400)
+
+    with connection.cursor() as cursor:
+        # get user id
+        cursor.execute(
+            "SELECT id FROM register WHERE username=%s",
+            [username]
+        )
+        user_row = cursor.fetchone()
+        if not user_row:
+            return JsonResponse({"error": "User not found"}, status=404)
+
+        user_id = user_row[0]
+
+        # check if already liked
+        cursor.execute(
+            "SELECT id FROM likes WHERE post_id=%s AND user_id=%s",
+            [post_id, user_id]
+        )
+        liked = cursor.fetchone()
+
+        if liked:
+            # UNLIKE
+            cursor.execute(
+                "DELETE FROM likes WHERE post_id=%s AND user_id=%s",
+                [post_id, user_id]
+            )
+            liked_status = False
+        else:
+            # LIKE
+            cursor.execute(
+                "INSERT INTO likes (post_id, user_id) VALUES (%s, %s)",
+                [post_id, user_id]
+            )
+            liked_status = True
+
+        # updated count
+        cursor.execute(
+            "SELECT COUNT(*) FROM likes WHERE post_id=%s",
+            [post_id]
+        )
+        count = cursor.fetchone()[0]
+
+    return JsonResponse({
+        "liked": liked_status,
+        "count": count
+    })
 
             
                 
