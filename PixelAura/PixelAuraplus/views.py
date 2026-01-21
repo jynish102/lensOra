@@ -408,6 +408,8 @@ def reels(request):
     login_user = getloginuserdt(request)
     login_username = login_user[0]["username"]
     profile = profiledata(request)
+    username=request.session.get("user")
+
     with connection.cursor() as cursor:
         cursor.execute("""
                 SELECT 
@@ -423,14 +425,56 @@ def reels(request):
             """, [login_username])
 
         rows = cursor.fetchall()
+
+        #Fetch comments with username + profile image
+        cursor.execute("""
+            SELECT 
+                c.post_id,
+                r.username,
+                p.image,
+                c.comment
+            FROM comments c
+            JOIN register r ON c.user_id = r.id
+            LEFT JOIN profile p ON r.username = p.username
+        """)
+
+        comment_rows = cursor.fetchall()
+        comments_by_post = {}
+
+        for post_id, uname, image, comment in comment_rows:
+            comments_by_post.setdefault(post_id, []).append({
+                "username": uname,
+                "image": image,
+                "comment": comment
+            })
+
+        cursor.execute("""
+            SELECT post_id, COUNT(*) 
+            FROM likes 
+            GROUP BY post_id
+        """)
+        like_counts = dict(cursor.fetchall())
+    
+        cursor.execute("""
+                SELECT l.post_id
+                FROM likes l
+                JOIN register r ON l.user_id = r.id
+                WHERE r.username = %s
+            """, [username])
+
+        liked_posts = {row[0] for row in cursor.fetchall()}
             
     suggested_posts = []
     for row in rows:
+        post_id = row[0]
         suggested_posts.append({
-            "id" :row[0],
+            "id" :post_id,
             "image": row[1],
             "username": row[2],
-            "profile_image": row[3]
+            "profile_image": row[3],
+            "comments": comments_by_post.get(post_id, []),
+            "like_count": like_counts.get(post_id, 0),
+            "liked": post_id in liked_posts
         })
     return render(request,"reels.html" , 
                   {"profile" : profile,
