@@ -93,9 +93,13 @@
 
       <!-- CAPTION / COMMENTS -->
       <div class="view-comments">
+          <div class="view-user">
+          <img src="{{ profile.image|default:'/static/images/xya.png' }}"
+               class="view-user-pic">
     <p><b>{{ user.username }}</b> 
          <span id="popupCaption"></span> 
         </p>
+          </div>
         </div>
         <!-- ACTIONS -->
       <div class="view-actions">
@@ -125,3 +129,4 @@
 {% block extra_js %}
 <script src="{% static 'js/suggested_profile.js' %}"></script>
 {% endblock %}
+
