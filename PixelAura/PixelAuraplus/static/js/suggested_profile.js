@@ -44,3 +44,13 @@ document.addEventListener("DOMContentLoaded", () => {
   console.log(caption)
 
 });
+
+function toggleCommentMenu(el) {
+  document
+    .querySelectorAll(".comment-more")
+    .forEach(m => m !== el && m.classList.remove("active"));
+
+  el.classList.toggle("active");
+}
+
+
