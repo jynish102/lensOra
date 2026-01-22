@@ -93,15 +93,38 @@
 
       <!-- CAPTION / COMMENTS -->
       <div class="view-comments">
-          <div class="view-user">
-          <img src="{{ profile.image|default:'/static/images/xya.png' }}"
-               class="view-user-pic">
-    <p><b>{{ user.username }}</b> 
-         <span id="popupCaption"></span> 
-        </p>
+       <div class="view-user">
+            <img src="{{ profile.image|default:'/static/images/xya.png' }}"
+                class="view-user-pic">
+          <p><b>{{ user.username }}</b> 
+            <span id="popupCaption"></span> 
+          </p>
+          <div class="comment-list">
+            <div class="comment-item">
+                <img src="{% static 'images/default-user.webp' %}"
+                    class="comment-user-img">
+                <div class="comment-text">
+                  <b>user1</b>
+                  <span>Nice 🔥</span>
+                </div>
+
+                <!-- 3 DOT MENU -->
+                <div class="comment-more" onclick="toggleCommentMenu(this)">
+                  <i class="bx bx-dots-horizontal-rounded"></i>
+                  <!-- MENU -->
+                <div class="comment-menu">
+                  <button class="delete-btn">Delete</button>
+                  <button class="cancel-btn">Cancel</button>
+                </div>
+                </div>
+              </div>
           </div>
         </div>
-        <!-- ACTIONS -->
+         
+        
+      </div>
+
+      <!-- ACTIONS -->
       <div class="view-actions">
         <div>
           <a>
@@ -110,23 +133,37 @@
         </div>
         <i class="bx bx-bookmark"></i>
       </div>
+      
+      
       <!-- ADD COMMENT -->
        <form method="POST" action="{% url 'add_comment' %}">
-    {% csrf_token %}
+        
+        
+          {% csrf_token %}
           <!-- IMPORTANT -->
           
                 <input type="hidden" name="post_id" id="commentPostId" />
-                <div class="view-add-comment">
+                
+                
+      <div class="view-add-comment">
         <textarea name="comment" type="text" placeholder="Add a comment…" required></textarea>
         <input type="submit" value="Post">
       </div>
     </form>
+    
+    
+    
+
     </div>
   </div>
 </div>
+
+
+
 {% endblock %}
 
 {% block extra_js %}
 <script src="{% static 'js/suggested_profile.js' %}"></script>
+
 {% endblock %}
 
