@@ -180,10 +180,17 @@
 
           <!-- COMMENTS -->
           <div class="view-comments">
+             <div class="view-user">
+                {% if profile.image %}
+                   <img src="{{ profile.image }}" class="view-user-pic">
+                {% else %}
+                  <i class="bx bxs-user default-user-icon"></i>
+                  <img src="{% static 'images/default-user.png' %}" class="view-user-pic">
+                {% endif %}
             <p>
               <b id="popupUsername"></b>
               <span id="popupCaption"></span>
-              
+             </div>
           
           
           
