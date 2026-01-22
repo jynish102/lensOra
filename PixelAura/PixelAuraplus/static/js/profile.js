@@ -44,12 +44,13 @@ document.addEventListener("DOMContentLoaded", () => {
   window.openViewPost = function (src, postId, caption) {
     viewPostImage.src = src;
     commentPostId.value = postId;   // ✅ THIS WAS MISSING
-    viewPostPopup.style.display = "flex";
-    document.body.style.overflow = "hidden";
+    
     document.getElementById("popupUsername").innerText =
       document.querySelector(".username").innerText;
 
     document.getElementById("popupCaption").innerText = caption;
+    console.log("Caption received:", caption);
+
 
     viewPostPopup.style.display = "flex";
     document.body.style.overflow = "hidden";
@@ -64,3 +65,18 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
+
+
+function toggleCommentMenu(el) {
+  document
+    .querySelectorAll(".comment-more")
+    .forEach(m => m !== el && m.classList.remove("active"));
+
+  el.classList.toggle("active");
+}
+
+
+
+
+
