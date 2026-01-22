@@ -179,23 +179,41 @@
           </div>
 
           <!-- COMMENTS -->
-          <div class="view-comments">
-             <div class="view-user">
+          <div class="view-comments" id="popupComments">
+            <div class="view-user">
                 {% if profile.image %}
                    <img src="{{ profile.image }}" class="view-user-pic">
                 {% else %}
                   <i class="bx bxs-user default-user-icon"></i>
                   <img src="{% static 'images/default-user.png' %}" class="view-user-pic">
                 {% endif %}
+            
+
             <p>
               <b id="popupUsername"></b>
               <span id="popupCaption"></span>
-             </div>
-          
-          
-          
-          </p>
-            <p><b>user1</b> Nice 🔥</p>
+            </div>
+            </p>
+            <div class="comment-list">
+              <div class="comment-item">
+                <img src="{% static 'images/default-user.webp' %}"
+                    class="comment-user-img">
+                <div class="comment-text">
+                  <b>user1</b>
+                  <span>Nice 🔥</span>
+                </div>
+
+                <!-- 3 DOT MENU -->
+                <div class="comment-more" onclick="toggleCommentMenu(this)">
+                  <i class="bx bx-dots-horizontal-rounded"></i>
+                  <!-- MENU -->
+                <div class="comment-menu">
+                  <button class="delete-btn">Delete</button>
+                  <button class="cancel-btn">Cancel</button>
+                </div>
+                </div>
+              </div>
+            </div>
           </div>
 
           <!-- ACTIONS -->
