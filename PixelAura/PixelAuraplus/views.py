@@ -988,9 +988,44 @@ def toggle_like(request):
 
 def forgot_password(request):
     profile = profiledata(request)
-   
     login = getloginuserdt(request)
-    return render(request,"forgot_password.html",{'profile':profile,'login':login})
+
+    password_found = None
+    error_popup = False
+    error_message = ""
+
+    if request.method == "POST":
+        username = request.POST.get("username")
+        mobile = request.POST.get("mobile")
+
+        with connection.cursor() as cursor:
+            cursor.execute("""
+                SELECT password
+                FROM register
+                WHERE username = %s AND mobile = %s
+            """, [username, mobile])
+
+            row = cursor.fetchone()
+
+            if row:
+                # ✅ SUCCESS → SHOW PASSWORD POPUP
+                password_found = row[0]
+            else:
+                # ❌ ERROR → SHOW ERROR POPUP
+                error_popup = True
+                error_message = "Invalid username or mobile number"
+
+    return render(
+        request,
+        "forgot_password.html",
+        {
+            "profile": profile,
+            "login": login,
+            "password_found": password_found,
+            "error_popup": error_popup,
+            "error_message": error_message,
+        }
+    )
 
 def toggle_like(request):
     if request.method != "POST":
