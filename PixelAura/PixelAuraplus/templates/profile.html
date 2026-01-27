@@ -102,6 +102,7 @@
         <h2>All Posts</h2>
         <div class="posts-grid">
           {% for p in posts %}
+           
           <div class="post-item"
           data-post-id="{{ p.0 }}"
           data-post-src="{{ p.1 }}">
@@ -120,8 +121,9 @@
             {% endif %}
           </div>
 
-          {% empty %}
+          {% empty%}
           <p>No posts available.</p>
+         
           {% endfor %}
         </div>
       </div>
@@ -180,7 +182,7 @@
 
           <!-- COMMENTS -->
           <div class="view-comments" id="popupComments">
-            <div class="view-user">
+            <div class="view-user owner-comment">
                 {% if profile.image %}
                    <img src="{{ profile.image }}" class="view-user-pic">
                 {% else %}
@@ -194,14 +196,11 @@
               <span id="popupCaption"></span>
             </div>
             </p>
-            <div class="comment-list">
-              <div class="comment-item">
-                <img src="{% static 'images/default-user.webp' %}"
-                    class="comment-user-img">
-                <div class="comment-text">
-                  <b>user1</b>
-                  <span>Nice 🔥</span>
-                </div>
+            <div class="comment-list" id="commentList">
+              
+              
+               
+                
 
                 <!-- 3 DOT MENU -->
                 <div class="comment-more" onclick="toggleCommentMenu(this)">
@@ -213,18 +212,11 @@
                 </div>
                 </div>
               </div>
+              
             </div>
           </div>
 
-          <!-- ACTIONS -->
-          <div class="view-actions">
-            <div>
-              <a>
-              <i class="bx bx-heart"></i>
-              </a>
-            </div>
-            <i class="bx bx-bookmark"></i>
-          </div>
+         
           
        <form method="post" action="{% url 'add_comment' %}" id=>
          
