@@ -80,6 +80,11 @@ editProfileForm.addEventListener("submit", (e) => {
     bioInput.focus();
   }
 });
+  document
+  .getElementById("privacyToggle")
+  .addEventListener("change", function () {
+    console.log(this.checked ? "PRIVATE" : "PUBLIC");
+  });
 
 
 });
