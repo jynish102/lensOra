@@ -488,6 +488,7 @@ def profile(request):
         
    
     loginu = getloginuserdt(request)
+    comments = get_comments(request)
     posts=viewpost(request)
 
     profile = profiledata(request) 
@@ -527,7 +528,38 @@ def profile(request):
                    "profile": profile, 
                    "post_count" : post_count,
                    "following_count" : following_count,
-                   "followers_count" : followers_count})
+                   "followers_count" : followers_count,
+                  "comments" : comments})
+
+def get_comments(request):
+    post_id = request.GET.get("post_id")
+    if not post_id:
+        return []
+    with connection.cursor() as cursor:
+        cursor.execute("""
+            SELECT 
+                r.username,
+                p.image,
+                c.comment
+            FROM comments c
+            JOIN register r ON c.user_id = r.id
+            LEFT JOIN profile p ON r.username = p.username
+            WHERE c.post_id = %s
+            ORDER BY c.id ASC
+        """,[post_id])
+        rows = cursor.fetchall()
+
+    comments = []
+    for  uname, image, comment in rows:
+        comments.append({
+            "username": uname,
+            "image": image,
+            "comment": comment
+        })
+        
+    return JsonResponse({"comments": comments})
+
+
 
 
 def profiledata(request):
@@ -568,6 +600,7 @@ def suggested_profile(request, username):
         return redirect("login")
     
     logged_user = request.session["user"]
+    comments = get_comments(request)
     
     with connection.cursor() as cursor:
 
