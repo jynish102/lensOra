@@ -59,21 +59,22 @@ function loadComments(postId) {
 
       data.comments.forEach((c) => {
         commentList.innerHTML += `
-          <div class="comment-item">
+          <div class="comment-item" data-id="${c.id}">
             <img src="${c.image || "/static/images/default-user.webp"}"
                  class="comment-user-img">
             <div class="comment-text">
               <b>${c.username}</b>
               <span>${c.comment}</span>
             </div>
-
+            ${c.is_owner ? `
             <div class="comment-more" onclick="toggleCommentMenu(this)">
               <i class="bx bx-dots-horizontal-rounded"></i>
               <div class="comment-menu">
-                <button class="delete-btn">Delete</button>
+                <button class="delete-btn" onclick="deleteComment(${c.id}, this)">Delete</button>
                 <button class="cancel-btn">Cancel</button>
               </div>
             </div>
+            ` : ``}
           </div>
         `;
       });
@@ -82,6 +83,32 @@ function loadComments(postId) {
       console.error("Comment fetch error:", err);
     });
 }
+
+function deleteComment(commentId, btn) {
+  if (!confirm("Delete this comment?")) return;
+
+  fetch("/PixelAuraplus/delete-comment/", {
+    method: "POST",
+    headers: {
+      "X-CSRFToken": getCSRFToken(),
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    body: `comment_id=${commentId}`
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      btn.closest(".comment-item").remove(); // 🔥 instant UI update
+    } else {
+      alert(data.error || "Delete failed");
+    }
+  });
+}
+
+function getCSRFToken() {
+  return document.querySelector('[name=csrfmiddlewaretoken]').value;
+}
+
 
 function toggleCommentMenu(el) {
   document
