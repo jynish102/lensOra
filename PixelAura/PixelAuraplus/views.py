@@ -532,12 +532,14 @@ def profile(request):
                   "comments" : comments})
 
 def get_comments(request):
+    username=request.session.get("user")
     post_id = request.GET.get("post_id")
     if not post_id:
         return []
     with connection.cursor() as cursor:
         cursor.execute("""
             SELECT 
+                c.id,
                 r.username,
                 p.image,
                 c.comment
@@ -550,14 +552,54 @@ def get_comments(request):
         rows = cursor.fetchall()
 
     comments = []
-    for  uname, image, comment in rows:
+    for  cid,uname, image, comment in rows:
         comments.append({
+            "id:cid
             "username": uname,
             "image": image,
-            "comment": comment
+            "comment": comment,
+            "is_owner": uname == username
         })
         
     return JsonResponse({"comments": comments})
+
+def delete_comment(request):
+    if request.method != "POST":
+        return JsonResponse({"error": "Invalid request"}, status=400)
+
+    if "user" not in request.session:
+        return JsonResponse({"error": "Not logged in"}, status=403)
+
+    comment_id = request.POST.get("comment_id")
+    username = request.session.get("user")
+
+    if not comment_id:
+        return JsonResponse({"error": "Missing comment id"}, status=400)
+
+    with connection.cursor() as cursor:
+        # Check ownership
+        cursor.execute("""
+            SELECT r.username
+            FROM comments c
+            JOIN register r ON c.user_id = r.id
+            WHERE c.id = %s
+        """, [comment_id])
+
+        row = cursor.fetchone()
+
+        if not row:
+            return JsonResponse({"error": "Comment not found"}, status=404)
+
+        comment_owner = row[0]
+
+        # ❌ Not owner → deny
+        if comment_owner != username:
+            return JsonResponse({"error": "Permission denied"}, status=403)
+
+        # ✅ Delete
+        cursor.execute("DELETE FROM comments WHERE id = %s", [comment_id])
+
+    return JsonResponse({"success": True})
 
 
 
