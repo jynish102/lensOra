@@ -52,7 +52,7 @@
   <p class="section-title">Who can see your content</p>
   <ul class="settings-list">
     <li>
-      <a href="{% url 'acc_private' %}">
+      <a href="#">
         <i class='bx bx-lock'></i>
         Account privacy
       </a>
@@ -97,8 +97,7 @@
 
   <div class="form-group">
   <label>Bio</label>
-  <textarea id="bioInput" name="bio" placeholder="Bio">{{ profile.bio|default
-    :''}}</textarea>
+  <textarea id="bioInput" name="bio" placeholder="Bio">{{ profile.bio }}</textarea>
   <small id="bioCount">0 / 150</small>
   <small id="bioError" style="color: red; display: none;">Bio cannot exceed 150 characters</small>
 </div>
@@ -141,6 +140,39 @@
   </div>
 </div>
 </div>
+<!--accpunt prri-->
+<div class="privacy-section">
+
+  <h2 class="privacy-title">Account privacy</h2>
+
+  <div class="privacy-card">
+    <div class="privacy-row">
+
+      <div class="privacy-text">
+        <h4>Private account</h4>
+        <p>
+          When your account is public, your profile and posts can be seen by anyone,
+          on or off Instagram.
+          <br><br>
+          When your account is private, only the followers you approve can see what
+          you share.
+        </p>
+      </div>
+
+      <!-- INSTAGRAM STYLE TOGGLE -->
+      <div class="ig-toggle">
+        <input type="checkbox" id="privacyToggle">
+        <label for="privacyToggle"></label>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!--dfkjdsnkj-->
+
+
 </div>
 {% endblock  %}
 
