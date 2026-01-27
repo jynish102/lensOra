@@ -29,6 +29,8 @@ urlpatterns = [
      path('update_post/', views.update_post, name='update_post'),
      path('add_comment/' , views.add_comment, name="add_comment"),
     path("toggle-like/", views.toggle_like, name="toggle_like"),
+    path("delete-comment/", views.delete_comment, name="delete_comment"),
+
     path('logout/', views.logout, name="logout"),
    
 ]
