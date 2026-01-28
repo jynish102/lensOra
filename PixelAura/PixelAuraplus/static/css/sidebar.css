@@ -219,6 +219,15 @@ body:not(.dark) .dropdown-toggle {
     display: none;
 }
 
+.action-btn.saved {
+    color: white;
+}
+
+.action-btn.saved i,
+.action-btn.saved span {
+    color: #fff !important;
+}
+
 .home {
     position: absolute;
     left: 210px;
