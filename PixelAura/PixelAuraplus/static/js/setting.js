@@ -9,6 +9,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const fileInput = document.getElementById("profileImageInput");
   const profileImg = document.getElementById("profilePreview");
 
+  const editTab = document.getElementById("editProfileTab");
+  const privacyTab = document.getElementById("privacyTab");
+
+  const editSection = document.querySelector(".edit-profile");
+  const privacySection = document.querySelector(".privacy-section");
+
+  
+
   const DEFAULT_IMG = "https://cdn-icons-png.flaticon.com/512/847/847969.png";
 
   if (!openBtn || !modal || !fileInput) return;
@@ -80,11 +88,42 @@ editProfileForm.addEventListener("submit", (e) => {
     bioInput.focus();
   }
 });
-  document
+
+/*accc */
+
+document
   .getElementById("privacyToggle")
   .addEventListener("change", function () {
     console.log(this.checked ? "PRIVATE" : "PUBLIC");
   });
 
 
+
+    editSection.style.display = "block";
+    privacySection.style.display = "none";
+
+    // active state
+    editTab.classList.add("active");
+    privacyTab.classList.remove("active");
+
+  editTab.addEventListener("click", (e) => {
+    e.preventDefault();
+
+    editSection.style.display = "block";
+    privacySection.style.display = "none";
+
+    editTab.classList.add("active");
+    privacyTab.classList.remove("active");
+  });  
+  
+
+  privacyTab.addEventListener("click", () => {
+    // show privacy
+    editSection.style.display = "none";
+    privacySection.style.display = "block";
+
+    // active state
+    privacyTab.classList.add("active");
+    editTab.classList.remove("active");
+  });
 });
