@@ -85,27 +85,61 @@ document.querySelectorAll(".reel-container").forEach(reelBox => {
 });
 
 /*-------------------------- like button------------------------- */
-document.querySelectorAll(".likeBtn").forEach(btn => {
-    btn.addEventListener("click", () => {
+document.querySelectorAll(".likeBtn").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const postId = btn.dataset.postId;
+    if (!postId) {
+      console.error("❌ postId missing on like button", btn);
+      return;
+    }
 
-        const icon = btn.querySelector("i");
-        const countSpan = btn.querySelector("span");
+    const icon = btn.querySelector("i");
+    const countSpan = btn.querySelector("span");
 
-        let count = parseInt(countSpan.innerText.replace("k", "")) || 0;
+    fetch("/PixelAuraplus/toggle-like/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": getCookie("csrftoken"),
+      },
+      body: JSON.stringify({ post_id: postId }),
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Server error");
+        return res.json();
+      })
+      .then((data) => {
+        countSpan.innerText = data.count;
 
-        if (btn.classList.contains("liked")) {
-            // ✅ UNLIKE
-            btn.classList.remove("liked");
-            icon.classList.replace("bxs-heart", "bx-heart");
-            countSpan.innerText = (count - 1) + "k";
+        if (data.status === "liked") {
+          btn.classList.add("liked");
+          icon.classList.replace("bx-heart", "bxs-heart");
         } else {
-            // ✅ LIKE
-            btn.classList.add("liked");
-            icon.classList.replace("bx-heart", "bxs-heart");
-            countSpan.innerText = (count + 1) + "k";
+          btn.classList.remove("liked");
+          icon.classList.replace("bxs-heart", "bx-heart");
         }
-    });
+      })
+      .catch((err) => console.error("LIKE ERROR:", err));
+  });
 });
+
+
+
+
+// CSRF helper
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== "") {
+    document.cookie.split(";").forEach((cookie) => {
+      cookie = cookie.trim();
+      if (cookie.startsWith(name + "=")) {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+      }
+    });
+  }
+  return cookieValue;
+}
+
 
 /*----------------------more setting------------------- */
 const moreToggle = document.getElementById("moreToggle");
@@ -216,4 +250,30 @@ function previewMedia(event) {
         videoPreview.style.display = "block";
     }
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".save-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      btn.classList.toggle("saved");
+    });
+  });
+});
+
+
+btn.addEventListener("click", () => {
+  btn.classList.toggle("saved");
+
+  const icon = btn.querySelector("i");
+  icon.classList.toggle("bx-bookmark");
+  icon.classList.toggle("bx-bookmark-alt");
+});
+
+
+const el = document.getElementById("something");
+if (el) {
+  el.addEventListener("click", () => {
+    // logic
+  });
+}
+
 
