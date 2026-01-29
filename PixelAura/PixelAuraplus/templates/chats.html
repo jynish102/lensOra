@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Reels{% endblock %}
+{% block content %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/reels.css' %}">
+{% endblock %}
+
+
+ <!-- Featured Posts -->
+            <div class="feed">
+                {% for post in sposts %}
+
+            <!-- ✅ SINGLE POST (VIDEO) -->
+            <div class="post-card">
+
+                <!-- 🔥 USER OVERLAY -->
+                <div class="post-header">
+                    <img
+            src="{{ post.profile_image|default:'/static/images/default-user.png' }}"
+            class="post-user-logo"
+          />
+                    <div>
+                        <span class="post-username">{{ post.username }}</span>
+                        <small>Suggested For You</small>
+                    </div>
+                </div>
+
+                <!-- 🎥 POST MEDIA -->
+                <div
+        class="reel-container"
+        data-type="{% if post.video %}video{% else %}photo{% endif %}"
+      >
+        {% if post.video %}
+        <video
+          src="{{ post.video }}"
+          class="post-media"
+          autoplay
+          muted
+          loop
+        ></video>
+        {% else %}
+        <img src="{{ post.image }}" class="post-media" />
+        {% endif %}
+
+                    <div class="tap-indicator">
+                        <i class="bx bx-pause"></i>
+                        <span>Paused</span>
+                    </div>
+                  <!-- ❤️ POST ACTIONS -->
+                    <div class="post-actions-vertical">
+          <div class="action-btn likeBtn {% if post.liked %}liked{% endif %}" data-post-id="{{ post.id }}">
+            <i class="bx {% if post.liked %}bxs-heart{% else %}bx-heart{% endif %}"></i>
+            <span>{{ post.like_count }}</span>
+          </div>
+
+                        <!-- COMMENT ACTION -->
+          <div class="action-btn comment-wrapper">
+            <i class="bx bx-comment"></i>
+            <span>{{ post.comments|length }}</span>
+
+            <!-- RIGHT COMMENT PANEL -->
+
+            <div class="comment-panel">
+              <!-- HEADER -->
+              <div class="comment-header">
+                <span>Comments</span>
+                <i class="bx bx-x"></i>
+              </div>
+
+              <!-- COMMENT LIST -->
+              <div class="comment-body">
+                {% for c in post.comments %}
+                <div class="comment-item">
+                  {% if c.image %}
+                  <img src="{{ c.image }}" class="comment-user-img" />
+                  {% else %}
+                  <img
+                    src="{% static 'images/default-user.png' %}"
+                    class="comment-user-img"
+                  />
+                  {% endif %}
+                  <div class="comment-text">
+                    <b>{{ c.username }} </b>
+                    <span>{{ c.comment }}</span>
+                  </div>
+                </div>
+                {% empty %}
+                <p class="no-comments">No comments yet</p>
+                {% endfor %}
+              </div>
+
+              <form class="comment-form" method="post" action="{% url 'add_comment' %}">
+                {% csrf_token %}
+
+                <!-- IMPORTANT -->
+                <input type="hidden" name="post_id" value="{{ post.id }}" />
+
+                <div class="comment-input-row">
+                  <img
+                    src="{{ profile.image|default:'/static/images/default-user.png' }}"
+                    class="comment-user-img"
+                  />
+
+                  <input
+                    type="text"
+                    name="comment"
+                    placeholder="Add a comment..."
+                    required
+                  />
+                </div>
+
+                <button type="submit" class="comment-submit">Post</button>
+              </form>
+            </div>
+          </div>
+
+                        <div class="action-btn">
+                            <i class="bx bx-bookmark"></i>
+                            <span>Save</span>
+                        </div>
+
+                        <!-- ✅ SOUND ICON FOR VIDEO -->
+                        <div class="action-btn soundBtn">
+                            <i class="bx bx-volume-full"></i>
+                            <span>Sound</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+{% endblock %}
