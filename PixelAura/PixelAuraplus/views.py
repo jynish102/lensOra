@@ -1168,6 +1168,12 @@ def toggle_like(request):
         "count": count
     })
 
+def chats(request):
+    profile = profiledata(request)
+    return render(request, "chats.html" , 
+    { "profile" : profile
+    }
+
             
                 
 
