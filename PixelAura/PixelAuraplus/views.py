@@ -1173,6 +1173,14 @@ def chats(request):
     return render(request, "chats.html" , 
     { "profile" : profile
     }
+def chat_pg(request):
+    username = request.session.get("user")
+    profile =profiledata(request) 
+  
+    return render(request,"chat_pg.html",
+    {"username" : username,
+        "profile" : profile,
+        })
 
             
                 
