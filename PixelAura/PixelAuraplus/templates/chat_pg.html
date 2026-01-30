@@ -9,14 +9,14 @@
 
 <div class="chat-layout">
     <div class="chat-container">
-        <a href="{% url 'home' %}" class="close-link">
+        <a href="{% url 'chats' %}" class="close-link">
       <i class='bx bx-x ac-close'></i>
     </a>
              
         <!-- TOP BAR -->
         <div class="chat-header">
-          <img src="/static/images/default-user.webp" class="chat-header-avatar">
-          <span class="chat-header-name">jk</span>
+          <img src="{{ chat_user.image|default:'/static/images/default-user.webp' }} "  class="chat-header-avatar">
+          <span class="chat-header-name">{{ chat_user.username }}</span>
         </div>
 
         <!-- CHAT BODY -->
@@ -24,16 +24,12 @@
 
           <!-- Profile Preview -->
           <div class="chat-profile-preview">
-              <a href="{% url 'chats' %}" class="close-link">
-      <i class='bx bx-x ac-close'></i>
-    </a>
-            <img src="/static/images/default-user.webp" class="chat-preview-avatar">
-            <h3>jk</h3>
+            <img src="{{ chat_user.image|default:'/static/images/default-user.webp' }}" class="chat-preview-avatar">
+            <h3>{{ chat_user.username }}</h3>
+            <a href="{% url 'suggested_user_profile' chat_user.username %}">
             <button class="view-profile-btn">View profile</button>
+            </a>
           </div>
-
-         
-
         </div>
 
         <!-- INPUT BAR -->
@@ -48,9 +44,5 @@
           </div>
         </div>
     </div>
-
 </div>
-
-
 {% endblock %}
-
