@@ -1173,12 +1173,30 @@ def chats(request):
     return render(request, "chats.html" , 
     { "profile" : profile
     }
-def chat_pg(request):
-    username = request.session.get("user")
+                  
+def chat_page(request,username):
     profile =profiledata(request) 
+
+    with connection.cursor() as cursor:
+        cursor.execute("""
+            SELECT r.username, p.image
+            FROM register r
+            LEFT JOIN profile p ON r.username = p.username
+            WHERE r.username = %s
+        """, [username])
+
+        row = cursor.fetchone()
+
+    if row:
+        chat_user = {
+            "username": row[0],
+            "image": row[1]
+        }
+    else:
+        chat_user = None
   
     return render(request,"chat_pg.html",
-    {"username" : username,
+    {"chat_user":chat_user,
         "profile" : profile,
         })
 
