@@ -26,12 +26,12 @@ urlpatterns = [
     path('follow/<str:username>/', views.follow_user, name="follow_user"),
     path('post_crud/',views.post_crud, name="post_crud"),
     path('delete-post/<int:post_id>/', views.delete_post,name="delete_post"),
-     path('update_post/', views.update_post, name='update_post'),
-     path('add_comment/' , views.add_comment, name="add_comment"),
+    path('update_post/', views.update_post, name='update_post'),
+    path('add_comment/' , views.add_comment, name="add_comment"),
     path("toggle-like/", views.toggle_like, name="toggle_like"),
     path("delete-comment/", views.delete_comment, name="delete_comment"),
-    path("chats/", views.chats, name="chats"),
-    path("chat_page/", views.chat_pg, name="chat_page"),
+    path('chats/' , views.chats, name="chats"),
+    path("chat_page/<str:username>/", views.chat_pg, name="chat_page"),
 
     path('logout/', views.logout, name="logout"),
    
