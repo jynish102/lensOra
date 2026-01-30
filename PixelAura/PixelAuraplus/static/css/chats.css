@@ -58,7 +58,7 @@
     padding: 14px;
     background: #a9b81285;
     scrollbar-width: none;
-        /* Firefox */
+       
     -ms-overflow-style: none;
     
 }
@@ -100,15 +100,16 @@ width: 0px;
     font-weight: 500;
 }
 
-/*chata--------------*/
+/*--------------------------------------------chat_page--------------*/
 .chat-container {
     display: flex;
     flex-direction: column;
     height: 100vh;
-    background: white;
+    background: url('https://images.unsplash.com/photo-1527482797697-8795b05a13fe') no-repeat center center;
+        background-size: cover;
 }
 
-/* Header */
+
 .chat-header {
     display: flex;
     align-items: center;
@@ -125,24 +126,25 @@ width: 0px;
 
 .chat-header-name {
     font-weight: 600;
+    color:#4f46e5
 }
 
-/* Body */
+
 .chat-body {
     flex: 1;
     padding: 20px;
     overflow-y: auto;
 }
 
-/* Hide scrollbar */
+
 .chat-body::-webkit-scrollbar {
     display: none;
 }
 
-/* Profile preview center */
+
 .chat-profile-preview {
     text-align: center;
-    margin-top: 40px;
+    margin-top: -10px;
 }
 
 .chat-preview-avatar {
@@ -160,7 +162,7 @@ width: 0px;
     cursor: pointer;
 }
 
-/* Time */
+
 .chat-time {
     text-align: center;
     font-size: 12px;
@@ -168,7 +170,7 @@ width: 0px;
     margin: 30px 0;
 }
 
-/* Messages */
+
 .chat-message {
     max-width: 60%;
     padding: 8px 14px;
@@ -183,7 +185,7 @@ width: 0px;
     margin-left: auto;
 }
 
-/* Input Bar */
+
 .chat-input-bar {
     display: flex;
     align-items: center;
@@ -204,4 +206,12 @@ width: 0px;
     font-size: 20px;
     margin-left: 10px;
     cursor: pointer;
+}
+.user-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    text-decoration: none;
+    color: black;
+    border-radius: 8px;
 }
