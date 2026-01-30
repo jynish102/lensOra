@@ -215,3 +215,12 @@ width: 0px;
     color: black;
     border-radius: 8px;
 }
+.close-link {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #333;
+}
+
