@@ -5,7 +5,6 @@
     font-family: "Poppins", sans-serif;
 }
 
-/* PAGE BACKGROUND */
 body {
     min-height: 100vh;
     background: linear-gradient(135deg, #9da8cc, #9c6894);
@@ -14,7 +13,7 @@ body {
     align-items: center;
 }
 
-/* MAIN LAYOUT: left (form) + right (images) */
+
 .page-wrapper {
     width: 100%;
     max-width: 1100px;
@@ -24,7 +23,7 @@ body {
     gap: 40px;
 }
 
-/* LEFT SIDE */
+
 .left-side {
     display: flex;
     flex-direction: column;
@@ -32,7 +31,7 @@ body {
     gap: 12px;
 }
 
-/* REGISTER CARD */
+
 .register-card {
     width: 590px;
     background: #fff;
@@ -43,7 +42,7 @@ body {
     align-items: center;
 }
 
-/* LOGO + BRAND */
+
 .logo {
     width: 120px;
     height: auto;
@@ -58,7 +57,7 @@ body {
     color: #262626;
 }
 
-/* FORM */
+
 .register-form {
     width: 100%;
 }
@@ -66,12 +65,12 @@ body {
 .form-inner {
     width: 100%;
     max-width: 380px;
-    /* small box size */
+   
     margin: 0 auto;
-    /* center inside the card */
+   
 }
 
-/* STEPS */
+
 .step {
     display: none;
 }
@@ -82,7 +81,7 @@ body {
     display: block;
 }
 
-/* TITLE INSIDE CARD */
+
 .section-title {
     font-size: 18px;
     font-weight: 600;
@@ -91,7 +90,7 @@ body {
     text-align: center;
 }
 
-/* STEP 1 INPUTS */
+
 .step-1 input[type="text"],
 .step-1 input[type="email"],
 .step-1 input[type="password"] {
@@ -111,7 +110,7 @@ body {
     background: #ffffff;
 }
 
-/* BUTTONS */
+
 .primary-btn,
 .secondary-btn {
     border: none;
@@ -134,7 +133,7 @@ body {
     color: #333;
 }
 
-/* STEP 2 GRID (Birthdate / Phone / Photo) */
+
 .extra-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
