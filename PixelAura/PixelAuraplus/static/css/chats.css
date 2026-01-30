@@ -31,6 +31,10 @@
     border-radius: 50%;
     object-fit: cover;
     border: 2px solid #e6e6e6;
+    border-top-left-radius: 6px;
+        border-top-right-radius: 30%;
+        border-bottom-left-radius: 30%;
+        border-bottom-right-radius: 6px;
 }
 
 .chat-user-text {
@@ -53,7 +57,7 @@
 
 .chat-sidebar {
     width: 680px;
-    height: 100vh;
+    height: 500vh;
     border-right: 1px solid #eee;
     padding: 14px;
     background: #a9b81285;
@@ -93,6 +97,10 @@ width: 0px;
     height: 44px;
     border-radius: 50%;
     object-fit: cover;
+    border-top-left-radius: 6px;
+        border-top-right-radius: 30%;
+        border-bottom-left-radius: 30%;
+        border-bottom-right-radius: 6px;
 }
 
 .chat-name {
@@ -118,15 +126,20 @@ width: 0px;
 }
 
 .chat-header-avatar {
-    width: 40px;
-    height: 40px;
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
     margin-right: 10px;
+    border-top-left-radius: 6px;
+        border-top-right-radius: 30%;
+        border-bottom-left-radius: 30%;
+        border-bottom-right-radius: 6px;
 }
 
 .chat-header-name {
     font-weight: 600;
-    color:#4f46e5
+    color:#e0e0eb;
+    font-size: 30px;
 }
 
 
@@ -152,6 +165,10 @@ width: 0px;
     height: 90px;
     border-radius: 50%;
     margin-bottom: 10px;
+    border-top-left-radius: 6px;
+        border-top-right-radius: 30%;
+        border-bottom-left-radius: 30%;
+        border-bottom-right-radius: 6px;
 }
 
 .view-profile-btn {
@@ -209,12 +226,14 @@ width: 0px;
 }
 .user-item {
     display: flex;
-    align-items: center;
-    padding: 10px;
-    text-decoration: none;
-    color: black;
-    border-radius: 8px;
+        align-items: center;
+        gap: 12px;
+        padding: 10px;
+        text-decoration: none;
+        color: black;
+        border-radius: 10px;
 }
+
 .close-link {
     position: absolute;
     top: 12px;
@@ -223,4 +242,3 @@ width: 0px;
     cursor: pointer;
     color: #333;
 }
-
