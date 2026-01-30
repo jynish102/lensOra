@@ -14,7 +14,6 @@
 
         <div class="chat-user-text">
           <span class="chat-username">{{ username }}</span>
-        
         </div>
       </div>
 
@@ -29,6 +28,7 @@
       
       {% for s in suser %}
       <div class="chat-user">
+          <a href="{% url 'chat_page' s.username %}">
         {% if s.image %}
               <img src="{{ s.image }}" class="chat-avatar" />
               {% else %}
@@ -39,17 +39,9 @@
               {% endif %}
       
         <span class="chat-name">{{ s.username }}</span>
+          </a>
       </div>
       {% endfor %}
-
-      
-
     </div>
-
-   
-
 </div>
-
-
 {% endblock %}
-
