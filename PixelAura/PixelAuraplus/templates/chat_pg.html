@@ -24,6 +24,9 @@
 
           <!-- Profile Preview -->
           <div class="chat-profile-preview">
+              <a href="{% url 'chats' %}" class="close-link">
+      <i class='bx bx-x ac-close'></i>
+    </a>
             <img src="/static/images/default-user.webp" class="chat-preview-avatar">
             <h3>jk</h3>
             <button class="view-profile-btn">View profile</button>
@@ -50,3 +53,4 @@
 
 
 {% endblock %}
+
