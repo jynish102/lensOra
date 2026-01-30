@@ -1,11 +1,10 @@
-/* WRAPPER */
 .ac-content {
     flex: 1;
     padding: 40px 60px;
     background: #fff;
 }
 
-/* TOP BAR */
+
 .ac-top-bar {
     display: flex;
     justify-content: space-between;
@@ -22,7 +21,7 @@
     cursor: pointer;
 }
 
-/* DESCRIPTION */
+
 .ac-desc {
     font-size: 14px;
     margin: 15px 0 25px;
@@ -30,7 +29,7 @@
     max-width: 600px;
 }
 
-/* CARD */
+
 .pd-card {
     border: 1px solid #ddd;
     border-radius: 14px;
@@ -39,7 +38,7 @@
     background: #fff;
 }
 
-/* SINGLE ITEM */
+
 .pd-item {
     display: flex;
     justify-content: space-between;
