@@ -109,7 +109,7 @@
 
             {% if p.1 %}
             {% if p.1|lower|slice:"-4:" == ".mp4" %}
-            <video controls>
+            <video autoplay muted loop playsinline>
               <source src="{{ p.1 }}" class="grid-post" type="video/mp4" />
               Your browser does not support the video tag.
             </video>
