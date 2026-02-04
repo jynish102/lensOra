@@ -31,7 +31,7 @@ urlpatterns = [
     path("toggle-like/", views.toggle_like, name="toggle_like"),
     path("delete-comment/", views.delete_comment, name="delete_comment"),
     path('chats/' , views.chats, name="chats"),
-    path("chat_page/<str:username>/", views.chat_pg, name="chat_page"),
+    path("chat_page/<str:username>/", views.chat_page, name="chat_page"),
 
     path('logout/', views.logout, name="logout"),
    
