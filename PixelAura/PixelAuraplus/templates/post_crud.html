@@ -37,7 +37,18 @@
             {% for post in posts %}
             <div class="image-item" data-post-id="{{ post.0 }}" 
                               data-caption="{{ post.3 |escape }}">
+            {% if post.1 %}
+            {% if post.1|lower|slice:"-4:" == ".mp4" %}
+            <video autoplay muted loop playsinline>
+              <source src="{{ post.1 }}" type="video/mp4"/>
+              Your browser does not support the video tag.
+            </video>
+            {% else %}              
                 <img src="{{ post.1 }}" alt="Post image">
+                {% endif %}
+                <p>{{ post.0 }}</p>
+            {% endif %}
+                
                 <span class="check-icon">✓</span>
             </div>
             {% endfor %}
@@ -74,7 +85,7 @@
                         <!-- RIGHT -->
                         <div class="edit-form-box">
                             <div class="edit-user-row">
-                                <img src="{{ profile.image }}" class="edit-user-img">
+                                <img src="{{ profile.image }}" class="edit-user-img"> 
                                 <span class="edit-username">{{ username }}</span>
                             </div>
                                
@@ -83,7 +94,7 @@
                                     placeholder="Write a caption..."
                                 maxlength="2200"></textarea>
                             <div class="caption-counter">
-    <span id="charCount">0/2200</span> 
+                        <span id="charCount">0/2200</span> 
 </div>
                      </div>
                     </div>
@@ -104,5 +115,3 @@
 </body>
 <script src="{% static 'js/post_crud.js' %}"></script>
 </html>
-
-
