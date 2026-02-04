@@ -7,6 +7,7 @@ from django.http import HttpResponse,JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 
+
 def login(request):
     if "user" in request.session:
         return redirect('home')
@@ -42,7 +43,7 @@ def details(request):
     return render(request,'more_detail.html')   
 
 def home(request):
-    
+    profile = profiledata(request) 
     login_user = getloginuserdt(request)
     login_profile = profiledata(request)
     login_username = login_user[0]["username"]
@@ -164,7 +165,7 @@ def home(request):
                  "liked": post_id in liked_posts
             })  
 
-    profile = profiledata(request) 
+    
     return render(request,'home.html', 
                   {'ulist' : suggested_users , 
                    'datas' : datalist, 
@@ -174,7 +175,6 @@ def home(request):
                    "sp" : login_profile,
                    "comments": comments_by_post, 
                    })
-
 
 
 def getloginuserdt(request):
@@ -187,9 +187,9 @@ def getloginuserdt(request):
                 'id' :row[0],
                 'name':row[1],
                 'email':row[2],
-                 'mobile':  data[3],
-                'password':  data[4],
-               'birthdate':row[5],
+                'mobile':  row[3],
+                'password':row[4],
+                'birthdate':row[5],
                 'username': row[6]
             }
             for row in data
@@ -207,11 +207,11 @@ def suggestuser(request):
         data = cursor.fetchall()
         userlist = [{
                 'id' :row[0],
-                'name':row[1],
-                'email':row[2],
-                'password':row[3],
-                'mobile':  row[4],
-                'birthdate':row[5],
+                # 'name':row[1],
+                # 'email':row[2],
+                # 'password':row[3],
+                # 'mobile':  row[4],
+                # 'birthdate':row[5],
                 'username': row[6]
             }for row in data]
         return userlist
@@ -255,6 +255,7 @@ def account_sidebar(request):
 
 def setting(request):
     loginu = getloginuserdt(request)
+   
     un = request.session.get('user')
 
     if request.method == "POST":
@@ -280,6 +281,7 @@ def setting(request):
                 [un]
             )
             existing = cursor.fetchone()
+           
 
             if existing:
                 # ✅ UPDATE
@@ -485,17 +487,21 @@ def profile(request):
         return redirect('login')
     
     username=request.session.get("user")
+    post_id = request.GET.get("post_id")
         
    
     loginu = getloginuserdt(request)
-    comments = get_comments(request)
     posts=viewpost(request)
+
+    comments = get_comments(request)
+    
+
 
     profile = profiledata(request) 
     
     with connection.cursor() as cursor:
 
-        # POSTS
+        # # POSTS
         # cursor.execute("""
         #     SELECT id, image, caption
         #     FROM posts
@@ -503,6 +509,7 @@ def profile(request):
         # """, [username])
         # posts = cursor.fetchall()
         post_count = len(posts)
+        
 
         # FOLLOWERS COUNT
         cursor.execute("""
@@ -529,10 +536,10 @@ def profile(request):
                    "post_count" : post_count,
                    "following_count" : following_count,
                    "followers_count" : followers_count,
-                  "comments" : comments})
+                   "comments": comments})
 
 def get_comments(request):
-    username=request.session.get("user")
+    username = request.session.get("user")
     post_id = request.GET.get("post_id")
     if not post_id:
         return []
@@ -554,7 +561,7 @@ def get_comments(request):
     comments = []
     for  cid,uname, image, comment in rows:
         comments.append({
-            "id:cid
+            "id":cid,
             "username": uname,
             "image": image,
             "comment": comment,
@@ -601,7 +608,7 @@ def delete_comment(request):
 
     return JsonResponse({"success": True})
 
-
+                   
 
 
 def profiledata(request):
@@ -678,7 +685,7 @@ def suggested_profile(request, username):
 
         # POSTS
         cursor.execute("""
-            SELECT id,image
+            SELECT id,image,caption
             FROM posts
             WHERE username = %s
             ORDER BY id DESC
@@ -726,7 +733,8 @@ def suggested_profile(request, username):
         "follows_you":follows_you,
         "post_count" : post_count,
         "followers_count" : followers_count,
-        "following_count" : following_count
+        "following_count" : following_count,
+        "comments":comments
         
     })
 
@@ -839,7 +847,7 @@ def edit_post(request,id):
         return render(request, 'profile.html', {'post':post})
 
 
-
+#suser
 def viewprofile(request):
     username = request.session.get('user')
 
@@ -860,6 +868,7 @@ def notifications(request):
         return redirect("login")
 
     logged_user = request.session["user"]  # username
+    profile = profiledata(request) 
 
     with connection.cursor() as cursor:
         cursor.execute("""
@@ -877,7 +886,8 @@ def notifications(request):
         notifications = cursor.fetchall()
 
     return render(request, "notifications.html", {
-        "notifications": notifications
+        "notifications": notifications,
+        "profile" : profile
     })
 
 def follow_user(request, username):
@@ -1019,48 +1029,41 @@ def update_post(request):
     return redirect('post_crud')
 
 
-def toggle_like(request):
+def forgot_password(request):
+    profile = profiledata(request)
+    login = getloginuserdt(request)
+
+    password_found = None
+
     if request.method == "POST":
-        post_id = request.POST.get("post_id")
-        user_id = request.session.get("user_id")
+        username = request.POST.get("username")
+        mobile = request.POST.get("mobile")
 
         with connection.cursor() as cursor:
-            # Check if already liked
             cursor.execute("""
-                SELECT id FROM post_likes
-                WHERE post_id=%s AND user_id=%s
-            """, [post_id, user_id])
+                SELECT password
+                FROM register
+                WHERE username = %s AND mobile = %s
+            """, [username, mobile])
 
-            liked = cursor.fetchone()
+            row = cursor.fetchone()
 
-            if liked:
-                # Unlike
-                cursor.execute("""
-                    DELETE FROM post_likes
-                    WHERE post_id=%s AND user_id=%s
-                """, [post_id, user_id])
-                is_liked = False
+            if row:
+                # ✅ MATCH FOUND
+                password_found = row[0]
             else:
-                # Like
-                cursor.execute("""
-                    INSERT INTO post_likes (post_id, user_id)
-                    VALUES (%s, %s)
-                """, [post_id, user_id])
-                is_liked = True
+                # ❌ NO MATCH
+                messages.error(request, "Invalid username or mobile number")
 
-            # Count likes
-            cursor.execute("""
-                SELECT COUNT(*) FROM post_likes
-                WHERE post_id=%s
-            """, [post_id])
-
-            likes_count = cursor.fetchone()[0]
-
-        return JsonResponse({
-            "liked": is_liked,
-            "likes": likes_count
-        })
-
+    return render(
+        request,
+        "forgot_password.html",
+        {
+            "profile": profile,
+            "login": login,
+            "password_found": password_found
+        }
+    )
 def forgot_password(request):
     profile = profiledata(request)
     login = getloginuserdt(request)
@@ -1101,6 +1104,9 @@ def forgot_password(request):
             "error_message": error_message,
         }
     )
+
+
+
 
 def toggle_like(request):
     if request.method != "POST":
@@ -1168,16 +1174,60 @@ def toggle_like(request):
         "count": count
     })
 
-def chats(request):
-    profile = profiledata(request)
-    return render(request, "chats.html" , 
-    { "profile" : profile
-    }
-                  
-def chat_page(request,username):
-    profile =profiledata(request) 
 
+def chats(request):
+    username = request.session.get("user")
+    profile = profiledata(request)
+    suser = suggestuser(request)
+    # 🔹 Profile images (NO JOIN)
     with connection.cursor() as cursor:
+
+         # 🔹 Suggested users
+        cursor.execute("""
+            SELECT id, username
+            FROM register
+            WHERE username != %s
+        """, [username])
+        users = cursor.fetchall()
+
+        cursor.execute("""
+            SELECT username, image
+            FROM profile
+            WHERE username != %s
+        """,[username])
+        profiles = dict(cursor.fetchall())
+
+        suggested_users = []
+        for uid, uname in users:
+            img = profiles.get(uname)
+
+            if img:
+                img = "" + img
+
+            suggested_users.append({
+                "id": uid,
+                "username": uname,
+                "image": img  # match by username
+            })
+            
+    return render(request, "chats.html", {
+        "profile" : profile,
+        "username" : username,
+        "suser" :suggested_users
+    })   
+
+
+def chat_page(request,username):
+   
+   
+   profile = profiledata(request)
+   me = request.session.get("user")
+   if not me:
+        return redirect("login")
+   
+   with connection.cursor() as cursor:
+
+        # 1️⃣ Get chat user info
         cursor.execute("""
             SELECT r.username, p.image
             FROM register r
@@ -1186,25 +1236,47 @@ def chat_page(request,username):
         """, [username])
 
         row = cursor.fetchone()
+        print("LOGGED USER =", me)
+        print("CHAT USER =", username)
 
-    if row:
-        chat_user = {
-            "username": row[0],
-            "image": row[1]
-        }
-    else:
-        chat_user = None
-  
-    return render(request,"chat_pg.html",
-    {"chat_user":chat_user,
-        "profile" : profile,
+
+        # 2️⃣ Get chat messages between both users
+        cursor.execute("""
+            SELECT sender, receiver, message, create_at
+            FROM chats
+            WHERE 
+                (sender = %s AND receiver = %s)
+                OR 
+                (sender = %s AND receiver = %s)
+            ORDER BY create_at ASC
+        """, [me, username, username, me])
+
+        messages = cursor.fetchall()
+
+    # Build chat user object
+        if row:
+            chat_user = {
+                "username": row[0],
+                "image": row[1]
+            }
+        else:
+            chat_user = None
+
+            # Convert messages to readable list
+        chat_messages = []
+        for msg in messages:
+            chat_messages.append({
+                    "sender": msg[0],
+                    "receiver": msg[1],
+                    "message": msg[2],
+                    "time": msg[3]
+                })
+        return render(request, "chat_pg.html", {
+            "chat_user": chat_user,
+            "profile": profile,
+            "messages": chat_messages,
+            "me": me
         })
-
-            
-                
-
-
-
 
 def logout(request):
     if "user" in request.session:
