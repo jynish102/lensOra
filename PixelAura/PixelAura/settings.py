@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'PixelAuraplus',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -68,6 +69,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'PixelAura.wsgi.application'
+ASGI_APPLICATION = 'PixelAura.asgi.application'
 
 
 # Database
