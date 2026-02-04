@@ -3,8 +3,10 @@
 {% block title %}suggested_profile{% endblock %}
 {% block extra_css %}<link rel="stylesheet" href="{% static 'css/suggested_profile.css' %}" />{% endblock %}
 {% block content %}
+
+
 <div class="profile-header">
-    <a href="{% url 'chats' %}" class="close-link">
+  <a href="{% url 'home' %}" class="close-link">
       <i class='bx bx-x ac-close'></i>
     </a>
 
@@ -59,9 +61,18 @@
 <div class="posts-grid">
     {% for post in posts %}
         <div class="post">
+           {% if post.1 %}
+            {% if post.1|lower|slice:"-4:" == ".mp4" %}
+            <video autoplay muted loop playsinline>
+              <source src="{{ post.1 }}" class="grid-post" type="video/mp4" onclick="openViewPost('{{ post.1 }}', '{{ post.0 }}','{{ post.3|escapejs }}')"  />
+              Your browser does not support the video tag.
+            </video>
+            {% else %}
             <img src="{{ post.1 }}"  onclick="openViewPost('{{ post.1 }}', '{{ post.0 }}', '{{ post.2|escapejs }}')"
            class="grid-post">
+           {% endif %}
            <p>{{ post.0 }}</p>
+           {% endif %}
         </div>
     {% empty %}
         <p>No posts yet</p>
@@ -85,7 +96,7 @@
       <!-- HEADER -->
       <div class="view-post-header">
         <div class="view-user">
-          <img src="{{ profile.image|default:'/static/images/xya.png' }}"
+          <img src="{{ profile.image|default:'/static/images/default-user.webp' }}"
                class="view-user-pic">
           <span>{{ user.username }}</span>
         </div>
@@ -95,7 +106,7 @@
       <!-- CAPTION / COMMENTS -->
       <div class="view-comments">
        <div class="view-user owner-comment">
-            <img src="{{ profile.image|default:'/static/images/xya.png' }}"
+            <img src="{{ profile.image|default:'/static/images/default-user.webp' }}"
                 class="view-user-pic">
           <p><b>{{ user.username }}</b> 
             <span id="popupCaption"></span> 
@@ -120,6 +131,9 @@
     </div>
   </div>
 </div>
+
+
+
 {% endblock %}
 
 {% block extra_js %}
