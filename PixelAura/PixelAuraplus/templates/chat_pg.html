@@ -7,11 +7,12 @@
 <link rel="stylesheet" href="{% static 'css/chats.css' %}">
 {% endblock %}
 
+<body data-chat-user="{{ chat_user.username }}">
 <div class="chat-layout">
     <div class="chat-container">
-        <a href="{% url 'chats' %}" class="close-link">
-      <i class='bx bx-x ac-close'></i>
-    </a>
+      <a href="{% url 'chats' %}" class="close-link">
+       <i class='bx bx-x ac-close'></i>
+      </a>
              
         <!-- TOP BAR -->
         <div class="chat-header">
@@ -21,6 +22,8 @@
 
         <!-- CHAT BODY -->
         <div class="chat-body">
+          
+
 
           <!-- Profile Preview -->
           <div class="chat-profile-preview">
@@ -30,6 +33,21 @@
             <button class="view-profile-btn">View profile</button>
             </a>
           </div>
+          <div class="chat-messages" id="chatMessages">
+            {% for msg in messages %}
+              {% if msg.sender == me %}
+                <div class="chat-msg sent">
+                  <div class="chat-bubble">{{ msg.message }}</div>
+                </div>
+              {% else %}
+                <div class="chat-msg received">
+                  <div class="chat-bubble">{{ msg.message }}</div>
+                </div>
+              {% endif %}
+            {% endfor %}
+
+          </div>
+
         </div>
 
         <!-- INPUT BAR -->
@@ -40,9 +58,73 @@
             <i class="bx bx-smile"></i>
             
             <i class="bx bx-image"></i>
-            <i class="bx bx-send"></i>
+            <i class="bx bx-send" id="sendMessageBtn"></i>
           </div>
         </div>
+
+        
     </div>
+
 </div>
+</body>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  const sendBtn = document.getElementById("sendMessageBtn");
+  const input = document.querySelector(".chat-input");
+  const chatBox = document.getElementById("chatMessages");
+
+  const username = "{{ chat_user.username }}";
+
+  console.log("Connecting WebSocket...");
+
+  const socket = new WebSocket(
+    `ws://${window.location.host}/ws/chat/${username}/`
+  );
+
+  socket.onopen = () => {
+    console.log("✅ WebSocket CONNECTED");
+  };
+
+  socket.onerror = (error) => {
+    console.log("❌ WebSocket ERROR", error);
+  };
+
+  socket.onmessage = function (e) {
+    const data = JSON.parse(e.data);
+
+    console.log("📩 Received:", data.message);
+
+    const msgDiv = document.createElement("div");
+    msgDiv.classList.add("chat-msg", data.sender === "me" ? "sent" : "received");
+
+    msgDiv.innerHTML = `<div class="chat-bubble">${data.message}</div>`;
+
+    chatBox.appendChild(msgDiv);
+    chatBox.scrollTop = chatBox.scrollHeight;
+  };
+
+  function sendMessage() {
+    const msg = input.value.trim();
+    if (!msg) return;
+
+    console.log("📤 Sending:", msg);
+
+    socket.send(JSON.stringify({
+      message: msg
+    }));
+
+    input.value = "";
+  }
+
+  sendBtn.addEventListener("click", sendMessage);
+
+  input.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") sendMessage();
+  });
+
+});
+</script>
 {% endblock %}
