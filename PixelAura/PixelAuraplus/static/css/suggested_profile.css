@@ -100,7 +100,7 @@
         margin: 16px auto;
 }
 
-.posts-grid img {
+.posts-grid img ,video{
     width: 100%;
     height: 300px;
     object-fit: cover;
@@ -122,8 +122,7 @@
 }
 
 
-/*----cmmet*/
-/* OVERLAY */
+
 .view-post-overlay {
     position: fixed;
     inset: 0;
@@ -134,7 +133,7 @@
     z-index: 9999;
 }
 
-/* MAIN BOX */
+
 .view-post-box {
     width: 90%;
     max-width: 1100px;
@@ -145,7 +144,7 @@
     overflow: hidden;
 }
 
-/* LEFT IMAGE */
+
 .view-post-left {
     flex: 1.2;
     display: flex;
@@ -159,7 +158,6 @@
     object-fit: contain;
 }
 
-/* RIGHT PANEL */
 .view-post-right {
     flex: 1;
         background: #fff;
@@ -167,7 +165,7 @@
         flex-direction: column;
 }
 
-/* HEADER */
+
 .view-post-header {
     padding: 12px 16px;
     display: flex;
@@ -194,14 +192,14 @@
     cursor: pointer;
 }
 
-/* COMMENTS */
+
 .view-comments {
     flex: 1;
     padding: 12px 16px;
     overflow-y: auto;
 }
 
-/* ACTIONS */
+
 .view-actions {
     padding: 10px 16px;
     display: flex;
@@ -211,7 +209,7 @@
     font-size: 22px;
 }
 
-/* ADD COMMENT */
+
 .view-add-comment {
     padding: 10px 16px;
     display: flex;
@@ -240,7 +238,7 @@
     margin-bottom: 12px;
 }
 
-/* PROFILE IMAGE */
+
 .comment-user-img {
     width: 32px;
     height: 32px;
@@ -248,7 +246,7 @@
     object-fit: cover;
 }
 
-/* TEXT */
+
 .comment-text {
     font-size: 14px;
     line-height: 1.4;
@@ -260,7 +258,7 @@
     margin-right: 4px;
 }
 
-/* OWNER CAPTION STYLE */
+
 .owner-comment {
     margin-bottom: 16px;
 }
@@ -269,13 +267,13 @@
     color: #262626;
 }
 
-/* COMMENTS LIST */
+
 .comment-list {
     display: flex;
     flex-direction: column;
 }
 
-/* 3 DOT ICON */
+
 .comment-more {
     position: relative;
     cursor: pointer;
@@ -283,7 +281,7 @@
     font-size: 18px;
 }
 
-/* MENU (HIDDEN BY DEFAULT) */
+
 .comment-menu {
     position: absolute;
     top: 22px;
@@ -297,12 +295,12 @@
     min-width: 110px;
 }
 
-/* SHOW MENU */
+
 .comment-more.active .comment-menu {
     display: block;
 }
 
-/* MENU BUTTONS */
+
 .comment-menu button {
     width: 100%;
     padding: 10px;
@@ -312,19 +310,18 @@
     cursor: pointer;
 }
 
-/* DELETE */
+
 .comment-menu .delete-btn {
     color: #ed4956;
     font-weight: 600;
 }
 
-/* CANCEL */
 .comment-menu .cancel-btn {
     color: #262626;
     border-top: 1px solid #eee;
 }
 
-/* HOVER EFFECT */
+
 .comment-menu button:hover {
     background: #f5f5f5;
 }
@@ -333,9 +330,10 @@
     width: 100%;
     height: 100%;
     object-fit: contain;
-    /* Instagram uses contain */
+   
     background: #000;
 }
+
 .close-link {
     position: absolute;
     top: 12px;
@@ -344,4 +342,10 @@
     cursor: pointer;
     color: #333;
 }
-
+.view-media-box video{
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    object-fit: contain;
+    background: black;
+}
