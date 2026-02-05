@@ -17,28 +17,56 @@ tabs.forEach((tab) => {
 /*------------------------ VIEW POST + COMMENT -------------------------------*/
 document.addEventListener("DOMContentLoaded", () => {
   const viewPostPopup = document.getElementById("viewPostPopup");
-  const viewPostImage = document.getElementById("viewPostImage");
+  
   const commentPostId = document.getElementById("commentPostId");
 
   window.openViewPost = function (src, postId, caption) {
-    viewPostImage.src = src;
+    const popup = document.getElementById("viewPostPopup");
+    const mediaBox = document.getElementById("viewMediaContainer");
+    const commentPostId = document.getElementById("commentPostId");
+
+    mediaBox.innerHTML = "";
     commentPostId.value = postId;
 
     document.getElementById("popupUsername").innerText =
-      document.querySelector(".username").innerText;
+      document.querySelector(".username")?.innerText || "User";
 
     document.getElementById("popupCaption").innerText = caption;
 
+    // VIDEO
+    if (src.toLowerCase().endsWith(".mp4")) {
+      const video = document.createElement("video");
+      video.src = src;
+      video.controls = true;
+      video.autoplay = true;
+      video.muted = true;
+      video.loop = true;
+      video.playsInline = true;
+      video.style.width = "100%";
+      video.style.borderRadius = "12px";
+      mediaBox.appendChild(video);
+    }
+    // IMAGE
+    else {
+      const img = document.createElement("img");
+      img.src = src;
+      img.style.width = "100%";
+      img.style.borderRadius = "12px";
+      mediaBox.appendChild(img);
+    }
+
     loadComments(postId);
 
-    viewPostPopup.style.display = "flex";
+    popup.style.display = "flex";
     document.body.style.overflow = "hidden";
   };
+
 
   viewPostPopup.addEventListener("click", function (e) {
     if (e.target === viewPostPopup) {
       viewPostPopup.style.display = "none";
-      viewPostImage.src = "";
+      document.getElementById("viewMediaContainer").innerHTML = "";
+
       commentPostId.value = "";
       document.body.style.overflow = "auto";
     }
@@ -66,15 +94,19 @@ function loadComments(postId) {
               <b>${c.username}</b>
               <span>${c.comment}</span>
             </div>
-            ${c.is_owner ? `
+            
+             ${
+               c.is_owner
+                 ? `
             <div class="comment-more" onclick="toggleCommentMenu(this)">
               <i class="bx bx-dots-horizontal-rounded"></i>
               <div class="comment-menu">
-                <button class="delete-btn" onclick="deleteComment(${c.id}, this)">Delete</button>
+                <button class="delete-btn"onclick="deleteComment(${c.id}, this)">Delete</button>
                 <button class="cancel-btn">Cancel</button>
               </div>
             </div>
-            ` : ``}
+            `: ``
+             }
           </div>
         `;
       });
@@ -91,22 +123,21 @@ function deleteComment(commentId, btn) {
     method: "POST",
     headers: {
       "X-CSRFToken": getCSRFToken(),
-      "Content-Type": "application/x-www-form-urlencoded"
+      "Content-Type": "application/x-www-form-urlencoded",
     },
-    body: `comment_id=${commentId}`
+    body: `comment_id=${commentId}`,
   })
-  .then(res => res.json())
-  .then(data => {
-    if (data.success) {
-      btn.closest(".comment-item").remove(); // 🔥 instant UI update
-    } else {
-      alert(data.error || "Delete failed");
-    }
-  });
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.success) {
+        btn.closest(".comment-item").remove(); // 🔥 instant UI update
+      } else {
+        alert(data.error || "Delete failed");
+      }
+    });
 }
-
 function getCSRFToken() {
-  return document.querySelector('[name=csrfmiddlewaretoken]').value;
+  return document.querySelector("[name=csrfmiddlewaretoken]").value;
 }
 
 
