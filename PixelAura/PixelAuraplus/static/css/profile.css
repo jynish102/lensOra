@@ -16,9 +16,6 @@ body {
     padding: 15px;
     margin: auto;
 }
-
-
-
 .profile-top {
     display: flex;
     justify-content: space-between;
@@ -36,16 +33,12 @@ body {
     cursor: pointer;
 }
 
-
 .user-row {
     display: flex;
     align-items: center;
     gap: 18px;
     margin-bottom: 12px;
 }
-
-
-
 .user-right {
     flex: 1;
 }
@@ -64,7 +57,6 @@ body {
 .counts div {
     font-size: 20px;
 }
-
 
 .edit-btn-container {
     margin: 14px 0;
@@ -152,10 +144,6 @@ body {
     color: white;
 }
 
-
-
-
-
 .user-top-row {
     display: flex;
     align-items: center;
@@ -170,7 +158,7 @@ body {
 }
 
 
-/* ✅ GETTING STARTED WRAPPER */
+
 .getting-started {
     margin-top: 10px;
     padding: 10px 0;
@@ -187,7 +175,7 @@ body {
     color: #111;
 }
 
-/* ✅ CARD ROW */
+
 .gs-cards {
     display: flex;
     gap: 18px;
@@ -196,7 +184,7 @@ body {
     margin-top: 20px;
 }
 
-/* ✅ SINGLE CARD */
+
 .gs-card {
     width: 260px;
     border: 1px solid #ddd;
@@ -207,7 +195,7 @@ body {
     text-align: center;
 }
 
-/* ✅ ICON CIRCLE */
+
 .gs-icon {
     width: 54px;
     height: 54px;
@@ -242,7 +230,7 @@ body {
     line-height: 1.4;
 }
 
-/* ✅ BUTTON */
+
 .gs-btn {
     background: #4f5dff;
     color: white;
@@ -253,7 +241,7 @@ body {
     cursor: pointer;
 }
 
-/* ✅ MODAL BACKGROUND */
+
 .create-post-overlay {
     position: fixed;
     top: 0;
@@ -267,7 +255,7 @@ body {
     z-index: 9999;
 }
 
-/* ✅ MODAL BOX */
+
 .create-post-box {
     width: 420px;
     height: 460px;
@@ -278,7 +266,7 @@ body {
     overflow: hidden;
 }
 
-/* ✅ HEADER */
+
 .create-post-header {
     height: 50px;
     border-bottom: 1px solid #ddd;
@@ -296,7 +284,7 @@ body {
     font-size: 22px;
 }
 
-/* ✅ BODY */
+
 .create-post-body {
     flex: 1;
     display: flex;
@@ -320,7 +308,7 @@ body {
     cursor: pointer;
 }
 
-/* ✅ CROP OVERLAY */
+
 .crop-overlay {
     position: fixed;
     inset: 0;
@@ -331,7 +319,7 @@ body {
     z-index: 10000;
 }
 
-/* ✅ CROP BOX */
+
 .crop-box {
     width: 420px;
     height: 520px;
@@ -342,7 +330,7 @@ body {
     flex-direction: column;
 }
 
-/* ✅ HEADER */
+
 .crop-header {
     height: 52px;
     border-bottom: 1px solid #ddd;
@@ -385,7 +373,7 @@ body {
     position: absolute;
 }
 
-/* ✅ IMAGE AREA */
+
 .crop-preview {
     flex: 1;
     display: flex;
@@ -400,7 +388,7 @@ body {
     object-fit: cover;
 }
 
-/* ✅ BOTTOM CONTROLS */
+
 .crop-controls {
     height: 50px;
     background: #000;
@@ -419,7 +407,7 @@ body {
 }
 
 
-/* ✅ DISCARD OVERLAY */
+
 .discard-overlay {
     position: fixed;
     inset: 0;
@@ -430,7 +418,7 @@ body {
     z-index: 20000;
 }
 
-/* ✅ DISCARD BOX */
+
 .discard-box {
     width: 360px;
     background: #fff;
@@ -450,7 +438,7 @@ body {
     padding-bottom: 10px;
 }
 
-/* ✅ ACTION BUTTONS */
+
 .discard-actions {
     display: flex;
     flex-direction: column;
@@ -482,10 +470,6 @@ body {
     top:2px;
     left: -5px;
 }
-
-
-
-
 
 .crop-body {
   display: flex;
@@ -524,8 +508,6 @@ body {
   border-radius: 50%;
   margin-right: 10px;
 }
-
-
 
 .caption-box {
   width: 100%;
@@ -580,7 +562,7 @@ body {
   display: block;
 }
 
-/*--------*/
+
 .view-post-overlay {
   position: fixed;
   inset: 0;
@@ -664,7 +646,7 @@ flex: 1;
 }
 
 
-/*---------bio-------------------*/
+
 .bio {
   margin-top: 10px;
 }
@@ -685,9 +667,6 @@ flex: 1;
 }
 
 
-
-
-/*edit-------------*/
 .post-menu-wrapper {
     position: relative;
     display: inline-block;
@@ -699,7 +678,6 @@ flex: 1;
     padding: 6px;
 }
 
-/* Popup box */
 .post-menu {
     top: 30px;
     right: 0;
@@ -714,7 +692,6 @@ flex: 1;
    cursor: pointer;
 }
 
-/* Links */
 .menu-link {
     padding: 12px 16px;
     text-decoration: none;
@@ -727,20 +704,16 @@ flex: 1;
     background: #f4f4f4;
 }
 
-/* Delete (red) */
+
 .menu-link.danger {
     color: #e63946;
     font-weight: 600;
 }
 
-/* Cancel */
+
 .menu-link.cancel {
     border-top: 1px solid #eee;
 }
-
-
-
-
 
 .view-user {
     display: flex;
@@ -755,25 +728,12 @@ flex: 1;
     object-fit: cover;
 }
 
-
-
-
-
-
-
-
 .view-add-comment input[type="text"] {
     flex: 1;
     border: none;
     outline: none;
     color: #3b82f6;
 }
-
-
-
-
-
-
 
 .post-menu i {
     font-size: 200px;
@@ -804,14 +764,14 @@ flex: 1;
 }
 
 /*-----------------------edit----------------------------------------------*/
-/* THIRD POPUP */
+
 .edit-post-overlay {
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.7);
     display: none;
     z-index: 3000;
-    /* HIGHER than view post popup */
+    
 }
 
 .edit-post-box {
@@ -852,10 +812,6 @@ flex: 1;
     height: 120px;
     outline: none;
 }
-
-
-
-
 .comment-item {
     display: flex;
         align-items: flex-start;
@@ -863,7 +819,7 @@ flex: 1;
         margin-bottom: 14px;
 }
 
-/* PROFILE IMAGE */
+
 .comment-user-img {
     width: 32px;
     height: 32px;
@@ -871,7 +827,7 @@ flex: 1;
     object-fit: cover;
 }
 
-/* TEXT */
+
 .comment-text {
     font-size: 14px;
         line-height: 1.4;
@@ -884,7 +840,7 @@ flex: 1;
     margin-right: 4px;
 }
 
-/* OWNER CAPTION STYLE */
+
 .owner-comment {
     margin-bottom: 16px;
 }
@@ -893,13 +849,13 @@ flex: 1;
     color: #262626;
 }
 
-/* COMMENTS LIST */
+
 .comment-list {
     display: flex;
     flex-direction: column;
 }
 
-/* 3 DOT ICON */
+
 .comment-more {
     position: relative;
     cursor: pointer;
@@ -907,7 +863,6 @@ flex: 1;
     font-size: 18px;
 }
 
-/* MENU (HIDDEN BY DEFAULT) */
 .comment-menu {
     position: absolute;
     top: 22px;
@@ -920,13 +875,10 @@ flex: 1;
     z-index: 20;
     min-width: 110px;
 }
-
-/* SHOW MENU */
 .comment-more.active .comment-menu {
     display: block;
 }
 
-/* MENU BUTTONS */
 .comment-menu button {
     width: 100%;
     padding: 10px;
@@ -936,23 +888,32 @@ flex: 1;
     cursor: pointer;
 }
 
-/* DELETE */
+
 .comment-menu .delete-btn {
     color: #ed4956;
     font-weight: 600;
 }
 
-/* CANCEL */
+
 .comment-menu .cancel-btn {
     color: #262626;
     border-top: 1px solid #eee;
 }
 
-/* HOVER EFFECT */
+
 .comment-menu button:hover {
     background: #f5f5f5;
 }
 
 .owner-comment {
     margin-bottom: 16px;
+}
+
+
+.view-media-box video {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    object-fit: contain;
+    background: black;
 }
