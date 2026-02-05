@@ -109,12 +109,12 @@
 
             {% if p.1 %}
             {% if p.1|lower|slice:"-4:" == ".mp4" %}
-            <video autoplay muted loop playsinline>
-              <source src="{{ p.1 }}" class="grid-post" type="video/mp4" />
+            <video class="grid-post" autoplay muted loop playsinline onclick="openViewPost('{{ p.1 }}', '{{ p.0 }}','{{ p.3|escapejs }}'),true">
+              <source src="{{ p.1 }}"  type="video/mp4"   />
               Your browser does not support the video tag.
             </video>
             {% else %}
-            <img src="{{ p.1 }}" class="grid-post" alt="post image" onclick="openViewPost('{{ p.1 }}', '{{ p.0 }}','{{ p.3|escapejs }}')" />
+            <img src="{{ p.1 }}" class="grid-post" alt="post image" onclick="openViewPost('{{ p.1 }}', '{{ p.0 }}','{{ p.3|escapejs }}'),false" />
             
             {% endif %}
             <p>{{ p.0 }}</p>
@@ -151,10 +151,11 @@
 
       <!-- LEFT IMAGE -->
       <div class="view-post-left">
-        <img id="viewPostImage" src=>
+        <div id="viewMediaContainer" class="view-media-box"></div>
+
+
         <a href="{% url 'home' %}" class="close-link">
-      
-    </a>
+        </a>
       </div>
 
       <!-- RIGHT CONTENT -->
