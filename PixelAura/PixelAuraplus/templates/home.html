@@ -1,6 +1,13 @@
 {% extends 'base.html' %} {% load static %}
  {% block title %}Home{% endblock %}
 {% block content %}
+{% if messages %}
+ {% for message in messages %}
+    <script>
+      alert("{{ message }}")
+    </script>
+  {% endfor %}
+ {% endif %}
 <!-- Welcome Section -->
 <div class="welcome-section">
   <h1>Welcome to <span>PixelAura+</span> ✨</h1>
