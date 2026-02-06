@@ -1,4 +1,5 @@
-{% extends 'base.html' %} {% load static %} {% block title %}Home{% endblock %}
+{% extends 'base.html' %} {% load static %}
+ {% block title %}Home{% endblock %}
 {% block content %}
 <!-- Welcome Section -->
 <div class="welcome-section">
@@ -83,18 +84,18 @@
       <!-- 🎥 POST MEDIA -->
       <div
         class="reel-container"
-        data-type="{% if post.video %}video{% else %}photo{% endif %}"
+        data-type="{% if post.image|lower|slice:'-4:' == '.mp4' %}video{% else %}image{% endif %}"
+       
       >
-        {% if post.video %}
-        <video
-          src="{{ post.video }}"
-          class="post-media"
-          autoplay
-          muted
-          loop
-        ></video>
+        {% if post.image %}
+            {% if post.image|lower|slice:"-4:" == ".mp4" %}
+            <video class="post-media" autoplay muted loop playsinline >
+              <source src="{{ post.image }}"  type="video/mp4"   />
+              Your browser does not support the video tag.
+            </video>
         {% else %}
         <img src="{{ post.image }}" class="post-media" />
+        {% endif %}
         {% endif %}
 
         <div class="tap-indicator">
@@ -103,7 +104,7 @@
         </div>
 
         <!-- ❤️ POST ACTIONS -->
-       <div class="post-actions-vertical">
+        <div class="post-actions-vertical">
           <div class="action-btn likeBtn {% if post.liked %}liked{% endif %}" data-post-id="{{ post.id }}">
             <i class="bx {% if post.liked %}bxs-heart{% else %}bx-heart{% endif %}"></i>
             <span>{{ post.like_count }}</span>
@@ -137,7 +138,7 @@
                   {% endif %}
                   <div class="comment-text">
                     <b>{{ c.username }} </b>
-                    <span>{{ c.comment }}</span>
+                    <span>{{ c.comment}}</span>
                   </div>
                 </div>
                 {% empty %}
@@ -153,7 +154,7 @@
 
                 <div class="comment-input-row">
                   <img
-                    src="{{ profile.image|default:'/static/images/default-user.png' }}"
+                    src="{{ profile.image|default:'/static/images/default-user.webp' }}"
                     class="comment-user-img"
                   />
 
@@ -170,7 +171,7 @@
             </div>
           </div>
 
-          <div class="action-btn save-btn saved" >
+          <div class="action-btn save-btn" >
             <i class="bx bx-bookmark"></i>
             <span>Save</span>
           </div>
