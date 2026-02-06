@@ -30,18 +30,17 @@
                 <!-- 🎥 POST MEDIA -->
                 <div
         class="reel-container"
-        data-type="{% if post.video %}video{% else %}photo{% endif %}"
+       data-type="{% if post.image|lower|slice:'-4:' == '.mp4' %}video{% else %}image{% endif %}"
       >
-        {% if post.video %}
-        <video
-          src="{{ post.video }}"
-          class="post-media"
-          autoplay
-          muted
-          loop
-        ></video>
+       {% if post.image %}
+            {% if post.image|lower|slice:"-4:" == ".mp4" %}
+            <video class="post-media" autoplay muted loop playsinline >
+              <source src="{{ post.image }}"  type="video/mp4"   />
+              Your browser does not support the video tag.
+            </video>
         {% else %}
         <img src="{{ post.image }}" class="post-media" />
+        {% endif %}
         {% endif %}
 
                     <div class="tap-indicator">
