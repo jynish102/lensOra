@@ -18,10 +18,12 @@ def login(request):
             query = "select * from register where username=%s and password=%s"
             cursor.execute(query,[un,pw])
             data = cursor.fetchone()
-            if data:
+             if data:
                 request.session['user'] = data[6]
+                messages.success(request,f"Welcome!  {data[6]}  To Home Page.")
                 return redirect('home')
             else:
+                messages.success(request,"Sorry! f{un}, Your Login Data Is not Match To Your Registered Data. ")
                 return redirect('login')
     return render(request,'login.html')
 
