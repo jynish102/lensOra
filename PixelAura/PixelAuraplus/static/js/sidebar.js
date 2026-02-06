@@ -42,46 +42,45 @@ document.querySelectorAll(".switch-appearance").forEach(toggle => {
 
 
 /*------------------video,paues---------------------------------------*/
-document.querySelectorAll(".reel-container").forEach(reelBox => {
+document.querySelectorAll(".reel-container").forEach((reelBox) => {
+  const type = reelBox.dataset.type;
+  const video = reelBox.querySelector(".post-media");
+  const soundBtn = reelBox.querySelector(".soundBtn");
+  const tapIndicator = reelBox.querySelector(".tap-indicator");
 
-    const type = reelBox.dataset.type;
-    const video = reelBox.querySelector(".post-media");
-    const soundBtn = reelBox.querySelector(".soundBtn");
-    const tapIndicator = reelBox.querySelector(".tap-indicator");
+  /* ✅ PHOTO POST → REMOVE VIDEO FEATURES */
+  if (type === "image") {
+    if (soundBtn) soundBtn.style.display = "none";
+    if (tapIndicator) tapIndicator.style.display = "none";
+    return;
+  }
+  /* ✅ STOP if video missing */
+  if (!video) return;
+  /* ✅ SOUND TOGGLE */
+  soundBtn.addEventListener("click", () => {
+    video.muted = !video.muted;
+    soundBtn.innerHTML = video.muted
+      ? `<i class="bx bx-volume-mute"></i>`
+      : `<i class="bx bx-volume-full"></i>`;
+  });
 
-    /* ✅ PHOTO POST → REMOVE VIDEO FEATURES */
-    if (type === "photo") {
-        if (soundBtn) soundBtn.style.display = "none";
-        if (tapIndicator) tapIndicator.style.display = "none";
-        return;
+  /* ✅ DOUBLE TAP TO PAUSE (NOT LIKE) */
+  let lastTap = 0;
+  video.addEventListener("click", () => {
+    const now = new Date().getTime();
+    if (now - lastTap < 300) {
+      video.pause();
+      tapIndicator.classList.add("show");
+
+      setTimeout(() => {
+        tapIndicator.classList.remove("show");
+      }, 800);
+    } else {
+      video.play();
+      tapIndicator.classList.remove("show");
     }
-
-    /* ✅ SOUND TOGGLE */
-    soundBtn.addEventListener("click", () => {
-        video.muted = !video.muted;
-        soundBtn.innerHTML = video.muted
-            ? `<i class="bx bx-volume-mute"></i>`
-            : `<i class="bx bx-volume-full"></i>`;
-    });
-
-    /* ✅ DOUBLE TAP TO PAUSE (NOT LIKE) */
-    let lastTap = 0;
-    video.addEventListener("click", () => {
-        const now = new Date().getTime();
-        if (now - lastTap < 300) {
-            video.pause();
-            tapIndicator.classList.add("show");
-
-            setTimeout(() => {
-                tapIndicator.classList.remove("show");
-            }, 800);
-        }else{
-            video.play();
-            tapIndicator.classList.remove("show");
-        }
-        lastTap = now;
-    });
-
+    lastTap = now;
+  });
 });
 
 /*-------------------------- like button------------------------- */
@@ -122,6 +121,8 @@ document.querySelectorAll(".likeBtn").forEach((btn) => {
       .catch((err) => console.error("LIKE ERROR:", err));
   });
 });
+
+
 
 
 
@@ -251,29 +252,34 @@ function previewMedia(event) {
     }
 }
 
+/* -----------------------saved--------------------*/
+
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".save-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
+      const icon = btn.querySelector("i");  
       btn.classList.toggle("saved");
+
+      
+
+      if (btn.classList.contains("bx-bookmark")) {
+        icon.classList.replace("bx-bookmark", "bxs-bookmark");
+      } else {
+        icon.classList.replace("bxs-bookmark", "bx-bookmark");
+      }
+      console.log("Save clicked");
+
     });
   });
 });
-
-
-btn.addEventListener("click", () => {
-  btn.classList.toggle("saved");
-
-  const icon = btn.querySelector("i");
-  icon.classList.toggle("bx-bookmark");
-  icon.classList.toggle("bx-bookmark-alt");
-});
-
-
-const el = document.getElementById("something");
-if (el) {
-  el.addEventListener("click", () => {
-    // logic
+document.querySelectorAll(".reel-video").forEach((video) => {
+  video.addEventListener("click", () => {
+    if (video.paused) {
+      video.play();
+    } else {
+      video.pause();
+    }
   });
-}
+});
 
 
