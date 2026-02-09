@@ -71,7 +71,7 @@
             <img src="{{ post.1 }}"  onclick="openViewPost('{{ post.1 }}', '{{ post.0 }}', '{{ post.2|escapejs }}'),false"
            class="grid-post">
            {% endif %}
-           <p>{{ post.0 }}</p>
+          
            {% endif %}
         </div>
     {% empty %}
@@ -140,3 +140,4 @@
 <script src="{% static 'js/suggested_profile.js' %}"></script>
 
 {% endblock %}
+
