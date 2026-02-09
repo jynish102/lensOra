@@ -36,8 +36,14 @@ def register(request):
         dob = request.POST.get('birthdate')
         un = request.POST.get('username')
         with connection.cursor() as cursor:
+            cursor.execute("SELECT id FROM register WHERE username=%s", [un])
+            if cursor.fetchone():
+              messages.error(request, f"Username '{un}' already exists!")
+              return redirect('register')
+            
             query ="insert into register (name,email,mobile,password,birthdate,username) values(%s,%s,%s,%s,%s,%s)"
             cursor.execute(query,[nm, em, mb, pw, dob, un])
+            messages.success(request, f"Registration successful! Welcome {un} 🎉")
             return redirect('login')
     return render(request,'register.html')
 
