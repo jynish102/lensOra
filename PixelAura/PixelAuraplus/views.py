@@ -23,7 +23,7 @@ def login(request):
                 messages.success(request,f"Welcome!  {data[6]}  To Home Page.")
                 return redirect('home')
             else:
-                messages.success(request,"Sorry! f{un}, Your Login Data Is not Match To Your Registered Data. ")
+                messages.success(request, f"Sorry! {un}, Your Login Data Is not Match To Your Registered Data. ")
                 return redirect('login')
     return render(request,'login.html')
 
