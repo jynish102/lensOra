@@ -116,6 +116,10 @@
     /*---------------------------email validation------------------*/
     const emailInput = document.getElementById("email");
     const emailError = document.getElementById("email-error");
+    const mobileInput = document.getElementById("mobile");
+    const mobileError = document.getElementById("mobile-error");
+    
+
 
     emailInput.addEventListener("input", function () {
         const email = emailInput.value.trim();
@@ -134,20 +138,44 @@
             emailError.textContent = "";
         }
     });
-        document.querySelector(".register-form").addEventListener("submit", function (e) {
-        const email = emailInput.value.trim();
-        const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    /*-------------------prevent -email submission---------------------*/
+    document.querySelector(".register-form").addEventListener("submit", function (e) {
+    const email = emailInput.value.trim();
+    const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const mobile = mobileInput.value.trim();
 
-        if (!pattern.test(email)) {
-            e.preventDefault();
-            emailError.textContent = "❌ Please enter a valid email before registering";
-            emailInput.focus();
-        }
+            if (!pattern.test(email)) {
+                e.preventDefault();
+                emailError.textContent = "❌ Please enter a valid email before registering";
+                emailInput.focus();
+            }
+
+            if (mobile.length !== 10) {
+              e.preventDefault();
+              mobileError.textContent =
+                "❌ Please enter a valid 10-digit mobile number";
+              mobileInput.focus();
+            }
     });
-    /*-------------------------------register-alert--------------------*/
-  
+     
+    /*------------------------------mobile valid---------------------*/ 
+    mobileInput.addEventListener("input", function () {
+      // Allow numbers only
+      this.value = this.value.replace(/\D/g, "");
 
+      const mobile = this.value;
 
+      if (mobile === "") {
+        mobileError.textContent = "";
+        return;
+      }
 
+      if (mobile.length < 10) {
+        mobileError.textContent = "❌ Mobile number must be 10 digits";
+      } else if (mobile.length > 10) {
+        mobileError.textContent = "❌ Mobile number cannot exceed 10 digits";
+      } else {
+        mobileError.textContent = "";
+      }
     });
-    
+    });
