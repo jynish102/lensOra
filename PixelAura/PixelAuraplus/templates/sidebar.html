@@ -143,3 +143,11 @@
         <p>© 2025–26 PixelAura • All Rights Reserved</p>
     </div>
 </footer>
+            <script>
+    {% if messages %}
+        {% for message in messages %}
+        alert("{{ message }}");
+        {% endfor %}
+    {% endif %}
+</script>
+
