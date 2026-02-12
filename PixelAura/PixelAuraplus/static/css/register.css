@@ -280,4 +280,11 @@ body {
 .status-msg.success {
     color: green;
 }
+.input-error {
+    color: #e74c3c;
+    font-size: 13px;
+    display: block;
+    margin-top: 4px;
+}
+
 
