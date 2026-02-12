@@ -817,6 +817,7 @@ def add_post(request):
                 VALUES (%s, %s, %s)
                 """
                 cursor.execute(q, [image_r_p, un, cp])
+                messages.success(request,f"{un} Your Post Add Successfully....And The Caption is {cp}......")
 
         return redirect('home')
 
