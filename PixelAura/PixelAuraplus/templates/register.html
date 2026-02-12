@@ -29,7 +29,8 @@
                     <div class="step step-1 active">
                         <h3 class="section-title">Create your account</h3>
                         <input type="text" name="name" placeholder="Full name" required>
-                        <input type="email" name="email" placeholder="Email" required>
+                        <input type="email" name="email" id="email" placeholder="Email" required>
+                        <small id="email-error" class="input-error"></small>
                         <input type="text" name="mobile" placeholder="Mobile" required>
 
                         <input type="text" name="password" placeholder="Password" required>
@@ -127,100 +128,8 @@
 </div>
 
 <!-- SIMPLE JS TO SWITCH STEPS -->
-<script>
-    const step1 = document.querySelector('.step-1');
-    const step2 = document.querySelector('.step-2');
-    const nextBtn = document.getElementById('nextBtn');
-    const backBtn = document.getElementById('backBtn');
-    const stepField = document.getElementById('stepField');
-    const bottomCard = document.getElementById('bottomCard');
-
-    nextBtn.addEventListener('click', function () {
-        step1.classList.remove('active');
-        step2.classList.add('active');
-        stepField.value = '2';
-        bottomCard.style.display = 'none';   // hide "Already have an account?"
-    });
-
-    backBtn.addEventListener('click', function () {
-        step2.classList.remove('active');
-        step1.classList.add('active');
-        stepField.value = '1';
-        bottomCard.style.display = 'block';  // show again
-    });
-</script>
-<!--video-->
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-
-    const usernameInput = document.getElementById("username");
-    const suggestionsBox = document.getElementById("username-suggestions");
-    const statusMsg = document.getElementById("username-status");
-
-    // ❗ DEMO: usernames already taken (replace with backend check)
-    const takenUsernames = ["john123", "rahul99", "pixelmaster"];
-
-    // FUNCTION: Generate username suggestions
-    function generateSuggestions(base) {
-        return [
-            base + Math.floor(Math.random() * 90 + 10),
-            base + "_" + Math.floor(Math.random() * 900 + 100),
-            base + "_pro"
-        ];
-    }
-
-    // Show suggestions automatically when input is typed
-    usernameInput.addEventListener("input", () => {
-        const val = usernameInput.value.trim();
-
-        suggestionsBox.innerHTML = "";
-        statusMsg.textContent = "";
-
-        if (val.length < 3) return; // Show only after 3 letters
-
-        const suggestions = generateSuggestions(val);
-
-        suggestions.forEach(name => {
-            const div = document.createElement("div");
-            div.classList.add("suggestion");
-            div.textContent = name;
-
-            // When clicked → fill username input
-            div.onclick = () => {
-                usernameInput.value = name;
-                checkUsernameAvailability(name);
-                suggestionsBox.innerHTML = "";
-            };
-
-            suggestionsBox.appendChild(div);
-        });
-    });
-
-    // Function to check if username exists
-    function checkUsernameAvailability(username) {
-
-        // Simulated check
-        const isTaken = takenUsernames.includes(username);
-
-        if (isTaken) {
-            statusMsg.textContent = "❌ Username already taken";
-            statusMsg.className = "status-msg error";
-        } else {
-            statusMsg.textContent = "✔ Username is available";
-            statusMsg.className = "status-msg success";
-        }
-    }
-
-    // Check when user stops typing
-    usernameInput.addEventListener("blur", () => {
-        const name = usernameInput.value.trim();
-        if (name.length >= 3) {
-            checkUsernameAvailability(name);
-        }
-    });
-
-});
+<script src="{% static 'js/register.js' %}">
+    
     {% if messages %}
     {% for message in messages %}
       
