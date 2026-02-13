@@ -721,8 +721,8 @@ body:not(.dark) .hover-menu .danger {
     z-index: 999;
 }
 .popup-box {
-    width: 420px;
-    background: white;
+    width: 720px;
+    background: rgb(36,148,136);
     border-radius: 15px;
     overflow: hidden;
     display: flex;
@@ -766,7 +766,7 @@ body:not(.dark) .hover-menu .danger {
     cursor: pointer;
 }
 .upload-area {
-    width: 100%;
+    width: 600px;
     height: 240px;
     border: 2px dashed #ccc;
     border-radius: 12px;
