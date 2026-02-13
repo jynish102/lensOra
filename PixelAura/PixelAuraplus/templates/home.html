@@ -51,9 +51,9 @@
     <!-- ✅ RIGHT SIDE: MAIN USER -->
     <div class="main-user-box">
       <a href="{% url 'profile' %}" class="profile-link">
-        {% if profile.image %}
+        {% if loginprof.image %}
         <img
-          src="{{ profile.image }}"
+          src="{{ loginprof.image }}"
           class="logo-wrapper user-logo suggest-img"
         />
         {% else %}
