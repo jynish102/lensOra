@@ -7,7 +7,10 @@
       alert("{{ message }}")
     </script>
   {% endfor %}
- {% endif %}
+    
+{% endif %}
+
+
 <!-- Welcome Section -->
 <div class="welcome-section">
   <h1>Welcome to <span>PixelAura+</span> ✨</h1>
@@ -66,7 +69,7 @@
         <span class="main-fullname">{{ datas.name }}</span>
       </div>
     </div>
-    <a href="{% url 'login' %}" class="switch-btn">Switch</a>
+    
   </div>
 
   <!-- Featured Posts -->
@@ -134,6 +137,7 @@
               <!-- COMMENT LIST -->
               <div class="comment-body">
                 {% for c in post.comments %}
+                
                 <div class="comment-item">
                   {% if c.image %}
                   <img src="{{ c.image }}" class="comment-user-img" />
@@ -177,12 +181,7 @@
               </form>
             </div>
           </div>
-
-          <div class="action-btn save-btn" >
-            <i class="bx bx-bookmark"></i>
-            <span>Save</span>
-          </div>
-
+          
           <!-- ✅ SOUND ICON FOR VIDEO -->
           <div class="action-btn soundBtn">
             <i class="bx bx-volume-full"></i>
@@ -195,11 +194,5 @@
   </div>
   <!-- COMMENT POPUP -->
 
-  {% if messages %}
-  <div class="toast">
-    {% for message in messages %}
-    <p class="{{ message.tags }}">{{ message }}</p>
-    {% endfor %}
-  </div>
-  {% endif %} {% endblock %}
+   {% endblock %}
 </div>
