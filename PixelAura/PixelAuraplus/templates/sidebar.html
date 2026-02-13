@@ -36,8 +36,14 @@
                 </li>
                 <li class="nav-link">
                     <a href="{% url 'notifications' %}">
-                        <i class="bx bxs-heart"></i>
+                        <i class="bx bxs-bell"></i>
                         <span class="text nav-text">Notifications</span>
+                    </a>
+                </li>
+                <li class="nav-link">
+                    <a href="{% url 'chats' %}">
+                        <i class="bx bx-message-rounded-dots"></i>
+                        <span class="text nav-text">Chats</span>
                     </a>
                 </li>
                 <li class="profile-box">
@@ -59,13 +65,13 @@
                     </div>
                     <div class="dropdown-menu hover-menu">
                         <a href="{% url 'setting' %}"><i class="bx bx-cog"></i> Settings</a>
-                        <a href="{% url 'saved' %}"><i class="bx bx-bookmark"></i> Saved</a>
+                        
                         <a href="javascript:void(0)" class="switch-appearance">
                             <i class="bx bx-moon appearance-icon"></i>
                             <span class="appearance-text">Dark Mode</span>
                         </a>
                         <div class="divider"></div>
-                        <a href="{% url 'login' %}">Switch accounts</a>
+                       
                         <a href="{% url 'logout' %}" class="danger">Log out</a>
                     </div>
                 </li>
@@ -103,20 +109,14 @@
     <img name="img" src="{{ profile.image|default:'/static/images/default-user.png' }}" class="user-dp" alt="User">
     
     <div class="user-text">
-       
-        <span name="name" class="username">{{ datas.username }}<span>
-    
-       
-    </div>
+       <span name="name" class="username">{{ datas.username }}<span>
+        </div>
 </div>
-
-
-        <textarea name="txtarea" class="caption-box" placeholder="Write a caption..." maxlength="2200"></textarea>
+<textarea name="txtarea" class="caption-box" placeholder="Write a caption..." maxlength="2200"></textarea>
             <div class="caption-counter">
     <span id="charCount">0</span> / 2200
 </div>
-
-        <input class="post-btn" type="submit" value="Post">
+<input class="post-btn" type="submit" value="Post">
 </form>
 
     </div>
@@ -128,7 +128,7 @@
         <h3>Discard post?</h3>
         <p>If you leave, your post will not be saved.</p>
 
-        <button typr="button" class="discard-btn" onclick="discardPost()">Discard</button>
+        <button type="button" class="discard-btn" onclick="discardPost()">Discard</button>
         <button type="button" class="cancel-btn" onclick="closeDiscard()">Cancel</button>
 
     </div>
@@ -143,11 +143,10 @@
         <p>© 2025–26 PixelAura • All Rights Reserved</p>
     </div>
 </footer>
-            <script>
+<script>
     {% if messages %}
         {% for message in messages %}
         alert("{{ message }}");
         {% endfor %}
     {% endif %}
 </script>
-
