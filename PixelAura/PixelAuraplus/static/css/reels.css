@@ -45,7 +45,6 @@ body.dark {
     transform: translateY(-50%) rotate(0deg);
 }
 
-
 .sidebar .image {
     min-width: 45px;
     height: 45px;
@@ -85,7 +84,6 @@ body.dark {
     border-radius: none;
 }
 
-
 .search-box {
     display: flex;
     align-items: center;
@@ -124,7 +122,6 @@ body.dark {
     background: #3a3b3c;
 }
 
-
 .bottom-content li {
     list-style: none;
     margin-top: 15px;
@@ -144,8 +141,7 @@ body.dark .menu-bar .mode i.moon {
 }
 
 body:not(.dark) .sidebar  {
-    /* background: linear-gradient(to right, #ff512f, #dd2476); */
-    background: #fff;
+   background: #fff;
 }
 
 body:not(.dark) .sidebar a{
@@ -159,8 +155,6 @@ body:not(.dark) .nav-link a:hover {
 body:not(.dark) .search-box {
     background: #efedf0f3;
 }
-
-
 
 body:not(.dark) .profile-box a:hover {
     background: #e4dada;
@@ -178,7 +172,6 @@ body:not(.dark) .dropdown-toggle{
     border-radius: 6px;
     transition: 0.3s;
     color: #fff;
-    
 }
 .profile-box img {
     width: 42px;
@@ -198,7 +191,6 @@ body:not(.dark) .dropdown-toggle{
     color: #fff;
 }
 
-
 .sidebar.close .profile-box .text {
     opacity: 0;
     display: none;
@@ -216,8 +208,8 @@ body:not(.dark) .dropdown-toggle{
 
 .footer {
     width: 100%;
-    background:#18191a;       /* dark background */
-    color: #000707;             /* light text */
+    background:#18191a;       
+    color: #000707;             
     padding: 12px 20px;
     text-align: center;
     position: fixed;
@@ -340,14 +332,12 @@ body:not(.dark) .dropdown-toggle{
     background: #000;
 }
 
-
 .post-media {
     width: 100%;
     height: 550px;
     object-fit: cover;
     display: block;
 }
-
 
 .post-header {
     position: absolute;
@@ -379,7 +369,6 @@ body:not(.dark) .dropdown-toggle{
     font-size: 11px;
     opacity: 0.8;
 }
-
 
 .post-actions {
     position: absolute;
@@ -519,7 +508,6 @@ body:not(.dark) .dropdown-toggle{
     margin: 0;
 }
 
-
 .dropdown-toggle {
     background: none;
     border: none;
@@ -578,8 +566,6 @@ body:not(.dark) .hover-menu{
     background: #fff;
 }
 
-
-
 .dropdown-menu a:hover {
     background: #f5f2f2;
 }
@@ -592,7 +578,6 @@ body:not(.dark) .hover-menu{
 .hover-dropdown {
     position: relative;
 }
-
 
 .dropdown-toggle {
     display: flex;
@@ -611,7 +596,6 @@ body:not(.dark) .hover-menu{
 .hover-menu {
     position: absolute;
     bottom: 110%;
-    
     left: 0;
     background:#18191a;
     border-radius: 14px;
@@ -626,7 +610,6 @@ body:not(.dark) .hover-menu{
     display: flex;
     flex-direction: column;
 }
-
 
 .hover-dropdown:hover .hover-menu {
     opacity: 1;
@@ -651,13 +634,11 @@ body:not(.dark) .hover-menu a{
     background: rgba(255, 255, 255, 0.08);
 }
 
-
 .hover-menu .divider {
     height: 1px;
     background: rgba(255, 255, 255, 0.1);
     margin: 4px 0;
 }
-
 
 .hover-menu .danger {
     color: #ff4d4d;
@@ -665,9 +646,6 @@ body:not(.dark) .hover-menu a{
 body:not(.dark) .hover-menu .danger {
     color: #ff4d4d;
 }
-
-
-
 
 .switch-appearance {
     display: flex;
@@ -768,8 +746,6 @@ body:not(.dark) .hover-menu .danger {
    
 }
 
-
-/* Popup */
 .popup-overlay {
     display: none;
     position: fixed;
@@ -781,7 +757,6 @@ body:not(.dark) .hover-menu .danger {
     z-index: 999;
 }
 
-/* Popup Box */
 .popup-box {
     width: 420px;
     background: white;
@@ -797,7 +772,6 @@ body:not(.dark) .hover-menu .danger {
     100% { transform: translateY(0); opacity: 1; }
 }
 
-/* Header */
 .popup-header {
     padding: 12px 16px;
     font-size: 18px;
@@ -814,7 +788,6 @@ body:not(.dark) .hover-menu .danger {
     cursor: pointer;
 }
 
-/* Upload Area */
 .upload-area {
     width: 100%;
     height: 240px;
@@ -837,7 +810,7 @@ body:not(.dark) .hover-menu .danger {
     color: #666;
 }
 
-/* Image Preview */
+
 .preview-img {
     width: 100%;
     max-height: 240px;
@@ -846,7 +819,6 @@ body:not(.dark) .hover-menu .danger {
     margin-top: 20px;
 }
 
-/* Caption */
 .caption-box {
     margin: 15px;
     height: 80px;
@@ -857,7 +829,6 @@ body:not(.dark) .hover-menu .danger {
     font-size: 14px;
 }
 
-/* Post Button */
 .post-btn {
     margin: 0 15px 15px 15px;
     padding: 10px;
@@ -873,7 +844,6 @@ body:not(.dark) .hover-menu .danger {
     background: #007ad6;
 }
 
-/* Discard Popup Box */
 .discard-box {
     width: 320px;
     background: #fff;
@@ -895,7 +865,6 @@ body:not(.dark) .hover-menu .danger {
     margin-bottom: 20px;
 }
 
-/* Buttons */
 .discard-btn {
     width: 100%;
     background: #ed4956;
@@ -919,7 +888,6 @@ body:not(.dark) .hover-menu .danger {
     cursor: pointer;
 }
 
-
 .preview-video {
     width: 100%;
     max-height: 240px;
@@ -927,7 +895,6 @@ body:not(.dark) .hover-menu .danger {
     margin-top: 20px;
     background: #000;
 }
-
 
 .user-info-bar {
     display: flex;
@@ -959,7 +926,7 @@ body:not(.dark) .hover-menu .danger {
     color: #777;
 }
 
-/*------------Comment csss-----*/
+/*------------Comment css-----*/
 .comment-popup {
     position: fixed;
     top: 0;
@@ -1053,7 +1020,6 @@ body:not(.dark) .hover-menu .danger {
     position: relative;
 }
 
-/* PANEL */
 .comment-panel {
     position: absolute;
     top: -300px;
@@ -1070,12 +1036,10 @@ body:not(.dark) .hover-menu .danger {
     z-index: 100;
 }
 
-/* SHOW ON HOVER */
 .comment-wrapper:hover .comment-panel {
     display: flex;
 }
 
-/* HEADER */
 .comment-header {
     display: flex;
     justify-content: space-between;
@@ -1084,7 +1048,6 @@ body:not(.dark) .hover-menu .danger {
     border-bottom: 1px solid #eee;
 }
 
-/* BODY */
 .comment-body {
     flex: 1;
     padding: 10px 12px;
@@ -1096,7 +1059,7 @@ body:not(.dark) .hover-menu .danger {
     margin-bottom: 8px;
 }
 
-/* FORM */
+
 .comment-form {
     display: flex;
     padding: 10px;
@@ -1141,5 +1104,3 @@ body:not(.dark) .hover-menu .danger {
 .comment-text b {
     margin-right: 4px;
 }
-
-
