@@ -51,7 +51,7 @@ def details(request):
     return render(request,'more_detail.html')   
 
 def home(request):
-    profile = profiledata(request) 
+    loginprof = profiledata(request) 
     login_user = getloginuserdt(request)
     login_profile = profiledata(request)
     login_username = login_user[0]["username"]
@@ -177,7 +177,7 @@ def home(request):
     return render(request,'home.html', 
                   {'ulist' : suggested_users , 
                    'datas' : datalist, 
-                   "profile" : profile,
+                   "loginprof" : loginprof,
                    "suggested_posts": suggested_posts,
                    "suser" : login_user,
                    "sp" : login_profile,
@@ -227,9 +227,9 @@ def suggestuser(request):
 
 
 def sidebar(request):
-    profile = profiledata(request) 
+    loginprof = profiledata(request) 
     loginu = getloginuserdt(request)
-    return render(request,'sidebar.html', {"profile" : profile, "datas" : loginu})
+    return render(request,'sidebar.html', {"loginprof" : loginprof, "datas" : loginu})
 
 def account_sidebar(request):
     return render(request,'account_sidebar.html')
@@ -658,6 +658,7 @@ def suggested_profile(request, username):
     
     logged_user = request.session["user"]
     comments = get_comments(request)
+    loginprof = profiledata(request)
     
     with connection.cursor() as cursor:
 
@@ -735,7 +736,7 @@ def suggested_profile(request, username):
 
     return render(request, "suggested_profile.html", {
         "user": user,
-        "profile": profile,
+        "loginprof": loginprof,
         "posts": posts,
         "is_following" : is_following,
         "follows_you":follows_you,
@@ -745,11 +746,6 @@ def suggested_profile(request, username):
         "comments":comments
         
     })
-
-
-
-
-
 
 def suggested_user_profile(request, username):
     with connection.cursor() as cursor:
@@ -951,8 +947,7 @@ def follow_user(request, username):
                 ])
 
     return redirect("suggested_user_profile", username=username)
-
-
+    
 def add_comment(request):
     if request.method != "POST":
         return redirect("home")
@@ -979,14 +974,10 @@ def add_comment(request):
             [username]
         )
         user = cursor.fetchone()
-
         if not user:
             print("❌ User not found")
             return redirect(request.META.get("HTTP_REFERER"))
-
         user_id = user[0]
-        
-
         cursor.execute(
             """
             INSERT INTO comments (post_id, user_id, comment)
@@ -1003,13 +994,8 @@ def post_crud(request):
     if 'user' not in request.session:
         return redirect('login')
     username = request.session['user']
-
-    
     posts = viewpost(request)
-
     profile = profiledata(request)
-       
-    
     return render(request,"post_crud.html",{'username' :username, 'posts':posts, 'profile' : profile})
 
 def delete_post(request, post_id):
@@ -1036,8 +1022,6 @@ def update_post(request):
             )
 
     return redirect('post_crud')
-
-
 def forgot_password(request):
     profile = profiledata(request)
     login = getloginuserdt(request)
@@ -1113,10 +1097,7 @@ def forgot_password(request):
             "error_message": error_message,
         }
     )
-
-
-
-
+    
 def toggle_like(request):
     if request.method != "POST":
         return JsonResponse({"error": "Invalid request"}, status=400)
@@ -1226,9 +1207,7 @@ def chats(request):
     })   
 
 
-def chat_page(request,username):
-   
-   
+def chat_page(request,username): 
    profile = profiledata(request)
    me = request.session.get("user")
    if not me:
