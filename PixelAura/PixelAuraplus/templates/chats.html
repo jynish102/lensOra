@@ -10,7 +10,7 @@
 <div class="chat-layout">
     <div class="chat-top-card">
       <div class="chat-user-info">
-        <img src="{{ profile.image|default:'/static/images/default-user.png' }}" class="chat-user-img">
+        <img src="{{ loginprof.image|default:'/static/images/default-user.png' }}" class="chat-user-img">
 
         <div class="chat-user-text">
           <span class="chat-username">{{ username }}</span>
@@ -46,3 +46,4 @@
     </div>
 </div>
 {% endblock %}
+
