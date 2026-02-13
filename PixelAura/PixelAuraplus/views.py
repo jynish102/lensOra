@@ -1167,7 +1167,7 @@ def toggle_like(request):
 
 def chats(request):
     username = request.session.get("user")
-    profile = profiledata(request)
+    loginprof = profiledata(request)
     suser = suggestuser(request)
     # 🔹 Profile images (NO JOIN)
     with connection.cursor() as cursor:
@@ -1201,14 +1201,14 @@ def chats(request):
             })
             
     return render(request, "chats.html", {
-        "profile" : profile,
+        "loginprof" : loginprof,
         "username" : username,
         "suser" :suggested_users
     })   
 
 
 def chat_page(request,username): 
-   profile = profiledata(request)
+   loginprof = profiledata(request)
    me = request.session.get("user")
    if not me:
         return redirect("login")
@@ -1224,8 +1224,8 @@ def chat_page(request,username):
         """, [username])
 
         row = cursor.fetchone()
-        print("LOGGED USER =", me)
-        print("CHAT USER =", username)
+        # print("LOGGED USER =", me)
+        # print("CHAT USER =", username)
 
 
         # 2️⃣ Get chat messages between both users
@@ -1261,7 +1261,7 @@ def chat_page(request,username):
                 })
         return render(request, "chat_pg.html", {
             "chat_user": chat_user,
-            "profile": profile,
+            "loginprof": loginprof,
             "messages": chat_messages,
             "me": me
         })
