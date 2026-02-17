@@ -263,7 +263,7 @@ def account_sidebar(request):
 
 def setting(request):
     loginu = getloginuserdt(request)
-   
+   loginprof = profiledata(requrest)
     un = request.session.get('user')
 
     if request.method == "POST":
@@ -321,7 +321,8 @@ def setting(request):
         'setting.html',
         {
             'datas': loginu,
-            'profile': profile
+            'profile': profile,
+            'loginprof' : loginprof,
         }
     )
 
