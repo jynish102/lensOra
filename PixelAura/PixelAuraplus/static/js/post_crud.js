@@ -42,6 +42,7 @@ const editModal = document.getElementById("editPostModal");
 const editPostImage = document.getElementById("editPostImage");
 const editPostId = document.getElementById("editPostId");
 const editCaption = document.getElementById("editCaption");
+const editMediaBox = document.getElementById("editMediaBox");
 
 /* OPEN EDIT MODAL */
 editBtn.addEventListener("click", () => {
@@ -49,24 +50,36 @@ editBtn.addEventListener("click", () => {
 
   const selectedItem = document.querySelector(".image-item.selected");
   const selectedImg = selectedItem.querySelector("img");
+  const selectedVideo = selectedItem.querySelector("video");
 
-  editPostImage.src = selectedImg.src;
+   editMediaBox.innerHTML = "";
+
+  if (selectedImg) {
+    editMediaBox.innerHTML = `
+      <img id="editPostImage" src="${selectedImg.src}">
+    `;
+  } 
+  else if (selectedVideo) {
+    const videoSrc = selectedVideo.querySelector("source").src;
+    editMediaBox.innerHTML = `
+      <video controls autoplay muted loop>
+        <source src="${videoSrc}" type="video/mp4">
+      </video>
+    `;
+  }
+
   editPostId.value = selectedPostId;
 
   const caption = selectedItem.dataset.caption || "";
   editCaption.value = caption;
-  charCount.innerText = caption.length; // ✅ FIX
+  charCount.innerText = caption.length;
 
-  editBtn.addEventListener("click", () => {
-    document.body.style.overflow = "hidden";
-    editModal.classList.add("active");
-  });
+  document.body.style.overflow = "hidden";
+  editModal.classList.add("active");
 });
-
 editCaption.addEventListener("input", () => {
   charCount.innerText = editCaption.value.length;
 });
-
 
 /* CLOSE EDIT MODAL */
 function closeEditModal() {
