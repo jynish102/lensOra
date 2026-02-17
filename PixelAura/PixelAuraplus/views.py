@@ -496,15 +496,9 @@ def profile(request):
     
     username=request.session.get("user")
     post_id = request.GET.get("post_id")
-        
-   
     loginu = getloginuserdt(request)
     posts=viewpost(request)
-
     comments = get_comments(request)
-    
-
-
     profile = profiledata(request) 
     
     with connection.cursor() as cursor:
@@ -535,6 +529,16 @@ def profile(request):
         """, [username])
         following_count = cursor.fetchone()[0]
 
+       cursor.execute("""
+        SELECT r.username,r.name,p.image
+        FROM follows f
+        JOIN register r ON f.following_username = r.username
+        JOIN profile p
+        ON r.username = p.username
+        WHERE f.follower_username = %s
+    """, [username])
+        following_users = cursor.fetchall()
+
         
     
     return render(request,"profile.html",
@@ -544,7 +548,8 @@ def profile(request):
                    "post_count" : post_count,
                    "following_count" : following_count,
                    "followers_count" : followers_count,
-                   "comments": comments})
+                   "comments": comments,
+                  "following_users" : following_users})
 
 def get_comments(request):
     username = request.session.get("user")
