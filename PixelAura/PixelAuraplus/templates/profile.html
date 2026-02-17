@@ -55,7 +55,7 @@
             </div>
             <div>
               <b>{{ following_count }}</b>
-              <span>Following</span>
+              <span id="followingBtn" style="cursor:pointer;">Following</span>
             </div>
           </div>
 
@@ -117,7 +117,7 @@
             <img src="{{ p.1 }}" class="grid-post" alt="post image" onclick="openViewPost('{{ p.1 }}', '{{ p.0 }}','{{ p.3|escapejs }}'),false" />
             
             {% endif %}
-       
+           
             {% endif %}
           </div>
 
@@ -237,8 +237,48 @@
   </div>
 </div>
 </div>
+<!-------------- Following Popup------------------------------------------------------------>
+<!-- FOLLOWING MODAL -->
+<div class="follow-overlay" id="followModal">
+  <div class="follow-box">
+
+    <!-- HEADER -->
+    <div class="follow-header">
+      <h3>Following</h3>
+      <span class="close-btn" onclick="closeFollowModal()">✕</span>
+    </div>
+
+    <!-- SEARCH -->
+    <div class="follow-search">
+      <input type="text" placeholder="Search" />
+    </div>
+
+    <!-- USER LIST -->
+    <div class="follow-list">
+
+     {% for user in following_users %}
+      <div class="follow-item">
+        <img src="{{ user.2 }}" class="follow-avatar">
+
+        <div class="follow-info">
+          <div class="follow-username">
+            {{ user.0 }}
+          </div>
+          <div class="follow-name">{{ user.1 }}</div>
+        </div>
+
+        <button class="follow-btn">Following</button>
+      </div>
+  {% empty %}
+  <p style="text-align:center; padding:20px;">No Following Yet</p>
+  {% endfor %}
+      
+    </div>
+  </div>
+</div>
 
 
+<!----------------------------------------end of popup----------------------------------------------------------->
 </body>
 <script src="{% static 'js/profile.js' %}"></script>
 
