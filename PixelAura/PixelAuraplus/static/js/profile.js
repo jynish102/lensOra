@@ -148,3 +148,18 @@ function toggleCommentMenu(el) {
 
   el.classList.toggle("active");
 }
+
+/*-------------------------follow popup----------------------------------- */
+const followModal = document.getElementById("followModal");
+
+document.getElementById("followingBtn").addEventListener("click", () => {
+  followModal.classList.add("active");
+  document.body.style.overflow = "hidden";
+});
+
+function closeFollowModal() {
+  followModal.classList.remove("active");
+  document.body.style.overflow = "auto";
+}
+
+/*-------------------------------------end popup--------------------------- */
