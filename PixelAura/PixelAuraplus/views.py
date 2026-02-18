@@ -540,6 +540,26 @@ def profile(request):
     """, [username])
         following_users = cursor.fetchall()
 
+       cursor.execute("""
+        SELECT r.username,r.name,p.image
+        FROM follows f
+        JOIN register r ON f.following_username = r.username
+        JOIN profile p
+        ON r.username = p.username
+        WHERE f.follower_username = %s
+    """, [username])
+        following_users = cursor.fetchall()
+
+        cursor.execute("""
+        SELECT r.username,r.name,p.image
+        FROM follows f
+        JOIN register r ON f.follower_username = r.username
+        JOIN profile p
+        ON r.username = p.username
+        WHERE f.following_username = %s
+    """, [username])
+        follower_users = cursor.fetchall()
+
         
     
     return render(request,"profile.html",
@@ -550,7 +570,8 @@ def profile(request):
                    "following_count" : following_count,
                    "followers_count" : followers_count,
                    "comments": comments,
-                  "following_users" : following_users})
+                  "following_users" : following_users,
+                  "follower_users" : follower_users })
 
 def get_comments(request):
     username = request.session.get("user")
@@ -739,6 +760,27 @@ def suggested_profile(request, username):
         """, [username])
         following_count = cursor.fetchone()[0]
 
+          cursor.execute("""
+        SELECT r.username,r.name,p.image
+        FROM follows f
+        JOIN register r ON f.following_username = r.username
+        JOIN profile p
+        ON r.username = p.username
+        WHERE f.follower_username = %s
+    """, [username])
+        following_users = cursor.fetchall()
+
+        cursor.execute("""
+        SELECT r.username,r.name,p.image
+        FROM follows f
+        JOIN register r ON f.follower_username = r.username
+        JOIN profile p
+        ON r.username = p.username
+        WHERE f.following_username = %s
+    """, [username])
+        follower_users = cursor.fetchall()
+
+
 
     return render(request, "suggested_profile.html", {
         "user": user,
@@ -749,7 +791,9 @@ def suggested_profile(request, username):
         "post_count" : post_count,
         "followers_count" : followers_count,
         "following_count" : following_count,
-        "comments":comments
+        "comments":comments,
+        "following_users" : following_users,
+        "follower_users" : follower_users
         
     })
 
