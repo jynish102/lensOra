@@ -132,12 +132,89 @@
   </div>
 </div>
 
+<!-------------- Following Popup------------------------------------------------------------>
 
+<div class="follow-overlay" id="followModal">
+  <div class="follow-box">
 
+    <!-- HEADER -->
+    <div class="follow-header">
+      <h3>Following</h3>
+      <span class="close-btn" onclick="closeFollowModal()">✕</span>
+    </div>
+
+    <!-- SEARCH -->
+    <div class="follow-search">
+      <input type="text" placeholder="Search" />
+    </div>
+
+    <!-- USER LIST -->
+    <div class="follow-list">
+
+     {% for user in following_users %}
+      <div class="follow-item">
+        <img src="{{ user.2 }}" class="follow-avatar">
+
+        <div class="follow-info">
+          <div class="follow-username">
+            {{ user.0 }}
+          </div>
+          <div class="follow-name">{{ user.1 }}</div>
+        </div>
+
+        <button class="follow_btn">Following</button>
+      </div>
+  {% empty %}
+  <p style="text-align:center; padding:20px;">No Following Yet</p>
+  {% endfor %}
+      
+    </div>
+  </div>
+</div>
+<!----------------------------------------end of popup----------------------------------------------------------->
+<!-------------- Followers Popup------------------------------------------------------------>
+
+<div class="follow-overlay" id="followersModal">
+  <div class="follow-box">
+
+    <!-- HEADER -->
+    <div class="follow-header">
+      <h3>Followers</h3>
+      <span class="close-btn" onclick="closeFollowersModal()">✕</span>
+    </div>
+
+    <!-- SEARCH -->
+    <div class="follow-search">
+      <input type="text" placeholder="Search" />
+    </div>
+
+    <!-- USER LIST -->
+    <div class="follow-list">
+
+     {% for user in follower_users %}
+      <div class="follow-item">
+        <img src="{{ user.2 }}" class="follow-avatar">
+
+        <div class="follow-info">
+          <div class="follow-username">
+            {{ user.0 }}
+          </div>
+          <div class="follow-name">{{ user.1 }}</div>
+        </div>
+
+        <button class="follow_btn">Follower</button>
+      </div>
+      {% empty %}
+      <p style="text-align:center; padding:20px;">No Followers Yet</p>
+      {% endfor %}
+      
+    </div>
+  </div>
+</div>
+<!----------------------------------------end----------------------------------------------------------->
 {% endblock %}
 
 {% block extra_js %}
 <script src="{% static 'js/suggested_profile.js' %}"></script>
 
 {% endblock %}
-
