@@ -130,3 +130,34 @@ function toggleCommentMenu(el) {
 
   el.classList.toggle("active");
 }
+/*-------------------------follow popup----------------------------------- */
+const followingModal = document.getElementById("followModal");
+const followersModal = document.getElementById("followersModal");
+
+const followingBtn = document.getElementById("followingBtn");
+const followerBtn = document.getElementById("followerBtn");
+
+/* OPEN FOLLOWING */
+followingBtn.addEventListener("click", () => {
+  followingModal.classList.add("active");
+  document.body.style.overflow = "hidden";
+});
+
+/* OPEN FOLLOWERS */
+followerBtn.addEventListener("click", () => {
+  followersModal.classList.add("active");
+  document.body.style.overflow = "hidden";
+});
+
+/* CLOSE FOLLOWING */
+function closeFollowModal() {
+  followingModal.classList.remove("active");
+  document.body.style.overflow = "auto";
+}
+
+/* CLOSE FOLLOWERS */
+function closeFollowersModal() {
+  followersModal.classList.remove("active");
+  document.body.style.overflow = "auto";
+}
+/*-------------------------------------end popup--------------------------- */
