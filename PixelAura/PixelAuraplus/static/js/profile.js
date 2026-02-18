@@ -150,16 +150,33 @@ function toggleCommentMenu(el) {
 }
 
 /*-------------------------follow popup----------------------------------- */
-const followModal = document.getElementById("followModal");
+const followingModal = document.getElementById("followModal");
+const followersModal = document.getElementById("followersModal");
 
-document.getElementById("followingBtn").addEventListener("click", () => {
-  followModal.classList.add("active");
+const followingBtn = document.getElementById("followingBtn");
+const followerBtn = document.getElementById("followerBtn");
+
+/* OPEN FOLLOWING */
+followingBtn.addEventListener("click", () => {
+  followingModal.classList.add("active");
   document.body.style.overflow = "hidden";
 });
 
+/* OPEN FOLLOWERS */
+followerBtn.addEventListener("click", () => {
+  followersModal.classList.add("active");
+  document.body.style.overflow = "hidden";
+});
+
+/* CLOSE FOLLOWING */
 function closeFollowModal() {
-  followModal.classList.remove("active");
+  followingModal.classList.remove("active");
   document.body.style.overflow = "auto";
 }
 
+/* CLOSE FOLLOWERS */
+function closeFollowersModal() {
+  followersModal.classList.remove("active");
+  document.body.style.overflow = "auto";
+}
 /*-------------------------------------end popup--------------------------- */
