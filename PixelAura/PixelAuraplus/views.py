@@ -1316,6 +1316,22 @@ def chat_page(request,username):
             "me": me
         })
 
+def update_privacy(request):
+    if 'user' not in request.session:
+        return redirect('login')
+
+    username = request.session.get('user')
+    status = request.POST.get('status')  # "1" or "0"
+
+    with connection.cursor() as cursor:
+        cursor.execute("""
+            UPDATE register
+            SET is_private = %s
+            WHERE username = %s
+        """, [status, username])
+
+    return JsonResponse({"success": True})
+
 def logout(request):
     if "user" in request.session:
         request.session.flush()
