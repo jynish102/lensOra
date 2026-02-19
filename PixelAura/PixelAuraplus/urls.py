@@ -32,6 +32,7 @@ urlpatterns = [
     path("delete-comment/", views.delete_comment, name="delete_comment"),
     path('chats/' , views.chats, name="chats"),
     path("chat_page/<str:username>/", views.chat_page, name="chat_page"),
+     path("update-privacy/", views.update_privacy, name="update_privacy"),
 
     path('logout/', views.logout, name="logout"),
    
