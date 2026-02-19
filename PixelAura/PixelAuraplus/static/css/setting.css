@@ -380,3 +380,87 @@ small {
 .settings-page .privacy-section {
     display: none;
 }
+.privacy-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.privacy-overlay.active {
+    display: flex;
+}
+
+
+.privacy-modal {
+    background: #fff;
+    width: 420px;
+    border-radius: 16px;
+    padding: 25px;
+    text-align: center;
+    animation: popup 0.2s ease;
+}
+
+@keyframes popup {
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.privacy-content {
+    margin: 20px 0;
+    text-align: left;
+    font-size: 14px;
+    color: #444;
+}
+
+.privacy-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.confirm-btn {
+    background: none;
+    border: none;
+    color: #0095f6;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.cancel-btn {
+    background: none;
+    border: none;
+    color: #555;
+    cursor: pointer;
+}
+
+.privacy-row-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.privacy-icon {
+    font-size: 22px;
+    color: #262626;
+    margin-top: 4px;
+    flex-shrink: 0;
+}
+
+.privacy-row-item p {
+    font-size: 14px;
+    color: #333;
+    line-height: 1.6;
+    margin: 0;
+}
