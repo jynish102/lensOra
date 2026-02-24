@@ -22,20 +22,19 @@
            <form method="post" action ="{% url 'follow_user' user.username %}">
             {% csrf_token %}
                  {% if is_following %}
-              <button class="follow-btn following" type="submit">
-                Following
-              </button>
+              {% if follow_status == "accepted" %}
+                  <button class="follow-btn following">Following</button>
 
-            {% elif follows_you %}
-              <button class="follow-btn follow-back" type="submit">
-                Follow Back
-              </button>
+              {% elif follow_status == "pending" %}
+                <button class="follow-btn requested" disabled>Requested</button>
 
-            {% else %}
-              <button class="follow-btn" type="submit">
-                Follow
-              </button>
-            {% endif %}
+              {% elif follows_you %}
+                <button class="follow-btn follow-back">Follow Back</button>
+
+              {% else %}
+                <button class="follow-btn">Follow</button>
+              {% endif %}
+
 
         </form>
         </div>
@@ -58,26 +57,32 @@
 
 <hr>
 
-<div class="posts-grid">
-    {% for post in posts %}
-        <div class="post">
-           {% if post.1 %}
-            {% if post.1|lower|slice:"-4:" == ".mp4" %}
-            <video class="grid-post" onclick="openViewPost('{{ post.1 }}', '{{ post.0 }}','{{ post.3|escapejs }}')" autoplay muted loop playsinline>
-              <source src="{{ post.1 }}" type="video/mp4"   />
-              Your browser does not support the video tag.
-            </video>
-            {% else %}
-            <img src="{{ post.1 }}"  onclick="openViewPost('{{ post.1 }}', '{{ post.0 }}', '{{ post.2|escapejs }}'),false"
-           class="grid-post">
-           {% endif %}
-          
-           {% endif %}
-        </div>
-    {% empty %}
-        <p>No posts yet</p>
-    {% endfor %}
-</div>
+{% if show_posts %}
+    <div class="posts-grid">
+        {% for post in posts %}
+            <div class="post">
+              {% if post.1 %}
+                {% if post.1|lower|slice:"-4:" == ".mp4" %}
+                <video class="grid-post" onclick="openViewPost('{{ post.1 }}', '{{ post.0 }}','{{ post.3|escapejs }}')" autoplay muted loop playsinline>
+                  <source src="{{ post.1 }}" type="video/mp4"   />
+                  Your browser does not support the video tag.
+                </video>
+                {% else %}
+                <img src="{{ post.1 }}"  onclick="openViewPost('{{ post.1 }}', '{{ post.0 }}', '{{ post.2|escapejs }}'),false"
+              class="grid-post">
+              {% endif %}
+              
+              {% endif %}
+            </div>
+        {% empty %}
+            <p>No posts yet</p>
+        {% endfor %}
+    </div>
+{% else %}
+   <div class="private-message">
+      🔒 This account is private
+   </div>
+{% endif %}    
 
 
 <!-- VIEW POST POPUP -->
@@ -218,3 +223,4 @@
 <script src="{% static 'js/suggested_profile.js' %}"></script>
 
 {% endblock %}
+
