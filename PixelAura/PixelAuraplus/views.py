@@ -971,52 +971,59 @@ def follow_user(request, username):
     if "user" not in request.session:
         return redirect("login")
 
-    follower = request.session["user"]    # username
-    follower_id = request.session["user"][0]   # id
+    follower = request.session["user"]
 
     if follower == username:
         return redirect("suggested_user_profile", username=username)
 
     with connection.cursor() as cursor:
 
-        # check already following
+        # Check existing relationship
         cursor.execute("""
-            SELECT id FROM follows
+            SELECT status FROM follows
             WHERE follower_username=%s AND following_username=%s
         """, [follower, username])
 
-        if cursor.fetchone():
-            # UNFOLLOW
-            cursor.execute("""
-                DELETE FROM follows
-                WHERE follower_username=%s AND following_username=%s
-            """, [follower, username])
+        existing = cursor.fetchone()
+
+        if existing:
+            current_status = existing[0]
+
+            if current_status == "requested":
+                # Cancel request
+                cursor.execute("""
+                    UPDATE follows
+                    SET status='accepted'
+                    WHERE follower_username=%s
+                    AND following_username=%s
+                """, [follower, username])
+
+            elif current_status == "accepted":
+                # Unfollow
+                cursor.execute("""
+                    DELETE FROM follows
+                    WHERE follower_username=%s AND following_username=%s
+                """, [follower, username])
 
         else:
-            # FOLLOW
+            # Check if target is private
             cursor.execute("""
-                INSERT INTO follows (follower_username, following_username)
-                VALUES (%s, %s)
-            """, [follower, username])
-
-            # 🔔 GET FOLLOWED USER ID
-            cursor.execute("""
-                SELECT id FROM register WHERE username=%s
+                SELECT is_private FROM register
+                WHERE username=%s
             """, [username])
 
-            followed_user = cursor.fetchone()
+            private_row = cursor.fetchone()
+            is_private = private_row[0] if private_row else 0
 
-            if followed_user:
-                followed_user_id = followed_user[0]
+            if is_private == 1:
+                status = "requested"
+            else:
+                status = "accepted"
 
-                # 🔔 INSERT NOTIFICATION HERE ✅
-                cursor.execute("""
-                    INSERT INTO notifications (user_id, message)
-                    VALUES (%s, %s)
-                """, [
-                    followed_user_id,
-                    f"{follower} started following you"
-                ])
+            cursor.execute("""
+                INSERT INTO follows (follower_username, following_username, status)
+                VALUES (%s, %s, %s)
+            """, [follower, username, status])
 
     return redirect("suggested_user_profile", username=username)
     
