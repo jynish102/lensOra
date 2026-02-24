@@ -16,48 +16,40 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const DEFAULT_IMG = "https://cdn-icons-png.flaticon.com/512/847/847969.png";
 
-  if (!openBtn || !modal || !fileInput) return;
+  if (openBtn && modal && fileInput) {
+    openBtn.addEventListener("click", () => {
+      modal.style.display = "flex";
+    });
 
-  // Open modal
-  openBtn.addEventListener("click", () => {
-    modal.style.display = "flex";
-  });
+    closeBtn.addEventListener("click", () => {
+      modal.style.display = "none";
+    });
 
-  // Close modal
-  closeBtn.addEventListener("click", () => {
-    modal.style.display = "none";
-  });
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) modal.style.display = "none";
+    });
 
-  // Close on backdrop click
-  modal.addEventListener("click", (e) => {
-    if (e.target === modal) modal.style.display = "none";
-  });
+    uploadBtn.addEventListener("click", () => {
+      fileInput.click();
+    });
 
-  // Upload Photo — opens file picker
-  uploadBtn.addEventListener("click", () => {
-    fileInput.click(); // this triggers the browser file picker
-  });
+    fileInput.addEventListener("change", () => {
+      const file = fileInput.files[0];
+      if (!file) return;
 
-  // Preview selected image
-  fileInput.addEventListener("change", () => {
-    const file = fileInput.files[0];
-    if (!file) return;
+      const url = URL.createObjectURL(file);
+      profileImg.src = url;
+      profileImg.onload = () => URL.revokeObjectURL(url);
 
-    const url = URL.createObjectURL(file);
-    profileImg.src = url;
-    profileImg.onload = () => URL.revokeObjectURL(url);
+      modal.style.display = "none";
+    });
 
-    modal.style.display = "none"; // close popup after selection
-  });
-
-  // Remove Photo — resets preview
-  removeBtn.addEventListener("click", () => {
-    profileImg.src = DEFAULT_IMG;
-    fileInput.value = ""; // ensures nothing is uploaded
-    modal.style.display = "none";
-  });
-
-  console.log("SETTING JS LOADED");
+    removeBtn.addEventListener("click", () => {
+      profileImg.src = DEFAULT_IMG;
+      fileInput.value = "";
+      modal.style.display = "none";
+    });
+  }
 
   const bioInput = document.getElementById("bioInput");
   const bioCount = document.getElementById("bioCount");
@@ -91,24 +83,53 @@ document.addEventListener("DOMContentLoaded", () => {
   const confirmBtn = document.getElementById("confirmPrivate");
   const cancelBtn = document.getElementById("cancelPrivate");
 
+  if (!toggle) return;
   let previousState = toggle.checked;
+  let isManualChange = false; // ✅ ADD THIS LINE
 
   /* CLICK TOGGLE */
-  toggle.addEventListener("click", function (e) {
-    e.preventDefault(); // stop auto toggle
-    privacyModal.classList.add("active");
-    document.body.style.overflow = "hidden";
-  });
+  if (toggle) {
+    toggle.addEventListener("change", function () {
+      if (isManualChange) {
+        isManualChange = false;
+        return;
+      }
+
+      if (this.checked) {
+        // only show modal when turning ON (private)
+        privacyModal.classList.add("active");
+        document.body.style.overflow = "hidden";
+
+        // revert temporarily until confirm
+        this.checked = false;
+      } else {
+        // directly make public without modal
+        updatePrivacy(0);
+      }
+    });
+  }
 
   /* CONFIRM */
-  confirmBtn.addEventListener("click", function () {
-    updatePrivacy(1); // set private
-    document.getElementById("privacyToggle").checked = true;
+  if (confirmBtn) {
+    confirmBtn.addEventListener("click", function () {
+      isManualChange = true;
+      toggle.checked = true;
+      updatePrivacy(1);
+    });
+  }
+
+  /* CANCEL */
+if (cancelBtn) {
+  cancelBtn.addEventListener("click", function () {
+    toggle.checked = previousState;
+    privacyModal.classList.remove("active");
+    document.body.style.overflow = "auto";
   });
+}  
 
   /* function */
   function updatePrivacy(status) {
-    fetch("/update-privacy/", {
+    fetch("/PixelAuraplus/update-privacy/", {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
@@ -120,17 +141,19 @@ document.addEventListener("DOMContentLoaded", () => {
       .then((response) => response.json())
       .then((data) => {
         console.log("Privacy Updated:", status);
+
+        // ✅ Force correct toggle state
+        toggle.checked = status === 1;
+
+        // ✅ Save new state
+        previousState = toggle.checked;
+
+        // ✅ Close modal automatically
+        privacyModal.classList.remove("active");
+        document.body.style.overflow = "auto";
       });
   }
 
-
-  /* CANCEL */
-  cancelBtn.addEventListener("click", function () {
-    toggle.checked = previousState;
-    privacyModal.classList.remove("active");
-    document.body.style.overflow = "auto";
-  });
-  /*---*/
   editSection.style.display = "block";
   privacySection.style.display = "none";
 
@@ -157,4 +180,6 @@ document.addEventListener("DOMContentLoaded", () => {
     privacyTab.classList.add("active");
     editTab.classList.remove("active");
   });
+
+  console.log(toggle);
 });
