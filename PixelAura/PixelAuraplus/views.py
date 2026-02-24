@@ -686,6 +686,7 @@ def suggested_profile(request, username):
     logged_user = request.session["user"]
     comments = get_comments(request)
     loginprof = profiledata(request)
+    show_posts = False
     
     with connection.cursor() as cursor:
 
@@ -780,6 +781,25 @@ def suggested_profile(request, username):
     """, [username])
         follower_users = cursor.fetchall()
 
+         # GET PRIVATE STATUS
+        cursor.execute("""
+        SELECT is_private FROM register
+        WHERE username = %s
+    """, [username])
+        private_row = cursor.fetchone()
+        is_private = private_row[0] if private_row else 0
+
+    # CONTROL POST VISIBILITY
+        if username == logged_user:
+         show_posts = True
+        elif is_private == 0:
+         show_posts = True
+        elif follow_status == "accepted":
+         show_posts = True
+        else:
+          show_posts = False
+
+
 
 
     return render(request, "suggested_profile.html", {
@@ -793,7 +813,9 @@ def suggested_profile(request, username):
         "following_count" : following_count,
         "comments":comments,
         "following_users" : following_users,
-        "follower_users" : follower_users
+        "follower_users" : follower_users,
+        "is_private" : is_private,
+        "show_posts" : show_posts
         
     })
 
