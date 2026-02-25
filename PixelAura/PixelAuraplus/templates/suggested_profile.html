@@ -19,24 +19,26 @@
             
             <h2 class="username">{{ user.username }}</h2>
             
-           <form method="post" action ="{% url 'follow_user' user.username %}">
-            {% csrf_token %}
-                 {% if is_following %}
-              {% if follow_status == "accepted" %}
-                  <button class="follow-btn following">Following</button>
+           <form method="post" action="{% url 'follow_user' user.username %}">
+    {% csrf_token %}
 
-              {% elif follow_status == "pending" %}
-                <button class="follow-btn requested" disabled>Requested</button>
+    {% if follow_status == "accepted" %}
+        <button class="follow-btn following">Following</button>
 
-              {% elif follows_you %}
-                <button class="follow-btn follow-back">Follow Back</button>
+    {% elif follow_status == "requested" %}
+        <button class="follow-btn requested">Requested</button>
 
-              {% else %}
-                <button class="follow-btn">Follow</button>
-              {% endif %}
+    {% elif request_pending_for_you %}
+        <button class="follow-btn accept">Accept</button>
 
+    {% elif follows_you %}
+        <button class="follow-btn follow-back">Follow Back</button>
 
-        </form>
+    {% else %}
+        <button class="follow-btn">Follow</button>
+
+    {% endif %}
+</form>
         </div>
 
         <ul class="profile-stats">
@@ -223,4 +225,5 @@
 <script src="{% static 'js/suggested_profile.js' %}"></script>
 
 {% endblock %}
+
 
