@@ -671,14 +671,6 @@ def profiledata(request):
                 'image': row[3],
             }
         return profile_data    
-
-
-def saved(request):
-    return render(request,"saved.html")
-
-
-
-
 def suggested_profile(request, username):
     if "user" not in request.session:
         return redirect("login")
@@ -733,23 +725,34 @@ def suggested_profile(request, username):
 
          # ✅ CHECK FOLLOW STATUS
         cursor.execute("""
-            SELECT id FROM follows
+            SELECT status FROM follows
             WHERE follower_username=%s AND following_username=%s
         """, [logged_user, username])
 
-        is_following = cursor.fetchone() is not None
+        follow_row = cursor.fetchone()
+        follow_status = follow_row[0] if follow_row else None
      
         cursor.execute("""
-            SELECT id FROM follows 
+            SELECT status FROM follows 
             WHERE follower_username=%s AND following_username=%s
         """, [username, logged_user])
-        follows_you = cursor.fetchone() is not None
+        reverse_row = cursor.fetchone() 
+
+        follows_you = False
+        request_pending_for_you = False
+
+        if reverse_row:
+         if reverse_row[0] == "accepted":
+           follows_you = True
+         elif reverse_row[0] == "requested":
+            request_pending_for_you = True
+
 
          # FOLLOWERS COUNT
         cursor.execute("""
             SELECT COUNT(*)
             FROM follows
-            WHERE following_username = %s
+            WHERE following_username = %s AND status='accepted'
         """, [username])
         followers_count = cursor.fetchone()[0]
 
@@ -761,7 +764,17 @@ def suggested_profile(request, username):
         """, [username])
         following_count = cursor.fetchone()[0]
 
-          cursor.execute("""
+        cursor.execute("""
+        SELECT r.username,r.name,p.image
+        FROM follows f
+        JOIN register r ON f.following_username = r.username
+        JOIN profile p
+        ON r.username = p.username
+        WHERE f.follower_username = %s
+    """, [username])
+        following_users = cursor.fetchall()
+
+        cursor.execute("""
         SELECT r.username,r.name,p.image
         FROM follows f
         JOIN register r ON f.following_username = r.username
@@ -781,7 +794,7 @@ def suggested_profile(request, username):
     """, [username])
         follower_users = cursor.fetchall()
 
-         # GET PRIVATE STATUS
+        # GET PRIVATE STATUS
         cursor.execute("""
         SELECT is_private FROM register
         WHERE username = %s
@@ -798,25 +811,23 @@ def suggested_profile(request, username):
          show_posts = True
         else:
           show_posts = False
-
-
-
-
     return render(request, "suggested_profile.html", {
         "user": user,
-        "loginprof": loginprof,
+        "profile": profile,
         "posts": posts,
-        "is_following" : is_following,
+        "follow_status" : follow_status,
         "follows_you":follows_you,
         "post_count" : post_count,
         "followers_count" : followers_count,
         "following_count" : following_count,
         "comments":comments,
+        "loginprof" : loginprof,
         "following_users" : following_users,
         "follower_users" : follower_users,
         "is_private" : is_private,
-        "show_posts" : show_posts
-        
+        "show_posts" : show_posts  ,
+        "follows_you": follows_you,
+        "request_pending_for_you": request_pending_for_you,
     })
 
 def suggested_user_profile(request, username):
@@ -971,42 +982,62 @@ def follow_user(request, username):
     if "user" not in request.session:
         return redirect("login")
 
-    follower = request.session["user"]
+    current_user = request.session["user"]
 
-    if follower == username:
+    if current_user == username:
         return redirect("suggested_user_profile", username=username)
 
     with connection.cursor() as cursor:
 
-        # Check existing relationship
+        # 1️⃣ Check if someone requested YOU
         cursor.execute("""
             SELECT status FROM follows
-            WHERE follower_username=%s AND following_username=%s
-        """, [follower, username])
+            WHERE follower_username=%s
+            AND following_username=%s
+        """, [username, current_user])
+
+        reverse = cursor.fetchone()
+
+        if reverse and reverse[0] == "requested":
+            # 🔥 ACCEPT REQUEST
+            cursor.execute("""
+                UPDATE follows
+                SET status='accepted'
+                WHERE follower_username=%s
+                AND following_username=%s
+            """, [username, current_user])
+
+            return redirect("suggested_user_profile", username=username)
+
+
+        # 2️⃣ Check if YOU already follow them
+        cursor.execute("""
+            SELECT status FROM follows
+            WHERE follower_username=%s
+            AND following_username=%s
+        """, [current_user, username])
 
         existing = cursor.fetchone()
 
         if existing:
-            current_status = existing[0]
-
-            if current_status == "requested":
-                # Cancel request
-                cursor.execute("""
-                    UPDATE follows
-                    SET status='accepted'
-                    WHERE follower_username=%s
-                    AND following_username=%s
-                """, [follower, username])
-
-            elif current_status == "accepted":
-                # Unfollow
+            if existing[0] == "accepted":
+                # 🔥 Unfollow
                 cursor.execute("""
                     DELETE FROM follows
-                    WHERE follower_username=%s AND following_username=%s
-                """, [follower, username])
+                    WHERE follower_username=%s
+                    AND following_username=%s
+                """, [current_user, username])
+
+            elif existing[0] == "requested":
+                # 🔥 Cancel Request
+                cursor.execute("""
+                    DELETE FROM follows
+                    WHERE follower_username=%s
+                    AND following_username=%s
+                """, [current_user, username])
 
         else:
-            # Check if target is private
+            # 3️⃣ New Follow
             cursor.execute("""
                 SELECT is_private FROM register
                 WHERE username=%s
@@ -1015,15 +1046,12 @@ def follow_user(request, username):
             private_row = cursor.fetchone()
             is_private = private_row[0] if private_row else 0
 
-            if is_private == 1:
-                status = "requested"
-            else:
-                status = "accepted"
+            status = "requested" if is_private == 1 else "accepted"
 
             cursor.execute("""
                 INSERT INTO follows (follower_username, following_username, status)
                 VALUES (%s, %s, %s)
-            """, [follower, username, status])
+            """, [current_user, username, status])
 
     return redirect("suggested_user_profile", username=username)
     
