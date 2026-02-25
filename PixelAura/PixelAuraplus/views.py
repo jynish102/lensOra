@@ -114,11 +114,20 @@ def home(request):
                 posts.username,
                 profile.image AS profile_image
             FROM posts
+            JOIN register  ON posts.username = register.username
             LEFT JOIN profile ON posts.username = profile.username
-            WHERE posts.username != %s
+            LEFT JOIN follows  
+            ON follows.follower_username = %s 
+            AND follows.following_username = posts.username
+            WHERE 
+                posts.username != %s
+                AND (
+                    register.is_private = 0
+                    OR follows.status = 'accepted'
+                )
             ORDER BY posts.id DESC
             LIMIT 10
-        """, [login_username])
+        """, [login_username, login_username])
 
         rows = cursor.fetchall()
 
