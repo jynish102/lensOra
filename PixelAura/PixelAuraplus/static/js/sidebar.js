@@ -3,6 +3,16 @@ const sidebar = document.querySelector(".sidebar");
 const toggle = document.querySelector(".toggle");
 
 const modeText = document.querySelector(".mode-text");
+const toast = document.querySelector(".toast-message");
+
+if (toast) {
+  setTimeout(() => {
+    toast.style.opacity = "0";
+    setTimeout(() => {
+      toast.remove();
+    }, 500);
+  }, 3000);
+}
 
 toggle.addEventListener("click", () => {
     sidebar.classList.toggle("close");
