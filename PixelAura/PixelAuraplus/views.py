@@ -6,6 +6,7 @@ import json
 from django.http import HttpResponse,JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
+import time
 
 
 def login(request):
@@ -18,12 +19,12 @@ def login(request):
             query = "select * from register where username=%s and password=%s"
             cursor.execute(query,[un,pw])
             data = cursor.fetchone()
-             if data:
+            if data:
                 request.session['user'] = data[6]
                 messages.success(request,f"Welcome!  {data[6]}  To Home Page.")
                 return redirect('home')
             else:
-                messages.success(request, f"Sorry! {un}, Your Login Data Is not Match To Your Registered Data. ")
+                messages.error(request,f"Sorry! {un}, Your Login Data Is not Match To Your Registered Data. ")
                 return redirect('login')
     return render(request,'login.html')
 
@@ -36,15 +37,16 @@ def register(request):
         dob = request.POST.get('birthdate')
         un = request.POST.get('username')
         with connection.cursor() as cursor:
-            cursor.execute("SELECT id FROM register WHERE username=%s", [un])
+            cursor.execute("SELECT username FROM register WHERE username=%s", [un])
             if cursor.fetchone():
-              messages.error(request, f"Username '{un}' already exists!")
+              messages.error(request, f"Username {un} already exists!")
               return redirect('register')
             
             query ="insert into register (name,email,mobile,password,birthdate,username) values(%s,%s,%s,%s,%s,%s)"
             cursor.execute(query,[nm, em, mb, pw, dob, un])
             messages.success(request, f"Registration successful! Welcome {un} 🎉")
             return redirect('login')
+
     return render(request,'register.html')
 
 def details(request):
@@ -128,7 +130,6 @@ def home(request):
             ORDER BY posts.id DESC
             LIMIT 10
         """, [login_username, login_username])
-
         rows = cursor.fetchall()
 
         #Fetch comments with username + profile image
@@ -272,8 +273,14 @@ def account_sidebar(request):
 
 def setting(request):
     loginu = getloginuserdt(request)
-   loginprof = profiledata(requrest)
+    loginprof =profiledata(request) 
     un = request.session.get('user')
+    # GET request
+    profile = profiledata(request)   # should return None if not exists
+    result = 0
+    username= request.session.get("user")
+    status = request.POST.get('status')
+    
 
     if request.method == "POST":
         bio = request.POST.get("bio")
@@ -282,6 +289,7 @@ def setting(request):
         pro_image_r_p = None
 
         if pro_img:
+            
             image_path = os.path.join(settings.MEDIA_ROOT, "profile", pro_img.name)
             os.makedirs(os.path.dirname(image_path), exist_ok=True)
 
@@ -292,14 +300,14 @@ def setting(request):
             pro_image_r_p = settings.MEDIA_URL + "profile/" + pro_img.name
 
         with connection.cursor() as cursor:
+           
+
             # 🔍 Check if profile exists
             cursor.execute(
                 "SELECT id FROM profile WHERE username = %s",
                 [un]
             )
             existing = cursor.fetchone()
-           
-
             if existing:
                 # ✅ UPDATE
                 if pro_image_r_p:
@@ -314,24 +322,38 @@ def setting(request):
                         SET bio=%s, gender=%s
                         WHERE username=%s
                     """, [bio, gen, un])
+                messages.success(request,f"{un} Your Profile UPDATED Successfully....And Your Gender is {gen}......")
+
             else:
                 # ✅ INSERT
                 cursor.execute("""
                     INSERT INTO profile (username, bio, gender, image)
                     VALUES (%s, %s, %s, %s)
                 """, [un, bio, gen, pro_image_r_p])
+                messages.success(request,f"{un} Your Profile Add Successfully....And Your Gender is {gen}......")
 
-        return redirect("profile")
+            return redirect("setting")
+        
+    with connection.cursor() as cursor:
+            cursor.execute("""
+            SELECT is_private FROM register
+            WHERE username = %s
+        """, [username])
+            result = cursor.fetchone()
 
-    # GET request
-    profile = profiledata(request)   # should return None if not exists
+    if result:
+          is_private = result[0]
+    else:
+         is_private = 0
+
     return render(
         request,
         'setting.html',
         {
             'datas': loginu,
             'profile': profile,
-            'loginprof' : loginprof,
+            "loginprof" : loginprof,
+            "is_private" : is_private
         }
     )
 
@@ -433,16 +455,25 @@ def reels(request):
     with connection.cursor() as cursor:
         cursor.execute("""
                 SELECT 
-                    posts.id,
-                    posts.image,
-                    posts.username,
-                    profile.image AS profile_image
-                FROM posts
-                LEFT JOIN profile ON posts.username = profile.username
-                WHERE posts.username != %s
-                ORDER BY posts.id DESC
-                LIMIT 10
-            """, [login_username])
+                posts.id,
+                posts.image,
+                posts.username,
+                profile.image AS profile_image
+            FROM posts
+            JOIN register  ON posts.username = register.username
+            LEFT JOIN profile ON posts.username = profile.username
+            LEFT JOIN follows  
+            ON follows.follower_username = %s 
+            AND follows.following_username = posts.username
+            WHERE 
+                posts.username != %s
+                AND (
+                    register.is_private = 0
+                    OR follows.status = 'accepted'
+                )
+            ORDER BY posts.id DESC
+            LIMIT 10
+        """, [login_username, login_username])
 
         rows = cursor.fetchall()
 
@@ -539,17 +570,7 @@ def profile(request):
         """, [username])
         following_count = cursor.fetchone()[0]
 
-       cursor.execute("""
-        SELECT r.username,r.name,p.image
-        FROM follows f
-        JOIN register r ON f.following_username = r.username
-        JOIN profile p
-        ON r.username = p.username
-        WHERE f.follower_username = %s
-    """, [username])
-        following_users = cursor.fetchall()
-
-       cursor.execute("""
+        cursor.execute("""
         SELECT r.username,r.name,p.image
         FROM follows f
         JOIN register r ON f.following_username = r.username
@@ -579,8 +600,8 @@ def profile(request):
                    "following_count" : following_count,
                    "followers_count" : followers_count,
                    "comments": comments,
-                  "following_users" : following_users,
-                  "follower_users" : follower_users })
+                   "following_users": following_users,
+                   "follower_users" : follower_users})
 
 def get_comments(request):
     username = request.session.get("user")
@@ -652,9 +673,6 @@ def delete_comment(request):
 
     return JsonResponse({"success": True})
 
-                   
-
-
 def profiledata(request):
     username = request.session.get('user')
     profile_data = {
@@ -680,6 +698,8 @@ def profiledata(request):
                 'image': row[3],
             }
         return profile_data    
+
+
 def suggested_profile(request, username):
     if "user" not in request.session:
         return redirect("login")
@@ -965,7 +985,7 @@ def notifications(request):
         return redirect("login")
 
     logged_user = request.session["user"]  # username
-    profile = profiledata(request) 
+    loginprof = profiledata(request) 
 
     with connection.cursor() as cursor:
         cursor.execute("""
@@ -984,7 +1004,7 @@ def notifications(request):
 
     return render(request, "notifications.html", {
         "notifications": notifications,
-        "profile" : profile
+        "loginprof" : loginprof
     })
 
 def follow_user(request, username):
@@ -1063,7 +1083,7 @@ def follow_user(request, username):
             """, [current_user, username, status])
 
     return redirect("suggested_user_profile", username=username)
-    
+
 def add_comment(request):
     if request.method != "POST":
         return redirect("home")
@@ -1090,10 +1110,13 @@ def add_comment(request):
             [username]
         )
         user = cursor.fetchone()
+
         if not user:
             print("❌ User not found")
             return redirect(request.META.get("HTTP_REFERER"))
+
         user_id = user[0]
+        
         cursor.execute(
             """
             INSERT INTO comments (post_id, user_id, comment)
@@ -1138,6 +1161,8 @@ def update_post(request):
             )
 
     return redirect('post_crud')
+
+
 def forgot_password(request):
     profile = profiledata(request)
     login = getloginuserdt(request)
@@ -1173,6 +1198,7 @@ def forgot_password(request):
             "password_found": password_found
         }
     )
+
 def forgot_password(request):
     profile = profiledata(request)
     login = getloginuserdt(request)
@@ -1213,7 +1239,10 @@ def forgot_password(request):
             "error_message": error_message,
         }
     )
-    
+
+
+
+
 def toggle_like(request):
     if request.method != "POST":
         return JsonResponse({"error": "Invalid request"}, status=400)
@@ -1323,7 +1352,7 @@ def chats(request):
     })   
 
 
-def chat_page(request,username): 
+def chat_page(request,username):
    loginprof = profiledata(request)
    me = request.session.get("user")
    if not me:
@@ -1340,8 +1369,8 @@ def chat_page(request,username):
         """, [username])
 
         row = cursor.fetchone()
-        # print("LOGGED USER =", me)
-        # print("CHAT USER =", username)
+        print("LOGGED USER =", me)
+        print("CHAT USER =", username)
 
 
         # 2️⃣ Get chat messages between both users
@@ -1397,6 +1426,8 @@ def update_privacy(request):
         """, [status, username])
 
     return JsonResponse({"success": True})
+
+
 
 def logout(request):
     if "user" in request.session:
