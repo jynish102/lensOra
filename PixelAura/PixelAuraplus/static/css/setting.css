@@ -464,3 +464,12 @@ small {
     line-height: 1.6;
     margin: 0;
 }
+.toast-message {
+  background: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  margin: 10px 0;
+  border-radius: 6px;
+  text-align: center;
+  font-weight: 500;
+}
