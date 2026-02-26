@@ -91,8 +91,7 @@
 
       <div class="form-group">
         <label>Bio</label>
-        <textarea id="bioInput" name="bio" placeholder="Bio">
-{{ profile.bio }}</textarea
+        <textarea id="bioInput" name="bio" placeholder="Bio">{{ profile.bio }}</textarea
         >
         <small id="bioCount">0 / 150</small>
         <small id="bioError" style="color: red; display: none"
@@ -108,8 +107,8 @@
             value="male"
             {%
             if
-            profile.gender=""
-            ="male"
+            profile.gender=
+            = "male"
             %}selected{%
             endif
             %}
@@ -120,8 +119,8 @@
             value="female"
             {%
             if
-            profile.gender=""
-            ="female"
+            profile.gender=
+            = "female"
             %}selected{%
             endif
             %}
