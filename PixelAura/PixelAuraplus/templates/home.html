@@ -3,9 +3,9 @@
 {% block content %}
 {% if messages %}
  {% for message in messages %}
-    <script>
-     <div class="toast">{{ message }}</div>
-    </script>
+    <div class="toast-message">
+      {{ message }}
+    </div>
   {% endfor %}
     
 {% endif %}
