@@ -13,6 +13,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const editSection = document.querySelector(".edit-profile");
   const privacySection = document.querySelector(".privacy-section");
+  const toast = document.querySelector(".toast-message");
+
+if (toast) {
+  setTimeout(() => {
+    toast.style.opacity = "0";
+    setTimeout(() => {
+      toast.remove();
+    }, 500);
+  }, 3000);
+}
 
   const DEFAULT_IMG = "https://cdn-icons-png.flaticon.com/512/847/847969.png";
 
