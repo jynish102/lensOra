@@ -3,6 +3,13 @@
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/setting.css' %}" />
 {% endblock %} {% block content %}
+{% if messages %}
+ {% for message in messages %}
+    <div class="toast-message">
+      {{ message }}
+    </div>
+  {% endfor %}  
+{% endif %}
 <div class="app">
   <div class="settings-panel">
     <!-- TOP TITLE -->
