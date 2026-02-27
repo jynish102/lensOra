@@ -1359,6 +1359,27 @@ def chat_page(request,username):
         return redirect("login")
    
    with connection.cursor() as cursor:
+        # 🔒 Check privacy + follow status
+        cursor.execute("""
+            SELECT r.is_private,
+                f.status
+            FROM register r
+            LEFT JOIN follows f
+                ON f.follower_username = %s
+                AND f.following_username = r.username
+            WHERE r.username = %s
+        """, [me, username])
+
+        privacy_row = cursor.fetchone()
+
+        if not privacy_row:
+            return redirect("home")
+
+        is_private = privacy_row[0]
+        follow_status = privacy_row[1]
+
+        if is_private == 1 and follow_status != "accepted":
+          return redirect("home")
 
         # 1️⃣ Get chat user info
         cursor.execute("""
