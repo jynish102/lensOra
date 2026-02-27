@@ -248,8 +248,8 @@ body:not(.dark) .dropdown-toggle {
 }
 
 .footer-logo {
-    width: 22px;
-    height: 22px;
+    width: 60px;
+    height: 60px;
     object-fit: cover;
     border-radius: 4px;
 }
