@@ -53,13 +53,15 @@ def details(request):
     return render(request,'more_detail.html')   
 
 def home(request):
+    if "user" not in request.session:
+        return redirect('login')
+        
     loginprof = profiledata(request) 
     login_user = getloginuserdt(request)
     login_profile = profiledata(request)
     login_username = login_user[0]["username"]
 
-    if "user" not in request.session:
-        return redirect('login')
+    
     
     username=request.session.get("user")
     with connection.cursor() as cursor:
