@@ -16,7 +16,7 @@
         <div class="register-card">
 
             <!-- logo + brand -->
-            <img src="{% static 'images/logo.png' %}" class="logo" alt="PixelAura+ logo">
+            <img src="{% static 'images/logoa.png' %}" class="logo" alt="PixelAura+ logo">
             <div class="brand-name">PixelAura+</div>
 
             <!-- SINGLE FORM (2 steps) -->
@@ -28,14 +28,17 @@
                     <!-- ========= STEP 1 ========= -->
                     <div class="step step-1 active">
                         <h3 class="section-title">Create your account</h3>
-                        <input type="text" name="name" placeholder="Full name"autofocus required>
-                        <input type="email" name="email" id="email" placeholder="Email" required>
+                        <input type="text" id="name"  name="name" placeholder="Full name"  autofocus required >
+                         <small id="nameError" class="error-text"></small>
+                         
+                        <input type="email" id="email" name="email" placeholder="Email" required >
                         <small id="email-error" class="input-error"></small>
-                        
-                        <input type="text" id="mobile" name="mobile" placeholder="Mobile" required>
-                         <small id="mobile-error" class="input-error"></small>
 
-                        <input type="text" name="password" placeholder="Password" required>
+                        <input type="text" id="mobile" name="mobile" placeholder="Mobile" required >
+                        <small id="mobile-error" class="input-error"></small>
+
+
+                        <input type="text" name="password" placeholder="Password" required >
                         <input type="text" name="confirm_password" placeholder="Confirm password" required>
 
                         <button type="button" class="primary-btn" id="nextBtn">Next</button>
@@ -67,6 +70,7 @@
                                     name="birthdate"
                                     class="extra-input"
                                     required
+                                    autofocus
                                 >
                             </div>
 
@@ -124,25 +128,24 @@
 
     </div>
 
-   
-
-
+    <div id="popup" class="popup-overlay">
+  <div class="popup-box">
+    <p id="popup-message"></p>
+    <button onclick="closePopup()">OK</button>
+  </div>
 </div>
-
+</div>
 <!-- SIMPLE JS TO SWITCH STEPS -->
-<script src="{% static 'js/register.js' %}">
-    
-    {% if messages %}
-    {% for message in messages %}
-      
-        alert("{{ message }}")
-     
-    {% endfor %}    
-    
-{% endif %}
-</script>
-
-
 
 </body>
+<script src="{% static 'js/register.js' %}"></script>
+
+      {% if messages %}
+        {% for message in messages %}
+        <script>
+        alert("{{ message }}");
+        </script>
+        {% endfor %}
+    {% endif %}
+
 </html>
