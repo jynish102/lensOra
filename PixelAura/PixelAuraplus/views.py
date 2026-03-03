@@ -12,6 +12,7 @@ import time
 def login(request):
     if "user" in request.session:
         return redirect('home')
+    
     if request.method == 'POST':
         un = request.POST.get('username')
         pw = request.POST.get('password')
@@ -34,8 +35,19 @@ def register(request):
         em = request.POST.get('email')
         mb = request.POST.get('mobile')
         pw = request.POST.get('password')
+        cp = request.POST.get('confirm_password')
         dob = request.POST.get('birthdate')
         un = request.POST.get('username')
+
+        if len(pw) < 6:
+         messages.error(request, "Password must be at least 6 characters")
+         return redirect("register")
+
+        if pw != cp:
+            messages.error(request, "Passwords do not match")
+            return redirect("register")
+
+
         with connection.cursor() as cursor:
             cursor.execute("SELECT username FROM register WHERE username=%s", [un])
             if cursor.fetchone():
@@ -55,7 +67,7 @@ def details(request):
 def home(request):
     if "user" not in request.session:
         return redirect('login')
-        
+    
     loginprof = profiledata(request) 
     login_user = getloginuserdt(request)
     login_profile = profiledata(request)
@@ -274,6 +286,9 @@ def account_sidebar(request):
 #     return render(request,'setting.html',{'datas' :loginu , "profile" : profile})
 
 def setting(request):
+    if "user" not in request.session:
+        return redirect('login')
+    
     loginu = getloginuserdt(request)
     loginprof =profiledata(request) 
     un = request.session.get('user')
@@ -367,6 +382,9 @@ def account_center(request):
     return render(request, 'account_center.html')
 
 def personal_detail_s(request):
+    if "user" not in request.session:
+        return redirect('login')
+    
     username = request.session.get('user')
     loginu = getloginuserdt(request)
     profile = profiledata(request) 
@@ -445,10 +463,16 @@ def change_pass(request):
     )
 
 def personal_detail_ss(request):
+    if "user" not in request.session:
+        return redirect('login')
+    
     loginu = getloginuserdt(request)
     return render (request,"personal_detail_ss.html",{'datas' :loginu})
 
 def reels(request):
+    if "user" not in request.session:
+        return redirect('login')
+    
     login_user = getloginuserdt(request)
     login_username = login_user[0]["username"]
     profile = profiledata(request)
@@ -934,6 +958,7 @@ def add_post(request):
     return render(request, "login.html")
 
 def viewpost(request):
+
     username = request.session.get('user')
 
     with connection.cursor() as cursor:
@@ -1014,6 +1039,7 @@ def follow_user(request, username):
         return redirect("login")
 
     current_user = request.session["user"]
+    action = request.POST.get("action") 
 
     if current_user == username:
         return redirect("suggested_user_profile", username=username)
@@ -1039,6 +1065,16 @@ def follow_user(request, username):
             """, [username, current_user])
 
             return redirect("suggested_user_profile", username=username)
+        
+        # if reverse and reverse[0] == "requested" and action == "reject":
+        #      # 🔥 ReJECT REQUEST
+        #     cursor.execute("""
+        #         DELETE FROM follows
+        #         WHERE follower_username=%s
+        #         AND following_username=%s
+        #     """, [username, current_user])
+
+        #     return redirect("suggested_user_profile", username=username)
 
 
         # 2️⃣ Check if YOU already follow them
@@ -1166,6 +1202,9 @@ def update_post(request):
 
 
 def forgot_password(request):
+    if "user" not in request.session:
+        return redirect('login')
+    
     profile = profiledata(request)
     login = getloginuserdt(request)
 
@@ -1202,6 +1241,9 @@ def forgot_password(request):
     )
 
 def forgot_password(request):
+    if "user" not in request.session:
+        return redirect('login')
+    
     profile = profiledata(request)
     login = getloginuserdt(request)
 
@@ -1313,6 +1355,9 @@ def toggle_like(request):
 
 
 def chats(request):
+    if "user" not in request.session:
+        return redirect('login')
+    
     username = request.session.get("user")
     loginprof = profiledata(request)
     suser = suggestuser(request)
@@ -1355,6 +1400,9 @@ def chats(request):
 
 
 def chat_page(request,username):
+   if "user" not in request.session:
+        return redirect('login')
+   
    loginprof = profiledata(request)
    me = request.session.get("user")
    if not me:
@@ -1455,4 +1503,4 @@ def update_privacy(request):
 def logout(request):
     if "user" in request.session:
         request.session.flush()
-        return redirect("login")
+    return redirect("login")
