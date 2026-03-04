@@ -3,8 +3,16 @@
 <link rel="stylesheet" href="{% static 'css/profile.css' %}">
 <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 </head>
+{% if messages %}
+ {% for msg in messages %}
+ <script>
+  alert("{{ msg }}")
+ </script>
+ {% endfor %}
+{% endif %} 
 
 <body>
+  
 
   <div class="profile-container">
     <a href="{% url 'home' %}" class="close-link">
