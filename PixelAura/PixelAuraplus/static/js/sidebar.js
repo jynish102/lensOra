@@ -1,8 +1,3 @@
-const body = document.querySelector("body");
-const sidebar = document.querySelector(".sidebar");
-const toggle = document.querySelector(".toggle");
-
-const modeText = document.querySelector(".mode-text");
 const toast = document.querySelector(".toast-message");
 
 if (toast) {
@@ -10,16 +5,21 @@ if (toast) {
     toast.style.opacity = "0";
     setTimeout(() => {
       toast.remove();
-    }, 500);
+    }, 500
+  );
   }, 3000);
 }
+const body = document.querySelector("body");
+const sidebar = document.querySelector(".sidebar");
+const toggle = document.querySelector(".toggle");
+
+const modeText = document.querySelector(".mode-text");
 
 toggle.addEventListener("click", () => {
-    sidebar.classList.toggle("close");
+  sidebar.classList.toggle("close");
 });
 
-
-document.querySelectorAll(".switch-appearance").forEach(toggle => {
+document.querySelectorAll(".switch-appearance").forEach((toggle) => {
   const icon = toggle.querySelector(".appearance-icon");
   const text = toggle.querySelector(".appearance-text");
 
@@ -44,12 +44,6 @@ document.querySelectorAll(".switch-appearance").forEach(toggle => {
     }
   });
 });
-
-
-
-
-
-
 
 /*------------------video,paues---------------------------------------*/
 document.querySelectorAll(".reel-container").forEach((reelBox) => {
@@ -132,11 +126,6 @@ document.querySelectorAll(".likeBtn").forEach((btn) => {
   });
 });
 
-
-
-
-
-
 // CSRF helper
 function getCookie(name) {
   let cookieValue = null;
@@ -150,7 +139,6 @@ function getCookie(name) {
   }
   return cookieValue;
 }
-
 
 /*----------------------more setting------------------- */
 const moreToggle = document.getElementById("moreToggle");
@@ -171,95 +159,140 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
-
 /*add posts--------------------------------------------------------------------------------- */
 
 /* -----------------------------
    OPEN POPUP
 ------------------------------ */
 function openPopup() {
-    document.getElementById("addPostPopup").style.display = "flex";
+  document.getElementById("addPostPopup").style.display = "flex";
 
-    // Reset previous preview if any
-    resetPreview();
+  // Reset previous preview if any
+  resetPreview();
 }
 
 /* -----------------------------
    CLOSE POPUP → SHOW DISCARD CONFIRMATION
 ------------------------------ */
 function closePopup() {
-    document.getElementById("discardPopup").style.display = "flex";
+  document.getElementById("discardPopup").style.display = "flex";
 }
 
 /* -----------------------------
    CANCEL DISCARD POPUP
 ------------------------------ */
 function closeDiscard() {
-    document.getElementById("discardPopup").style.display = "none";
+  document.getElementById("discardPopup").style.display = "none";
 }
 
 /* -----------------------------
    DISCARD POST → CLOSE BOTH POPUPS + RESET
 ------------------------------ */
 function discardPost() {
-    // Close both popups
-    document.getElementById("discardPopup").style.display = "none";
-    document.getElementById("addPostPopup").style.display = "none";
+  // Close both popups
+  document.getElementById("discardPopup").style.display = "none";
+  document.getElementById("addPostPopup").style.display = "none";
 
-    // Reset preview & caption
-    resetPreview();
+  // Reset preview & caption
+  resetPreview();
 }
 
 /* -----------------------------
    RESET ALL PREVIEW CONTENT
 ------------------------------ */
 function resetPreview() {
-    const img = document.getElementById("previewImg");
-    const video = document.getElementById("previewVideo");
+  const img = document.getElementById("previewImg");
+  const video = document.getElementById("previewVideo");
 
-    // Reset image
-    img.src = "";
-    img.style.display = "none";
+  // Reset image
+  img.src = "";
+  img.style.display = "none";
 
-    // Reset video
-    video.src = "";
-    video.style.display = "none";
+  // Reset video
+  video.src = "";
+  video.style.display = "none";
 
-    // Reset caption
-    document.querySelector(".caption-box").value = "";
+  // Reset caption
+  document.querySelector(".caption-box").value = "";
 
-    // Show upload area
-    document.querySelector(".upload-area").style.display = "flex";
+  // Show upload area
+  document.querySelector(".upload-area").style.display = "flex";
 }
 
 /* -----------------------------
    PREVIEW MEDIA (IMAGE / VIDEO)
 ------------------------------ */
+// function previewMedia(event) {
+//   const file = event.target.files[0];
+//   if (!file) return;
+
+//   const imagePreview = document.getElementById("previewImg");
+//   const videoPreview = document.getElementById("previewVideo");
+
+//   // Reset first
+//   imagePreview.style.display = "none";
+//   videoPreview.style.display = "none";
+
+//   // Hide upload box
+//   document.querySelector(".upload-area").style.display = "none";
+
+//   // IMAGE
+//   if (file.type.startsWith("image/")) {
+//     imagePreview.src = URL.createObjectURL(file);
+//     imagePreview.style.display = "block";
+//   }
+
+//   // VIDEO
+//   else if (file.type.startsWith("video/")) {
+//     videoPreview.src = URL.createObjectURL(file);
+//     videoPreview.style.display = "block";
+//   }
+// }
+
+
 function previewMedia(event) {
-    const file = event.target.files[0];
-    if (!file) return;
+  const file = event.target.files[0];
+  if (!file) return;
 
-    const imagePreview = document.getElementById("previewImg");
-    const videoPreview = document.getElementById("previewVideo");
+  const imagePreview = document.getElementById("previewImg");
+  const videoPreview = document.getElementById("previewVideo");
+  const uploadArea = document.querySelector(".upload-area");
 
-    // Reset first
-    imagePreview.style.display = "none";
-    videoPreview.style.display = "none";
+  const allowedTypes = ["image/jpeg", "image/webp", "video/mp4"];
 
-    // Hide upload box
-    document.querySelector(".upload-area").style.display = "none";
+  const allowedExtensions = [".jpg", ".jpeg", ".webp", ".mp4"];
 
-    // IMAGE
-    if (file.type.startsWith("image/")) {
-        imagePreview.src = URL.createObjectURL(file);
-        imagePreview.style.display = "block";
-    }
+  const fileExtension = file.name
+    .substring(file.name.lastIndexOf("."))
+    .toLowerCase();
 
-    // VIDEO
-    else if (file.type.startsWith("video/")) {
-        videoPreview.src = URL.createObjectURL(file);
-        videoPreview.style.display = "block";
-    }
+  // ❌ Block if not allowed
+  if (
+    !allowedTypes.includes(file.type) ||
+    !allowedExtensions.includes(fileExtension)
+  ) {
+    alert("Only JPG, JPEG, WEBP images and MP4 videos are allowed.");
+    event.target.value = ""; // reset file input
+    return;
+  }
+
+  // Reset previews
+  imagePreview.style.display = "none";
+  videoPreview.style.display = "none";
+
+  uploadArea.style.display = "none";
+
+  // IMAGE
+  if (file.type === "image/jpeg" || file.type === "image/webp") {
+    imagePreview.src = URL.createObjectURL(file);
+    imagePreview.style.display = "block";
+  }
+
+  // VIDEO
+  else if (file.type === "video/mp4") {
+    videoPreview.src = URL.createObjectURL(file);
+    videoPreview.style.display = "block";
+  }
 }
 
 /* -----------------------saved--------------------*/
@@ -267,10 +300,8 @@ function previewMedia(event) {
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".save-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
-      const icon = btn.querySelector("i");  
+      const icon = btn.querySelector("i");
       btn.classList.toggle("saved");
-
-      
 
       if (btn.classList.contains("bx-bookmark")) {
         icon.classList.replace("bx-bookmark", "bxs-bookmark");
@@ -278,10 +309,10 @@ document.addEventListener("DOMContentLoaded", () => {
         icon.classList.replace("bxs-bookmark", "bx-bookmark");
       }
       console.log("Save clicked");
-
     });
   });
 });
+
 document.querySelectorAll(".reel-video").forEach((video) => {
   video.addEventListener("click", () => {
     if (video.paused) {
@@ -291,5 +322,3 @@ document.querySelectorAll(".reel-video").forEach((video) => {
     }
   });
 });
-
-
