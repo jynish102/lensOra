@@ -1144,9 +1144,9 @@ def add_comment(request):
     comment = request.POST.get("comment")
     username = request.session.get("user")
 
-    print("POST_ID:", post_id)
-    print("COMMENT:", comment)
-    print(username)
+    # print("POST_ID:", post_id)
+    # print("COMMENT:", comment)
+    # print(username)
 
     if not post_id or not comment:
         print("❌ Missing post_id or comment")
@@ -1173,8 +1173,9 @@ def add_comment(request):
             """,
             [int(post_id), user_id, comment]
         )
+        messages.success(request,f"{username} Your Comment Added Successfully.....")
 
-        print("✅ COMMENT INSERTED")
+        # print("✅ COMMENT INSERTED")
 
     return redirect(request.META.get("HTTP_REFERER"))
 
