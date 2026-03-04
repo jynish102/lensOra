@@ -934,6 +934,17 @@ def add_post(request):
         if not img:
             # user clicked discard OR tried to submit without image
             return redirect('home')
+        
+        if img:
+            allowed_types = [
+                "image/jpeg",
+                "image/webp",
+                "video/mp4"
+            ]
+
+            if img.content_type not in allowed_types:
+                return HttpResponse("Invalid file type")
+
 
         if img:
             image_path = os.path.join(settings.MEDIA_ROOT, "posts", img.name)
@@ -1183,6 +1194,7 @@ def delete_post(request, post_id):
             "DELETE FROM posts WHERE id=%s AND username=%s",
             [post_id, username]
         )
+        messages.success(request,f"{username} Your Post Delete Successfully.....")
 
     return redirect('profile')
 
