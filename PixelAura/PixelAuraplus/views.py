@@ -1210,6 +1210,8 @@ def update_post(request):
                 "UPDATE posts SET caption=%s WHERE id=%s AND username=%s",
                 [caption, post_id, username]
             )
+            messages.success(request,f" Hey!! {username} Your Post Update Successfully...And New Updated Caption is {caption} :):)")
+
 
     return redirect('post_crud')
 
