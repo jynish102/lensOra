@@ -19,7 +19,15 @@
 
             <div class="user-row">
                 <!-- PROFILE IMAGE -->
+                {% if profile.image %}
                 <img src="{{ profile.image }}" class="top-user-img">
+                  
+                  {% else %}
+                  <img
+                    src="{% static 'images/default-user.webp' %}"
+                    class="top-user-img"
+                  />
+                  {% endif %}
 
                 <!-- USER TEXT -->
                 <div class="user-text">
@@ -115,4 +123,5 @@
 </body>
 <script src="{% static 'js/post_crud.js' %}"></script>
 </html>
+
 
