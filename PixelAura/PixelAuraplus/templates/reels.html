@@ -76,7 +76,7 @@
                   <img src="{{ c.image }}" class="comment-user-img" />
                   {% else %}
                   <img
-                    src="{% static 'images/default-user.png' %}"
+                    src="{% static 'images/default-user.webp' %}"
                     class="comment-user-img"
                   />
                   {% endif %}
@@ -98,9 +98,10 @@
 
                 <div class="comment-input-row">
                   <img
-                    src="{{ profile.image|default:'/static/images/default-user.png' }}"
+                    src="{{ profile.image|default:'/static/images/default-user.webp' }}"
                     class="comment-user-img"
                   />
+                 <b>{{ username }} </b>
 
                   <input
                     type="text"
