@@ -14,6 +14,15 @@ const backBtn = document.getElementById("backBtn");
 const stepField = document.getElementById("stepField");
 const bottomCard = document.getElementById("bottomCard");
 nextBtn.addEventListener("click", function () {
+  // disable step1 inputs
+  step1.querySelectorAll("input").forEach(input => {
+    input.disabled = true;
+  });
+
+  // enable step2 inputs
+  step2.querySelectorAll("input").forEach(input => {
+    input.disabled = false;
+  });
   step1.classList.remove("active");
   step2.classList.add("active");
   stepField.value = "2";
@@ -22,6 +31,13 @@ nextBtn.addEventListener("click", function () {
 
 /*-------------------Error popup------------------*/
 backBtn.addEventListener("click", function () {
+  step1.querySelectorAll("input").forEach((input) => {
+    input.disabled = false;
+  });
+
+  step2.querySelectorAll("input").forEach((input) => {
+    input.disabled = true;
+  });
   step2.classList.remove("active");
   step1.classList.add("active");
   stepField.value = "1";
