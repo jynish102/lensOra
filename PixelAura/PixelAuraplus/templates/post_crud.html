@@ -93,7 +93,14 @@
                         <!-- RIGHT -->
                         <div class="edit-form-box">
                             <div class="edit-user-row">
-                                <img src="{{ profile.image }}" class="edit-user-img"> 
+                                {% if profile.image %}
+                <img src="{{ profile.image }}" class="edit-user-img" />
+                {% else %}
+                <img
+                  src="{% static 'images/default-user.webp' %}"
+                  class="edit-user-img"
+                />
+                {% endif %}
                                 <span class="edit-username">{{ username }}</span>
                             </div>
                                
@@ -123,5 +130,6 @@
 </body>
 <script src="{% static 'js/post_crud.js' %}"></script>
 </html>
+
 
 
