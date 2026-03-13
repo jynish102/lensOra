@@ -46,6 +46,19 @@ if (toast) {
     fileInput.addEventListener("change", () => {
       const file = fileInput.files[0];
       if (!file) return;
+      // allowed formats
+      const allowedTypes = [
+        "image/jpg",
+        "image/jpeg",
+        "image/png",
+        "image/webp",
+      ];
+
+      if (!allowedTypes.includes(file.type)) {
+        alert("Only JPG, PNG, and WEBP images are allowed.");
+        fileInput.value = "";
+        return;
+      }
 
       const url = URL.createObjectURL(file);
       profileImg.src = url;
