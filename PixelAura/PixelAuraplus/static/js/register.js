@@ -14,30 +14,79 @@ const backBtn = document.getElementById("backBtn");
 const stepField = document.getElementById("stepField");
 const bottomCard = document.getElementById("bottomCard");
 nextBtn.addEventListener("click", function () {
-  // disable step1 inputs
-  step1.querySelectorAll("input").forEach(input => {
-    input.disabled = true;
-  });
 
-  // enable step2 inputs
-  step2.querySelectorAll("input").forEach(input => {
-    input.disabled = false;
-  });
-  step1.classList.remove("active");
-  step2.classList.add("active");
-  stepField.value = "2";
-  bottomCard.style.display = "none"; // hide "Already have an account?"
+  let valid = true;
+
+  const name = document.getElementById("name").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const mobile = document.getElementById("mobile").value.trim();
+  const password = document.getElementById("password").value;
+  const confirmPassword = document.getElementById("confirm_password").value;
+
+  const nameError = document.getElementById("nameError");
+  const emailError = document.getElementById("email-error");
+  const mobileError = document.getElementById("mobile-error");
+  const passwordError = document.getElementById("passwordError");
+  const confirmPasswordError = document.getElementById("confirmPasswordError");
+
+  // Clear old errors
+  nameError.textContent = "";
+  emailError.textContent = "";
+  mobileError.textContent = "";
+  passwordError.textContent = "";
+  confirmPasswordError.textContent = "";
+
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  // Name validation
+  if (name === "" || /[0-9]/.test(name)) {
+    nameError.textContent = "Name cannot contain numbers";
+    valid = false;
+  }
+
+  // Email validation
+  if (!emailPattern.test(email)) {
+    emailError.textContent = "Invalid email format";
+    valid = false;
+  }
+
+  // Mobile validation
+  if (!/^[0-9]{10}$/.test(mobile)) {
+    mobileError.textContent = "Please enter a valid 10-digit mobile number";
+    valid = false;
+  }
+
+  // Password validation
+  if (password.length < 6) {
+    passwordError.textContent = "Password must be at least 6 characters";
+    valid = false;
+  }
+
+  // Confirm password
+  if (password !== confirmPassword) {
+    confirmPasswordError.textContent = "Passwords do not match";
+    valid = false;
+  }
+
+  // Only go to Step 2 if valid
+  if (valid) {
+    step1.classList.remove("active");
+    step2.classList.add("active");
+    stepField.value = "2";
+    bottomCard.style.display = "none";
+  }
+
 });
 
 /*-------------------Error popup------------------*/
 backBtn.addEventListener("click", function () {
-  step1.querySelectorAll("input").forEach((input) => {
-    input.disabled = false;
-  });
+  // step1.querySelectorAll("input").forEach((input) => {
+  //   input.disabled = false;
+  // });
 
-  step2.querySelectorAll("input").forEach((input) => {
-    input.disabled = true;
-  });
+  // step2.querySelectorAll("input").forEach((input) => {
+  //   input.disabled = true;
+  // });
   step2.classList.remove("active");
   step1.classList.add("active");
   stepField.value = "1";
@@ -144,7 +193,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const mobileError = document.getElementById("mobile-error");
 
   emailInput.addEventListener("input", function () {
-    const email = emailInput.value.trim();
+    const email = emailInput.value.trim().toLowerCase();
+    emailInput.value = email;
 
     // Email regex pattern
     const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -156,12 +206,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (!pattern.test(email)) {
       emailError.textContent =
-        "❌ Invalid email format (example: abc@gmail.com)";
+        "❌ Invalid email format (example: abc@gmail.com).";
     } else {
       emailError.textContent = "";
     }
   });
-  /*-------------------prevent -email submission---------------------*/
+  // /*-------------------prevent -email submission---------------------*/
   // document.querySelector(".register-form").addEventListener("submit", function (e) {
   // const email = emailInput.value.trim();
   // const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -181,92 +231,105 @@ document.addEventListener("DOMContentLoaded", function () {
   //         }
   // });
 
-  // /*------------------------------mobile valid---------------------*/
-  // mobileInput.addEventListener("input", function () {
-  //   // Allow numbers only
-  //   this.value = this.value.replace(/\D/g, "");
+  /*------------------------------mobile valid---------------------*/
+  mobileInput.addEventListener("input", function () {
+    // Allow numbers only
+    this.value = this.value.replace(/\D/g, "");
 
-  //   const mobile = this.value;
+    const mobile = this.value;
 
-  //   if (mobile === "") {
-  //     mobileError.textContent = "";
-  //     return;
-  //   }
+    if (mobile === "") {
+      mobileError.textContent = "";
+      return;
+    }
 
-  //   if (mobile.length < 10) {
-  //     mobileError.textContent = "❌ Mobile number must be 10 digits";
-  //   } else if (mobile.length > 10) {
-  //     mobileError.textContent = "❌ Mobile number cannot exceed 10 digits";
-  //   } else {
-  //     mobileError.textContent = "";
-  //   }
-  // });
+    if (mobile.length < 10) {
+      mobileError.textContent = "❌ Mobile number must be 10 digits";
+    } else if (mobile.length > 10) {
+      mobileError.textContent = "❌ Mobile number cannot exceed 10 digits";
+    } else {
+      mobileError.textContent = "";
+    }
+  });
 
-  // const nameInput = document.getElementById("name");
-  // const nameError = document.getElementById("nameError");
+  const nameInput = document.getElementById("name");
+  const nameError = document.getElementById("nameError");
 
-  // nameInput.addEventListener("input", function () {
-  //   const value = this.value;
+  nameInput.addEventListener("input", function () {
+    const value = this.value;
 
-  //   if (/[0-9]/.test(value)) {
-  //     nameError.textContent = "Name cannot contain numbers";
-  //     this.classList.add("input-error", "shake");
+    if (/[0-9]/.test(value)) {
+      nameError.textContent = "❌ Name cannot contain numbers";
+      this.classList.add("input-error", "shake");
 
-  //     // Remove shake after animation
-  //     setTimeout(() => {
-  //       this.classList.remove("shake");
-  //     }, 300);
-  //   } else {
-  //     nameError.textContent = "";
-  //     this.classList.remove("input-error");
-  //   }
-  // });
+      // Remove shake after animation
+      setTimeout(() => {
+        this.classList.remove("shake");
+      }, 300);
+    } else {
+      nameError.textContent = "";
+      this.classList.remove("input-error");
+    }
+  });
 
-  document
-    .querySelector(".register-form")
-    .addEventListener("submit", function (e) {
-      const email = emailInput.value.trim();
-      const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      const mobile = mobileInput.value.trim();
-      const nameInput = document.getElementById("name");
-      
-      const name = nameInput.value.trim();
-      const password = document.querySelector("input[name='password']").value;
-      const confirmPassword = document.querySelector(
-        "input[name='confirm_password']",
-      ).value;
+  const passwordInput = document.getElementById("password");
+  const confirmInput = document.getElementById("confirm_password");
 
-      if (name === "" || /[0-9]/.test(name)) {
-        e.preventDefault();
-        showPopup("❌ Name cannot contain numbers");
-        return;
-      }
+  passwordInput.addEventListener("input", function () {
+    const password = passwordInput.value;
 
-      if (!pattern.test(email)) {
-        e.preventDefault();
-        showPopup("❌ Please enter a valid email address");
-        return;
-      }
+    if (password.length < 6) {
+      passwordError.textContent = "❌ Password must be at least 6 characters";
+    } else {
+      passwordError.textContent = "";
+    }
+  });
 
-      if (mobile.length !== 10) {
-        e.preventDefault();
-        showPopup("❌ Please enter a valid 10-digit mobile number");
-        return;
-      }
-      
-      
+  confirmInput.addEventListener("input", function () {
+    const password = passwordInput.value;
+    const confirmPassword = confirmInput.value;
 
-      if (password.length < 6) {
-        e.preventDefault();
-        showPopup("❌ Password must be at least 6 characters");
-        return;
-      }
+    if (confirmPassword !== password) {
+      confirmPasswordError.textContent = "❌ Passwords do not match";
+    } else {
+      confirmPasswordError.textContent = "";
+    }
+  });
 
-      if (password !== confirmPassword) {
-        e.preventDefault();
-        showPopup("❌ Passwords do not match");
-        return;
-      }
+  const birthdateInput = document.getElementById("birthdate");
+  const birthdateError = document.getElementById("birthdateError");
 
-    });
+  birthdateInput.addEventListener("input", function () {
+    const dateValue = birthdateInput.value; // format: yyyy-mm-dd
+
+    if (!dateValue) return;
+
+    const year = dateValue.split("-")[0];
+
+    if (year.length > 4) {
+      birthdateError.textContent = "Year must be 4 digits only";
+      birthdateInput.value = "";
+    } else {
+      birthdateError.textContent = "";
+    }
+  });
+  const today = new Date();
+  const maxDate = new Date(
+    today.getFullYear() - 13,
+    today.getMonth(),
+    today.getDate(),
+  );
+  birthdateInput.max = maxDate.toISOString().split("T")[0];
+
+//   
+
+document.querySelector(".register-form").addEventListener("button", function (e) {
+
+ const username = document.getElementById("username").value.trim();
+
+ if (username.length < 3) {
+   e.preventDefault();
+ }
+
+});
 });
