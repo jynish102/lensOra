@@ -11,8 +11,9 @@
       MysqlworkBench
 
 #install: mysqlclient,daphne
+Daphne is for Run Chat Page In Project.
 
 For Chat I have to use Websocket
 # Run Server: Python manage.py runserver
-# for Check The First Implerment: daphne PixelAura.asgi:application 
-# for run both code at same time : daphne -p 8000  PixelAura.asgi:application 
+# for Check The First Implerment: daphne PixelAura.asgi:application (Only Chat Page Run With project Also Run  With above manage.py command.)
+# for run both Chat and Project  at same time : daphne -p 8000  PixelAura.asgi:application 
