@@ -475,7 +475,7 @@ def reels(request):
     
     login_user = getloginuserdt(request)
     login_username = login_user[0]["username"]
-    profile = profiledata(request)
+    loginprof = profiledata(request)
     username=request.session.get("user")
 
     with connection.cursor() as cursor:
@@ -554,7 +554,7 @@ def reels(request):
             "liked": post_id in liked_posts
         })
     return render(request,"reels.html" , 
-                  {"profile" : profile,
+                  {"profile" : loginprof,
                    "sposts" : suggested_posts})
 
 def profile(request):
