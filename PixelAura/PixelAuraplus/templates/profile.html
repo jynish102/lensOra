@@ -177,8 +177,8 @@
                 {% if profile.image %}
                    <img src="{{ profile.image }}" class="view-user-pic">
                 {% else %}
-                  <i class="bx bxs-user default-user-icon"></i>
-                  <img src="{% static 'images/default-user.png' %}" class="view-user-pic">
+                 
+                  <img src="{% static 'images/default-user.webp' %}" class="view-user-pic">
                 {% endif %}
                {% for login in userlogin %} 
               <span>{{ login.username }}</span>
@@ -195,8 +195,8 @@
                 {% if profile.image %}
                    <img src="{{ profile.image }}" class="view-user-pic">
                 {% else %}
-                  <i class="bx bxs-user default-user-icon"></i>
-                  <img src="{% static 'images/default-user.png' %}" class="view-user-pic">
+                 
+                  <img src="{% static 'images/default-user.webp' %}" class="view-user-pic">
                 {% endif %}
             
 
@@ -206,10 +206,6 @@
             </div>
             </p>
             <div class="comment-list" id="commentList">
-              
-              
-               
-                
 
                 <!-- 3 DOT MENU -->
                 <div class="comment-more" onclick="toggleCommentMenu(this)">
