@@ -722,7 +722,7 @@ body:not(.dark) .hover-menu .danger {
 }
 .popup-box {
     width: 720px;
-    background: rgb(36,148,136);
+    background: rgb(255 255 255);
     border-radius: 15px;
     overflow: hidden;
     display: flex;
