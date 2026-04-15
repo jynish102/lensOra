@@ -48,3 +48,6 @@ For Chat I have to use Websocket
 # Run Server: Python manage.py runserver
 # for Check The First Implerment: daphne PixelAura.asgi:application (Only Chat Page Run With project Also Run  With above manage.py command.)
 # for run both Chat and Project  at same time : daphne -p 8000  PixelAura.asgi:application 
+
+<img width="940" height="494" alt="image" src="https://github.com/user-attachments/assets/1a2cff35-d02c-45df-a501-9e0657e75463" />
+
