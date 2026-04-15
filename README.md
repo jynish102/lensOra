@@ -49,5 +49,23 @@ For Chat I have to use Websocket
 # for Check The First Implerment: daphne PixelAura.asgi:application (Only Chat Page Run With project Also Run  With above manage.py command.)
 # for run both Chat and Project  at same time : daphne -p 8000  PixelAura.asgi:application 
 
-<img width="940" height="494" alt="image" src="https://github.com/user-attachments/assets/1a2cff35-d02c-45df-a501-9e0657e75463" />
+# Project Preview
+1.) Register
+<img width="500" height="500" alt="image" src="https://github.com/user-attachments/assets/1a2cff35-d02c-45df-a501-9e0657e75463" />
+
+2.) Login
+<img width="500" height="500" alt="image" src="https://github.com/user-attachments/assets/cadc227d-d559-4b42-987e-4b059a0b7e9c" />
+
+3.) Home
+<img width="940" height="474" alt="image" src="https://github.com/user-attachments/assets/609867f1-c2fa-4dfd-89cc-0644f89524cb" />
+
+4.) Reels
+<img width="500" height="500" alt="image" src="https://github.com/user-attachments/assets/85d25c08-690b-46cc-aa43-b8c5075680c0" />
+
+5.) Add Post
+<img width="940" height="605" alt="image" src="https://github.com/user-attachments/assets/d47e16e7-be46-46da-88ad-8dc2c85edaa5" />
+
+
+
+
 
