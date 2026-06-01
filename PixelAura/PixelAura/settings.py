@@ -80,9 +80,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME':'pixelaura',
-        'HOST':'localhost',
-        'PORT':'3306',
-        'PASSWORD':'admin',
+        'HOST':'ballast.proxy.rlwy.net',
+        'PORT':'31630',
+        'PASSWORD':'QrmPyuLEqmhjxFtDHkujaZNETrHhEilY',
         'USER':'root'
     }
 }
