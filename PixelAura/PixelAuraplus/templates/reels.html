@@ -10,17 +10,13 @@
             <div class="feed">
                 {% for post in sposts %}
 
-            <!-- ✅ SINGLE POST (VIDEO) -->
+            <!--  SINGLE POST (VIDEO) -->
             <div class="post-card">
 
-                <!-- 🔥 USER OVERLAY -->
+                <!--  USER OVERLAY -->
                 <div class="post-header">
                     <img
-<<<<<<< HEAD
             src="{{ post.profile_image|default:'/static/images/default-user.webp' }}"
-=======
-            src="{{ post.profile_image|default:'/static/images/default-user.png' }}"
->>>>>>> 97df6a19ee0b9f4f1232fb06e04ac0701d3b34ad
             class="post-user-logo"
           />
                     <div>
@@ -29,7 +25,7 @@
                     </div>
                 </div>
 
-                <!-- 🎥 POST MEDIA -->
+                <!--  POST MEDIA -->
                 <div
         class="reel-container"
        data-type="{% if post.image|lower|slice:'-4:' == '.mp4' %}video{% else %}image{% endif %}"
@@ -103,11 +99,7 @@
                     src="{{ profile.image|default:'/static/images/default-user.webp' }}"
                     class="comment-user-img"
                   />
-<<<<<<< HEAD
                   <b>{{ username }} </b>
-=======
-                 <b>{{ username }} </b>
->>>>>>> 97df6a19ee0b9f4f1232fb06e04ac0701d3b34ad
 
                   <input
                     type="text"
@@ -120,13 +112,8 @@
                 <button type="submit" class="comment-submit">Post</button>
               </form>
             </div>
-<<<<<<< HEAD
           </div>
-          <!-- ✅ SOUND ICON FOR VIDEO -->
-=======
-          </div>      
-              <!-- ✅ SOUND ICON FOR VIDEO -->
->>>>>>> 97df6a19ee0b9f4f1232fb06e04ac0701d3b34ad
+          <!--  SOUND ICON FOR VIDEO -->
                         <div class="action-btn soundBtn">
                             <i class="bx bx-volume-full"></i>
                             <span>Sound</span>

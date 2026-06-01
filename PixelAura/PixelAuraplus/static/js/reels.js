@@ -3,7 +3,7 @@ document.querySelectorAll(".likeBtn").forEach((btn) => {
   btn.addEventListener("click", () => {
     const postId = btn.dataset.postId;
     if (!postId) {
-      console.error("❌ postId missing on like button", btn);
+      console.error("postId missing on like button", btn);
       return;
     }
 
@@ -37,9 +37,6 @@ document.querySelectorAll(".likeBtn").forEach((btn) => {
   });
 });
 
-
-
-
 // CSRF helper
 function getCookie(name) {
   let cookieValue = null;
@@ -53,24 +50,22 @@ function getCookie(name) {
   }
   return cookieValue;
 }
-
-
-/*------------------video,paues---------------------------------------*/
+/*------------------video,pause---------------------------------------*/
 document.querySelectorAll(".reel-container").forEach((reelBox) => {
   const type = reelBox.dataset.type;
   const video = reelBox.querySelector(".post-media");
   const soundBtn = reelBox.querySelector(".soundBtn");
   const tapIndicator = reelBox.querySelector(".tap-indicator");
 
-  /* ✅ PHOTO POST → REMOVE VIDEO FEATURES */
+  /*  PHOTO POST → REMOVE VIDEO FEATURES */
   if (type === "image") {
     if (soundBtn) soundBtn.style.display = "none";
     if (tapIndicator) tapIndicator.style.display = "none";
     return;
   }
-  /* ✅ STOP if video missing */
+  /*  STOP if video missing */
   if (!video) return;
-  /* ✅ SOUND TOGGLE */
+  /*  SOUND TOGGLE */
   soundBtn.addEventListener("click", () => {
     video.muted = !video.muted;
     soundBtn.innerHTML = video.muted
@@ -78,7 +73,7 @@ document.querySelectorAll(".reel-container").forEach((reelBox) => {
       : `<i class="bx bx-volume-full"></i>`;
   });
 
-  /* ✅ DOUBLE TAP TO PAUSE (NOT LIKE) */
+  /*  DOUBLE TAP TO PAUSE (NOT LIKE) */
   let lastTap = 0;
   video.addEventListener("click", () => {
     const now = new Date().getTime();

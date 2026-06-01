@@ -1,4 +1,5 @@
 {% load static %}
+<head>
 <title> Profile </title>
 <link rel="stylesheet" href="{% static 'css/profile.css' %}">
 <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
@@ -12,11 +13,6 @@
 {% endif %} 
 
 <body>
-<<<<<<< HEAD
-=======
-  
->>>>>>> 97df6a19ee0b9f4f1232fb06e04ac0701d3b34ad
-
   <div class="profile-container">
     <a href="{% url 'home' %}" class="close-link">
       <i class='bx bx-x ac-close'></i>
@@ -26,26 +22,21 @@
     </a>
    
     <div class="profile-sticky">
-      <!-- ✅ USER INFO ROW (Updated Layout) -->
+      <!--  USER INFO ROW (Updated Layout) -->
       <div class="user-row">
 
-        <!-- ✅ PROFILE IMAGE WITH CAMERA & DEFAULT ICON -->
+        <!--  PROFILE IMAGE WITH CAMERA & DEFAULT ICON -->
         <div class="profile-pic-wrapper">
 
           {% if profile.image %}
           <img src="{{ profile.image }}" class="profile-img">
           {% else %}
-          
-<<<<<<< HEAD
           <img src="{% static 'images/default-user.webp' %}" class="profile-img">
-=======
-          <img src="{% static 'images/default-user.png' %}" class="profile-img">
->>>>>>> 97df6a19ee0b9f4f1232fb06e04ac0701d3b34ad
           {% endif %}
         </div>
 
 
-        <!-- ✅ USERNAME + NAME + SETTINGS ICON -->
+        <!--  USERNAME + NAME + SETTINGS ICON -->
         <div class="user-right">
 
           <div class="user-top-row">
@@ -58,7 +49,7 @@
 
           </div>
 
-          <!-- ✅ COUNTS ROW (UNCHANGED) -->
+          <!--  COUNTS ROW (UNCHANGED) -->
           <div class="counts">
             <div>
               <b>{{ post_count }}</b>
@@ -66,11 +57,7 @@
             </div>
             <div>
               <b>{{ followers_count}}</b>
-<<<<<<< HEAD
               <span id="followerBtn" style="cursor:pointer;" >Followers</span>
-=======
-              <span>Followers</span>
->>>>>>> 97df6a19ee0b9f4f1232fb06e04ac0701d3b34ad
             </div>
             <div>
               <b>{{ following_count }}</b>
@@ -88,14 +75,14 @@
         </div>
       </div>
 
-      <!-- ✅ EDIT BUTTON ROW (UNCHANGED) -->
+      <!--  EDIT BUTTON ROW (UNCHANGED) -->
       <div class="edit-btn-container">
         <a href="{% url 'setting' %}">
           <button class="edit-btn">Edit Profile</button>
         </a>
       </div>
 
-      <!-- ✅ TABS -->
+      <!-- TABS -->
       <div class="tabs">
         <div class="tab active" data-tab="posts">
           <i class="bx bx-grid-alt"></i>
@@ -114,7 +101,7 @@
       </div>
 
 
-      <!-- ✅ POSTS TAB CONTENT (IMPORTANT FIX ✅) -->
+      <!--  POSTS TAB CONTENT (IMPORTANT FIX ) -->
       <div class="tab-content active" id="posts">
         
 
@@ -128,12 +115,12 @@
 
             {% if p.1 %}
             {% if p.1|lower|slice:"-4:" == ".mp4" %}
-            <video class="grid-post" autoplay muted loop playsinline onclick="openViewPost('{{ p.1 }}', '{{ p.0 }}','{{ p.3|escapejs }}'),true">
+            <video class="grid-post" autoplay muted loop playsinline onclick="openViewPost('{{ p.1 }}', '{{ p.0 }}','{{ p.3|escapejs }}',true)">
               <source src="{{ p.1 }}"  type="video/mp4"   />
               Your browser does not support the video tag.
             </video>
             {% else %}
-            <img src="{{ p.1 }}" class="grid-post" alt="post image" onclick="openViewPost('{{ p.1 }}', '{{ p.0 }}','{{ p.3|escapejs }}'),false" />
+            <img src="{{ p.1 }}" class="grid-post" alt="post image" onclick="openViewPost('{{ p.1 }}', '{{ p.0 }}','{{ p.3|escapejs }}',false)" />
             
             {% endif %}
            
@@ -172,20 +159,13 @@
                 {% if profile.image %}
                    <img src="{{ profile.image }}" class="view-user-pic">
                 {% else %}
-<<<<<<< HEAD
                   
-=======
-                 
->>>>>>> 97df6a19ee0b9f4f1232fb06e04ac0701d3b34ad
                   <img src="{% static 'images/default-user.webp' %}" class="view-user-pic">
                 {% endif %}
                {% for login in userlogin %} 
               <span>{{ login.username }}</span>
               {% endfor %}
-            </div>
-
-            
-                        
+            </div>            
           </div>
 
           <!-- COMMENTS -->
@@ -199,20 +179,13 @@
                 {% endif %}
             
 
-            <p>
-              <b id="popupUsername"></b>
-              <span id="popupCaption"></span>
+              <p>
+                <b id="popupUsername"></b>
+                <span id="popupCaption"></span>
+              </p>  
             </div>
-            </p>
+            
             <div class="comment-list" id="commentList">
-<<<<<<< HEAD
-              
-              
-               
-                
-=======
->>>>>>> 97df6a19ee0b9f4f1232fb06e04ac0701d3b34ad
-
                 <!-- 3 DOT MENU -->
                 <div class="comment-more" onclick="toggleCommentMenu(this)">
                   <i class="bx bx-dots-horizontal-rounded"></i>
@@ -223,19 +196,15 @@
                 </div>
                 </div>
               </div>
-              
             </div>
-          </div>
-
-         
-          
-       <form method="post" action="{% url 'add_comment' %}" id=>
+          </div> 
+       <form method="post" action="{% url 'add_comment' %}">
          
           {% csrf_token %}
           <!-- ADD COMMENT -->
            <input type="hidden" name="post_id" id="commentPostId" />
           <div class="view-add-comment">
-            <textarea type="text" name="comment" placeholder="Add a comment..." required></textarea>
+            <textarea  name="comment" placeholder="Add a comment..." required></textarea>
             <input type="submit" value="Post">
           </div>
 
@@ -248,11 +217,6 @@
 </div>
 </div>
 <!-------------- Following Popup------------------------------------------------------------>
-<<<<<<< HEAD
-
-=======
-<!-- FOLLOWING MODAL -->
->>>>>>> 97df6a19ee0b9f4f1232fb06e04ac0701d3b34ad
 <div class="follow-overlay" id="followModal">
   <div class="follow-box">
 
@@ -291,11 +255,7 @@
   </div>
 </div>
 <!----------------------------------------end of popup----------------------------------------------------------->
-<<<<<<< HEAD
-<!-------------- Followers Popup------------------------------------------------------------>
-=======
   <!-------------- Followers Popup------------------------------------------------------------>
->>>>>>> 97df6a19ee0b9f4f1232fb06e04ac0701d3b34ad
 
 <div class="follow-overlay" id="followersModal">
   <div class="follow-box">
@@ -336,12 +296,5 @@
 </div>
 
 <!----------------------------------------end----------------------------------------------------------->
-
-<<<<<<< HEAD
-
-=======
->>>>>>> 97df6a19ee0b9f4f1232fb06e04ac0701d3b34ad
 </body>
 <script src="{% static 'js/profile.js' %}"></script>
-
-</html>
