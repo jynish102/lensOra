@@ -25,7 +25,6 @@ httplib2==0.31.0
 hyperlink==21.0.0
 idna==3.11
 Incremental==24.11.0
-jpype1==1.6.0
 kiwisolver==1.4.8
 matplotlib==3.10.1
 msgpack==1.1.2
