@@ -1078,7 +1078,7 @@ def follow_user(request, username):
             return redirect("suggested_user_profile", username=username)
         
         # if reverse and reverse[0] == "requested" and action == "reject":
-        #      # 🔥 ReJECT REQUEST
+        #      #  ReJECT REQUEST
         #     cursor.execute("""
         #         DELETE FROM follows
         #         WHERE follower_username=%s
@@ -1088,7 +1088,7 @@ def follow_user(request, username):
         #     return redirect("suggested_user_profile", username=username)
 
 
-        # 2️⃣ Check if YOU already follow them
+        #  Check if YOU already follow them
         cursor.execute("""
             SELECT status FROM follows
             WHERE follower_username=%s
@@ -1099,7 +1099,7 @@ def follow_user(request, username):
 
         if existing:
             if existing[0] == "accepted":
-                # 🔥 Unfollow
+                #  Unfollow
                 cursor.execute("""
                     DELETE FROM follows
                     WHERE follower_username=%s
@@ -1107,7 +1107,7 @@ def follow_user(request, username):
                 """, [current_user, username])
 
             elif existing[0] == "requested":
-                # 🔥 Cancel Request
+                #  Cancel Request
                 cursor.execute("""
                     DELETE FROM follows
                     WHERE follower_username=%s
@@ -1115,7 +1115,7 @@ def follow_user(request, username):
                 """, [current_user, username])
 
         else:
-            # 3️⃣ New Follow
+            #  New Follow
             cursor.execute("""
                 SELECT is_private FROM register
                 WHERE username=%s
@@ -1149,7 +1149,7 @@ def add_comment(request):
     # print(username)
 
     if not post_id or not comment:
-        print("❌ Missing post_id or comment")
+        print(" Missing post_id or comment")
         return redirect(request.META.get("HTTP_REFERER"))
 
     with connection.cursor() as cursor:
@@ -1161,7 +1161,7 @@ def add_comment(request):
         user = cursor.fetchone()
 
         if not user:
-            print("❌ User not found")
+            print(" User not found")
             return redirect(request.META.get("HTTP_REFERER"))
 
         user_id = user[0]
@@ -1175,7 +1175,7 @@ def add_comment(request):
         )
         messages.success(request,f"{username} Your Comment Added Successfully.....")
 
-        # print("✅ COMMENT INSERTED")
+        # print("COMMENT INSERTED")
 
     return redirect(request.META.get("HTTP_REFERER"))
 
@@ -1213,7 +1213,7 @@ def update_post(request):
             messages.success(request,f" Hey!! {username} Your Post Update Successfully...And New Updated Caption is {caption} :):)")
 
 
-    return redirect('post_crud')
+        return redirect('post_crud')
 
 
 def forgot_password(request):
