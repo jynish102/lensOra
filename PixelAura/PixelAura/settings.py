@@ -122,20 +122,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-<<<<<<< HEAD
 STATIC_URL = 'static/'
 STATICFILES_DIR = [os.path.join(BASE_DIR,'PixelAuraplus/static')]
 
 MEDIA_URL ='PixelAuraplus/static/images/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'PixelAuraplus/static/images/')
-=======
-
-STATIC_URL = 'static/'
-STATICFILES_DIR = [os.path.join(BASE_DIR,"PixelAuraplus/static")]
-
-MEDIA_URL ="PixelAuraplus/static/images/"
-MEDIA_ROOT = os.path.join(BASE_DIR,"PixelAuraplus/static/images")
->>>>>>> 97df6a19ee0b9f4f1232fb06e04ac0701d3b34ad
 
 
 # Default primary key field type
