@@ -18,7 +18,6 @@ urlpatterns = [
     path('forgot_password/',views.forgot_password, name="forgot_password"),
     path('reels/', views.reels, name='reels'),
     path('profile/', views.profile, name="profile"),
-    path('saved/',views.saved, name="saved"),
     path('suggested_profile/<str:username>', views.suggested_profile, name="suggested_profile"),
     path('add_post/', views.add_post,name="add_post"),
     path('profile/<str:username>/' , views.suggested_profile, name="suggested_user_profile"),
