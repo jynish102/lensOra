@@ -147,7 +147,7 @@ function toggleCommentMenu(el) {
     .forEach((m) => m !== el && m.classList.remove("active"));
 
   el.classList.toggle("active");
-
+}
 /*-------------------------follow popup----------------------------------- */
 const followingModal = document.getElementById("followModal");
 const followersModal = document.getElementById("followersModal");
