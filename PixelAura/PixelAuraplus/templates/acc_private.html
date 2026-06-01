@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+<link src="stylesheet" href="{% static 'css/acc_private.css' %}">
+{% block content %}
+<div class="settings-content">
+    <h2>Account privacy</h2>
+
+    <div class="privacy-row">
+        <div class="privacy-text">
+            <h4>Private account</h4>
+            <p>
+                When your account is private, only people you approve
+                can see your photos and videos on Instagram.
+            </p>
+        </div>
+
+        <label class="switch">
+            <input type="checkbox">
+            <span class="slider"></span>
+        </label>
+    </div>
+</div>
+{% endblock %}
+
+<script src="{% static 'js.acc_private.js' %}"></script>
+

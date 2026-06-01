@@ -1,7 +1,18 @@
 from django.shortcuts import render,redirect
 from django.db import connection
+from django.conf import settings
+import os
+import json
+from django.http import HttpResponse,JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib import messages
+import time
+
 
 def login(request):
+    if "user" in request.session:
+        return redirect('home')
+    
     if request.method == 'POST':
         un = request.POST.get('username')
         pw = request.POST.get('password')
@@ -10,39 +21,361 @@ def login(request):
             cursor.execute(query,[un,pw])
             data = cursor.fetchone()
             if data:
+                request.session['user'] = data[6]
+                messages.success(request,f"Welcome!  {data[6]}  To Home Page.")
                 return redirect('home')
             else:
+                messages.error(request,f"Sorry! {un}, Your Login Data Is not Match To Your Registered Data. ")
                 return redirect('login')
     return render(request,'login.html')
 
 def register(request):
     if request.method == 'POST':
-        nm = request.POST.get('name')
-        em = request.POST.get('email')
-        mb = request.POST.get('mobile')
-        pw = request.POST.get('password')
+        print(request.POST)
+        nm = request.POST.get('name')or ""
+        em = request.POST.get('email')or ""
+        mb = request.POST.get('mobile')or ""
+        pw = request.POST.get('password') or ""
+      
+        cp = request.POST.get('confirm_password','')
         dob = request.POST.get('birthdate')
         un = request.POST.get('username')
+        print("PASSWORD:", pw)
+        print("PASSWORD:", pw)
+
+        if len(pw) < 6:
+         messages.error(request, "Password must be at least 6 characters")
+         return redirect("register")
+
+        if pw != cp:
+            messages.error(request, "Passwords do not match")
+            return redirect("register")
+
+
         with connection.cursor() as cursor:
+            cursor.execute("SELECT username FROM register WHERE username=%s", [un])
+            if cursor.fetchone():
+              messages.error(request, f"Username {un} already exists!")
+              return redirect('register')
+            
             query ="insert into register (name,email,mobile,password,birthdate,username) values(%s,%s,%s,%s,%s,%s)"
             cursor.execute(query,[nm, em, mb, pw, dob, un])
+            messages.success(request, f"Registration successful! Welcome {un} 🎉")
             return redirect('login')
+
     return render(request,'register.html')
 
 def details(request):
     return render(request,'more_detail.html')   
 
 def home(request):
-    return render(request,'home.html')
+    if "user" not in request.session:
+        return redirect('login')
+    
+    loginprof = profiledata(request) 
+    login_user = getloginuserdt(request)
+    login_profile = profiledata(request)
+    login_username = login_user[0]["username"]
+    username=request.session.get("user")
+    with connection.cursor() as cursor:
+        q = "select * from register where username=%s"
+        cursor.execute(q,[username])
+        
+        data = cursor.fetchone()
+        datalist = {
+                'id' :data[0],
+                'name':data[1],
+                'email':data[2],
+                'password':  data[3],
+                'mobile':  data[4],
+                'birthdate':data[5],
+                'username': data[6]
+        }
+
+         # 🔹 Suggested users
+        cursor.execute("""
+            SELECT id, username
+            FROM register
+            WHERE username != %s
+        """, [username])
+        users = cursor.fetchall()
+
+
+        # 🔹 Profile images (NO JOIN)
+        cursor.execute("""
+            SELECT username, image
+            FROM profile
+            WHERE username != %s
+        """,[username])
+        profiles = dict(cursor.fetchall())
+
+        suggested_users = []
+        for uid, uname in users:
+            img = profiles.get(uname)
+
+            if img:
+                img = "" + img
+
+            suggested_users.append({
+                "id": uid,
+                "username": uname,
+                "image": img  # match by username
+            })
+            
+            #postst dynamic
+            login_username = login_user[0]["username"]
+        cursor.execute("""
+            SELECT 
+                posts.id,
+                posts.image,
+                posts.username,
+                profile.image AS profile_image
+            FROM posts
+            JOIN register  ON posts.username = register.username
+            LEFT JOIN profile ON posts.username = profile.username
+            LEFT JOIN follows  
+            ON follows.follower_username = %s 
+            AND follows.following_username = posts.username
+            WHERE 
+                posts.username != %s
+                AND (
+                    register.is_private = 0
+                    OR follows.status = 'accepted'
+                )
+            ORDER BY posts.id DESC
+            LIMIT 10
+        """, [login_username, login_username])
+        rows = cursor.fetchall()
+
+        #Fetch comments with username + profile image
+        cursor.execute("""
+            SELECT 
+                c.post_id,
+                r.username,
+                p.image,
+                c.comment
+            FROM comments c
+            JOIN register r ON c.user_id = r.id
+            LEFT JOIN profile p ON r.username = p.username
+        """)
+
+        comment_rows = cursor.fetchall()
+        comments_by_post = {}
+
+        for post_id, uname, image, comment in comment_rows:
+            comments_by_post.setdefault(post_id, []).append({
+                "username": uname,
+                "image": image,
+                "comment": comment
+            })
+
+        cursor.execute("""
+            SELECT post_id, COUNT(*) 
+            FROM likes 
+            GROUP BY post_id
+        """)
+        like_counts = dict(cursor.fetchall())
+    
+        cursor.execute("""
+                SELECT l.post_id
+                FROM likes l
+                JOIN register r ON l.user_id = r.id
+                WHERE r.username = %s
+            """, [username])
+
+        liked_posts = {row[0] for row in cursor.fetchall()}
+
+        suggested_posts = []
+        for row in rows:
+            post_id = row[0]
+            suggested_posts.append({
+                "id" : post_id,
+                "image": row[1],
+                "username": row[2],
+                "profile_image": row[3],
+                "comments": comments_by_post.get(post_id, []),
+                 "like_count": like_counts.get(post_id, 0),
+                 "liked": post_id in liked_posts
+            })  
+
+    
+    return render(request,'home.html', 
+                  {'ulist' : suggested_users , 
+                   'datas' : datalist, 
+                   "loginprof" : loginprof,
+                   "suggested_posts": suggested_posts,
+                   "suser" : login_user,
+                   "sp" : login_profile,
+                   "comments": comments_by_post, 
+                   "username": username
+                   })
+
+
+def getloginuserdt(request):
+    username=request.session.get("user")
+    with connection.cursor() as cursor:
+        q = "select * from register where username=%s"
+        cursor.execute(q,[username])
+        data = cursor.fetchall()
+        datalist = [{
+                'id' :row[0],
+                'name':row[1],
+                'email':row[2],
+                'mobile':  row[3],
+                'password':row[4],
+                'birthdate':row[5],
+                'username': row[6]
+            }
+            for row in data
+            ]
+        return datalist 
+   
+
+
+
+def suggestuser(request):
+     username=request.session.get("user")
+     with connection.cursor() as cursor:
+        q = "select * from register where username!=%s"
+        cursor.execute(q,[username])
+        data = cursor.fetchall()
+        userlist = [{
+                'id' :row[0],
+                # 'name':row[1],
+                # 'email':row[2],
+                # 'password':row[3],
+                # 'mobile':  row[4],
+                # 'birthdate':row[5],
+                'username': row[6]
+            }for row in data]
+        return userlist
+
+
 
 def sidebar(request):
-    return render(request,'sidebar.html')
+    loginprof = profiledata(request) 
+    loginu = getloginuserdt(request)
+    return render(request,'sidebar.html', {"loginprof" : loginprof, "datas" : loginu})
 
 def account_sidebar(request):
     return render(request,'account_sidebar.html')
 
+# def setting(request):
+#     loginu = getloginuserdt(request)
+#     if request.method == "POST":
+#         un = request.session.get('user')
+#         bio = request.POST.get("bio")
+#         gen  = request.POST.get("gender")
+#         pro_img =request.FILES.get("profile_image")
+#         pro_image_r_p = None  # IMPORTANT
+
+#         if pro_img :
+#             image_path = os.path.join(settings.MEDIA_ROOT, "profile", pro_img.name)
+#             os.makedirs(os.path.dirname(image_path), exist_ok=True)
+#             with open(image_path,"wb") as f:
+#                 for chunk in pro_img.chunks():
+#                     f.write(chunk)
+#             pro_image_r_p = settings.MEDIA_URL + "profile/" + pro_img.name
+
+#         with connection.cursor() as cursor:
+#             q = """
+#             insert into profile (username,bio,gender,image) 
+#             values (%s, %s, %s, %s)
+#             """
+#             cursor.execute(q,[un,bio,gen,pro_image_r_p])
+#             return redirect("profile")
+#     profile = profiledata(request)     
+#     return render(request,'setting.html',{'datas' :loginu , "profile" : profile})
+
 def setting(request):
-    return render(request,'setting.html')  
+    if "user" not in request.session:
+        return redirect('login')
+    
+    loginu = getloginuserdt(request)
+    loginprof =profiledata(request) 
+    un = request.session.get('user')
+    # GET request
+    profile = profiledata(request)   # should return None if not exists
+    result = 0
+    username= request.session.get("user")
+    status = request.POST.get('status')
+    
+
+    if request.method == "POST":
+        bio = request.POST.get("bio")
+        gen = request.POST.get("gender")
+        pro_img = request.FILES.get("profile_image")
+        pro_image_r_p = None
+
+        if pro_img:
+            
+            image_path = os.path.join(settings.MEDIA_ROOT, "profile", pro_img.name)
+            os.makedirs(os.path.dirname(image_path), exist_ok=True)
+
+            with open(image_path, "wb") as f:
+                for chunk in pro_img.chunks():
+                    f.write(chunk)
+
+            pro_image_r_p = settings.MEDIA_URL + "profile/" + pro_img.name
+
+        with connection.cursor() as cursor:
+           
+
+            # 🔍 Check if profile exists
+            cursor.execute(
+                "SELECT id FROM profile WHERE username = %s",
+                [un]
+            )
+            existing = cursor.fetchone()
+            if existing:
+                # ✅ UPDATE
+                if pro_image_r_p:
+                    cursor.execute("""
+                        UPDATE profile
+                        SET bio=%s, gender=%s, image=%s
+                        WHERE username=%s
+                    """, [bio, gen, pro_image_r_p, un])
+                else:
+                    cursor.execute("""
+                        UPDATE profile
+                        SET bio=%s, gender=%s
+                        WHERE username=%s
+                    """, [bio, gen, un])
+                messages.success(request,f"{un} Your Profile UPDATED Successfully....And Your Gender is {gen}......")
+
+            else:
+                # ✅ INSERT
+                cursor.execute("""
+                    INSERT INTO profile (username, bio, gender, image)
+                    VALUES (%s, %s, %s, %s)
+                """, [un, bio, gen, pro_image_r_p])
+                messages.success(request,f"{un} Your Profile Add Successfully....And Your Gender is {gen}......")
+
+            return redirect("setting")
+        
+    with connection.cursor() as cursor:
+            cursor.execute("""
+            SELECT is_private FROM register
+            WHERE username = %s
+        """, [username])
+            result = cursor.fetchone()
+
+    if result:
+          is_private = result[0]
+    else:
+         is_private = 0
+
+    return render(
+        request,
+        'setting.html',
+        {
+            'datas': loginu,
+            'profile': profile,
+            "loginprof" : loginprof,
+            "is_private" : is_private
+        }
+    )
+
 
 def base(request):
     return render(request,'base.html')  
@@ -51,10 +384,1138 @@ def account_center(request):
     return render(request, 'account_center.html')
 
 def personal_detail_s(request):
-    return render(request,"personal_detail_s.html")
+    if "user" not in request.session:
+        return redirect('login')
+    
+    username = request.session.get('user')
+    loginu = getloginuserdt(request)
+    profile = profiledata(request) 
+
+    if request.method == "POST":
+        uname = request.POST.get("username")
+        email = request.POST.get("email")
+        mobile = request.POST.get("phone")
+        dob = request.POST.get("dob")
+
+        with connection.cursor() as cursor:
+            cursor.execute(
+                """
+                UPDATE register
+                SET  email=%s, 
+                    mobile=%s,
+                    birthdate=%s,
+                    username=%s
+                WHERE username=%s
+                """,
+                [email,mobile,dob,uname,username]
+            )
+
+        messages.success(request, "Profile updated successfully")
+        return redirect("personal_detail_s")
+    return render(request,"personal_detail_s.html",{'username' : username, 'datas' :loginu , "profile" : profile})
 
 def change_pass(request):
-    return render(request,'change_pass.html')
+    if "user" not in request.session:
+        return redirect('login')
+
+    username = request.session.get("user")
+    profile = profiledata(request)
+
+    if request.method == "POST":
+        current = request.POST.get("crntpwd")
+        new = request.POST.get("npwd")
+        confirm = request.POST.get("cnfmpwd")
+
+        # 1️⃣ Password match check
+        if new != confirm:
+            messages.error(request, "New passwords do not match")
+            return redirect("change_pass")
+        
+        current_hashed = current
+        new_hashed = new
+
+
+        with connection.cursor() as cursor:
+            # 2️⃣ Verify current password
+            cursor.execute(
+                "SELECT id FROM register WHERE username=%s AND password=%s",
+                [username, current_hashed]
+            )
+            user = cursor.fetchone()
+
+            if not user:
+                messages.error(request, "Current password is incorrect")
+                return redirect("change_pass")
+
+            # 3️⃣ Update password
+            cursor.execute(
+                "UPDATE register SET password=%s WHERE username=%s",
+                [new_hashed, username]
+            )
+
+        messages.success(request, "Password changed successfully")
+        return redirect("change_pass")
+    return render(
+        request,
+        "change_pass.html",
+        {
+            "profile": profile,
+            "username": username
+        }
+    )
 
 def personal_detail_ss(request):
-    return render (request,"personal_detail_ss.html")
+    if "user" not in request.session:
+        return redirect('login')
+    
+    loginu = getloginuserdt(request)
+    return render (request,"personal_detail_ss.html",{'datas' :loginu})
+
+def reels(request):
+    if "user" not in request.session:
+        return redirect('login')
+    
+    login_user = getloginuserdt(request)
+    login_username = login_user[0]["username"]
+    loginprof = profiledata(request)
+    username=request.session.get("user")
+
+    with connection.cursor() as cursor:
+        cursor.execute("""
+                SELECT 
+                posts.id,
+                posts.image,
+                posts.username,
+                profile.image AS profile_image
+            FROM posts
+            JOIN register  ON posts.username = register.username
+            LEFT JOIN profile ON posts.username = profile.username
+            LEFT JOIN follows  
+            ON follows.follower_username = %s 
+            AND follows.following_username = posts.username
+            WHERE 
+                posts.username != %s
+                AND (
+                    register.is_private = 0
+                    OR follows.status = 'accepted'
+                )
+            ORDER BY posts.id DESC
+            LIMIT 10
+        """, [login_username, login_username])
+
+        rows = cursor.fetchall()
+
+        #Fetch comments with username + profile image
+        cursor.execute("""
+            SELECT 
+                c.post_id,
+                r.username,
+                p.image,
+                c.comment
+            FROM comments c
+            JOIN register r ON c.user_id = r.id
+            LEFT JOIN profile p ON r.username = p.username
+        """)
+
+        comment_rows = cursor.fetchall()
+        comments_by_post = {}
+
+        for post_id, uname, image, comment in comment_rows:
+            comments_by_post.setdefault(post_id, []).append({
+                "username": uname,
+                "image": image,
+                "comment": comment
+            })
+
+        cursor.execute("""
+            SELECT post_id, COUNT(*) 
+            FROM likes 
+            GROUP BY post_id
+        """)
+        like_counts = dict(cursor.fetchall())
+    
+        cursor.execute("""
+                SELECT l.post_id
+                FROM likes l
+                JOIN register r ON l.user_id = r.id
+                WHERE r.username = %s
+            """, [username])
+
+        liked_posts = {row[0] for row in cursor.fetchall()}
+            
+    suggested_posts = []
+    for row in rows:
+        post_id = row[0]
+        suggested_posts.append({
+            "id" :post_id,
+            "image": row[1],
+            "username": row[2],
+            "profile_image": row[3],
+            "comments": comments_by_post.get(post_id, []),
+            "like_count": like_counts.get(post_id, 0),
+            "liked": post_id in liked_posts
+        })
+    return render(request,"reels.html" , 
+                  {"profile" : loginprof,
+                   "sposts" : suggested_posts})
+
+def profile(request):
+    if 'user' not in request.session:
+        return redirect('login')
+    
+    username=request.session.get("user")
+    post_id = request.GET.get("post_id")
+    loginu = getloginuserdt(request)
+    posts=viewpost(request)
+    comments = get_comments(request)
+    profile = profiledata(request) 
+    
+    with connection.cursor() as cursor:
+
+        # # POSTS
+        # cursor.execute("""
+        #     SELECT id, image, caption
+        #     FROM posts
+        #     WHERE username = %s
+        # """, [username])
+        # posts = cursor.fetchall()
+        post_count = len(posts)
+        
+
+        # FOLLOWERS COUNT
+        cursor.execute("""
+            SELECT COUNT(*)
+            FROM follows
+            WHERE following_username = %s
+        """, [username])
+        followers_count = cursor.fetchone()[0]
+
+        # FOLLOWING COUNT
+        cursor.execute("""
+            SELECT COUNT(*)
+            FROM follows
+            WHERE follower_username = %s
+        """, [username])
+        following_count = cursor.fetchone()[0]
+
+        cursor.execute("""
+        SELECT r.username,r.name,p.image
+        FROM follows f
+        JOIN register r ON f.following_username = r.username
+        JOIN profile p
+        ON r.username = p.username
+        WHERE f.follower_username = %s
+    """, [username])
+        following_users = cursor.fetchall()
+
+        cursor.execute("""
+        SELECT r.username,r.name,p.image
+        FROM follows f
+        JOIN register r ON f.follower_username = r.username
+        JOIN profile p
+        ON r.username = p.username
+        WHERE f.following_username = %s
+    """, [username])
+        follower_users = cursor.fetchall()
+
+        
+    
+    return render(request,"profile.html",
+                  {'userlogin' :loginu, 
+                   "posts": posts , 
+                   "profile": profile, 
+                   "post_count" : post_count,
+                   "following_count" : following_count,
+                   "followers_count" : followers_count,
+                   "comments": comments,
+                   "following_users": following_users,
+                   "follower_users" : follower_users})
+
+def get_comments(request):
+    username = request.session.get("user")
+    post_id = request.GET.get("post_id")
+    if not post_id:
+        return []
+    with connection.cursor() as cursor:
+        cursor.execute("""
+            SELECT 
+                c.id,
+                r.username,
+                p.image,
+                c.comment
+            FROM comments c
+            JOIN register r ON c.user_id = r.id
+            LEFT JOIN profile p ON r.username = p.username
+            WHERE c.post_id = %s
+            ORDER BY c.id ASC
+        """,[post_id])
+        rows = cursor.fetchall()
+
+    comments = []
+    for  cid,uname, image, comment in rows:
+        comments.append({
+            "id":cid,
+            "username": uname,
+            "image": image,
+            "comment": comment,
+            "is_owner": uname == username
+        })
+        
+    return JsonResponse({"comments": comments})
+
+def delete_comment(request):
+    if request.method != "POST":
+        return JsonResponse({"error": "Invalid request"}, status=400)
+
+    if "user" not in request.session:
+        return JsonResponse({"error": "Not logged in"}, status=403)
+
+    comment_id = request.POST.get("comment_id")
+    username = request.session.get("user")
+
+    if not comment_id:
+        return JsonResponse({"error": "Missing comment id"}, status=400)
+
+    with connection.cursor() as cursor:
+        # Check ownership
+        cursor.execute("""
+            SELECT r.username
+            FROM comments c
+            JOIN register r ON c.user_id = r.id
+            WHERE c.id = %s
+        """, [comment_id])
+
+        row = cursor.fetchone()
+
+        if not row:
+            return JsonResponse({"error": "Comment not found"}, status=404)
+
+        comment_owner = row[0]
+
+        # ❌ Not owner → deny
+        if comment_owner != username:
+            return JsonResponse({"error": "Permission denied"}, status=403)
+
+        # ✅ Delete
+        cursor.execute("DELETE FROM comments WHERE id = %s", [comment_id])
+
+    return JsonResponse({"success": True})
+
+def profiledata(request):
+    username = request.session.get('user')
+    profile_data = {
+        'username': username,
+        'bio': '',
+        'gender': '',
+        'image': None
+    }
+    with connection.cursor() as cursor:
+        cursor.execute("""
+            SELECT username, bio, gender, image
+            FROM profile
+            WHERE username = %s
+        """, [username])
+
+        row = cursor.fetchone()
+
+        if row:
+            profile_data = {
+                'username': row[0],
+                'bio': row[1],
+                'gender': row[2],
+                'image': row[3],
+            }
+        return profile_data    
+
+
+def suggested_profile(request, username):
+    if "user" not in request.session:
+        return redirect("login")
+    
+    logged_user = request.session["user"]
+    comments = get_comments(request)
+    loginprof = profiledata(request)
+    show_posts = False
+    
+    with connection.cursor() as cursor:
+
+        # USER
+        cursor.execute("""
+            SELECT id, username
+            FROM register
+            WHERE username = %s
+        """, [username])
+        user_row = cursor.fetchone()
+
+        if not user_row:
+            return redirect("home")
+
+        user = {
+            "id": user_row[0],
+            "username": user_row[1],
+        }
+
+        # PROFILE
+        cursor.execute("""
+            SELECT bio, image
+            FROM profile
+            WHERE username = %s
+        """, [username])
+        profile_row = cursor.fetchone()
+
+        profile = {
+            "bio": profile_row[0] if profile_row else "",
+            "image": profile_row[1] if profile_row else None,
+        }
+
+
+        # POSTS
+        cursor.execute("""
+            SELECT id,image,caption
+            FROM posts
+            WHERE username = %s
+            ORDER BY id DESC
+        """, [username])
+        posts = cursor.fetchall()
+        post_count = len(posts)
+
+
+         # ✅ CHECK FOLLOW STATUS
+        cursor.execute("""
+            SELECT status FROM follows
+            WHERE follower_username=%s AND following_username=%s
+        """, [logged_user, username])
+
+        follow_row = cursor.fetchone()
+        follow_status = follow_row[0] if follow_row else None
+     
+        cursor.execute("""
+            SELECT status FROM follows 
+            WHERE follower_username=%s AND following_username=%s
+        """, [username, logged_user])
+        reverse_row = cursor.fetchone() 
+
+        follows_you = False
+        request_pending_for_you = False
+
+        if reverse_row:
+         if reverse_row[0] == "accepted":
+           follows_you = True
+         elif reverse_row[0] == "requested":
+            request_pending_for_you = True
+
+
+         # FOLLOWERS COUNT
+        cursor.execute("""
+            SELECT COUNT(*)
+            FROM follows
+            WHERE following_username = %s AND status='accepted'
+        """, [username])
+        followers_count = cursor.fetchone()[0]
+
+        # FOLLOWING COUNT
+        cursor.execute("""
+            SELECT COUNT(*)
+            FROM follows
+            WHERE follower_username = %s
+        """, [username])
+        following_count = cursor.fetchone()[0]
+
+        cursor.execute("""
+        SELECT r.username,r.name,p.image
+        FROM follows f
+        JOIN register r ON f.following_username = r.username
+        JOIN profile p
+        ON r.username = p.username
+        WHERE f.follower_username = %s
+    """, [username])
+        following_users = cursor.fetchall()
+
+        cursor.execute("""
+        SELECT r.username,r.name,p.image
+        FROM follows f
+        JOIN register r ON f.following_username = r.username
+        JOIN profile p
+        ON r.username = p.username
+        WHERE f.follower_username = %s
+    """, [username])
+        following_users = cursor.fetchall()
+
+        cursor.execute("""
+        SELECT r.username,r.name,p.image
+        FROM follows f
+        JOIN register r ON f.follower_username = r.username
+        JOIN profile p
+        ON r.username = p.username
+        WHERE f.following_username = %s
+    """, [username])
+        follower_users = cursor.fetchall()
+
+        # GET PRIVATE STATUS
+        cursor.execute("""
+        SELECT is_private FROM register
+        WHERE username = %s
+    """, [username])
+        private_row = cursor.fetchone()
+        is_private = private_row[0] if private_row else 0
+
+    # CONTROL POST VISIBILITY
+        if username == logged_user:
+         show_posts = True
+        elif is_private == 0:
+         show_posts = True
+        elif follow_status == "accepted":
+         show_posts = True
+        else:
+          show_posts = False
+    return render(request, "suggested_profile.html", {
+        "user": user,
+        "profile": profile,
+        "posts": posts,
+        "follow_status" : follow_status,
+        "follows_you":follows_you,
+        "post_count" : post_count,
+        "followers_count" : followers_count,
+        "following_count" : following_count,
+        "comments":comments,
+        "loginprof" : loginprof,
+        "following_users" : following_users,
+        "follower_users" : follower_users,
+        "is_private" : is_private,
+        "show_posts" : show_posts  ,
+        "follows_you": follows_you,
+        "request_pending_for_you": request_pending_for_you,
+    })
+
+def suggested_user_profile(request, username):
+    with connection.cursor() as cursor:
+        cursor.execute(
+            "SELECT id, name, email, username  FROM register WHERE username = %s",
+            [username]
+        )
+        row = cursor.fetchone()
+
+    if not row:
+        return HttpResponse("User not found")
+
+    user = {
+        'id': row[0],
+        'name': row[1],
+        'email': row[2],
+        'username': row[3],
+    }
+
+    return render(request, 'suggested_profile.html', {'user': user})
+
+
+# def add_post(request):
+#     if request.method =="POST" :
+#         img = request.FILES.get('image')
+#         un = request.session.get('user')
+#         cp = request.POST.get("txtarea")
+#         if img :
+#             image_path = os.path.join(settings.MEDIA_ROOT, "posts", img.name)
+#             os.makedirs(os.path.dirname(image_path), exist_ok=True)
+#             with open(image_path,"wb") as f:
+#                 for chunk in img.chunks():
+#                     f.write(chunk)
+#             image_r_p = "/PixelAuraplus/static/images/posts/" +img.name
+
+#         with connection.cursor() as cursor:
+#             q = "insert into posts (image,username,caption) values (%s,%s, %s)"   
+#             cursor.execute(q,[image_r_p,un,cp])    
+#             return redirect('home') 
+#     return render(request,"login.html") 
+
+def add_post(request):
+    if request.method == "POST":
+        img = request.FILES.get('image')
+        un = request.session.get('user')
+        cp = request.POST.get("txtarea")
+
+        if not img:
+            # user clicked discard OR tried to submit without image
+            return redirect('home')
+        
+        if img:
+            allowed_types = [
+                "image/jpeg",
+                "image/webp",
+                "video/mp4"
+            ]
+
+            if img.content_type not in allowed_types:
+                return HttpResponse("Invalid file type")
+
+
+        if img:
+            image_path = os.path.join(settings.MEDIA_ROOT, "posts", img.name)
+            os.makedirs(os.path.dirname(image_path), exist_ok=True)
+
+            with open(image_path, "wb") as f:
+                for chunk in img.chunks():
+                    f.write(chunk)
+
+            image_r_p = settings.MEDIA_URL + "posts/" + img.name
+       
+        with connection.cursor() as cursor:
+                q = """
+                INSERT INTO posts (image, username, caption)
+                VALUES (%s, %s, %s)
+                """
+                cursor.execute(q, [image_r_p, un, cp])
+                messages.success(request,f"{un} Your Post Add Successfully....And The Caption is {cp}......")
+
+        return redirect('home')
+
+    return render(request, "login.html")
+
+def viewpost(request):
+
+    username = request.session.get('user')
+
+    with connection.cursor() as cursor:
+        cursor.execute("""
+            SELECT id, image, username, caption
+            FROM posts
+            WHERE username = %s
+            ORDER BY id DESC
+        """, [username])
+        posts = cursor.fetchall()
+
+    return posts
+
+
+def edit_post(request,id):
+    if request.method == 'POST':
+        
+        cp = request.POST.get("txtarea")
+
+        
+        with connection.cursor() as cursor:
+            q="update posts set caption=%s where id=%s"
+            cursor.execute(q,[cp,id])
+            data = cursor.fetchone()
+            post={
+                'id':data[0],
+                'caption' : [3]
+                
+            }
+        return render(request, 'profile.html', {'post':post})
+
+
+#suser
+def viewprofile(request):
+    username = request.session.get('user')
+
+    with connection.cursor() as cursor:
+        cursor.execute("""
+            SELECT id,username,bio,gender,image
+            FROM profile
+            WHERE username = %s
+        """, [username])
+        profile = cursor.fetchall()
+
+    return render(request, "profile.html", {
+        "profile": profile
+    })
+
+def notifications(request):
+    if "user" not in request.session:
+        return redirect("login")
+
+    logged_user = request.session["user"]  # username
+    loginprof = profiledata(request) 
+
+    with connection.cursor() as cursor:
+        cursor.execute("""
+            SELECT 
+                f.follower_username,
+                p.image,
+                f.created_at
+            FROM follows f
+            LEFT JOIN profile p 
+                ON p.username = f.follower_username
+            WHERE f.following_username = %s
+            ORDER BY f.created_at DESC
+        """, [logged_user])
+
+        notifications = cursor.fetchall()
+
+    return render(request, "notifications.html", {
+        "notifications": notifications,
+        "loginprof" : loginprof
+    })
+
+def follow_user(request, username):
+    if "user" not in request.session:
+        return redirect("login")
+
+    current_user = request.session["user"]
+    action = request.POST.get("action") 
+
+    if current_user == username:
+        return redirect("suggested_user_profile", username=username)
+
+    with connection.cursor() as cursor:
+
+        # 1️⃣ Check if someone requested YOU
+        cursor.execute("""
+            SELECT status FROM follows
+            WHERE follower_username=%s
+            AND following_username=%s
+        """, [username, current_user])
+
+        reverse = cursor.fetchone()
+
+        if reverse and reverse[0] == "requested":
+            # 🔥 ACCEPT REQUEST
+            cursor.execute("""
+                UPDATE follows
+                SET status='accepted'
+                WHERE follower_username=%s
+                AND following_username=%s
+            """, [username, current_user])
+
+            return redirect("suggested_user_profile", username=username)
+        
+        # if reverse and reverse[0] == "requested" and action == "reject":
+        #      # 🔥 ReJECT REQUEST
+        #     cursor.execute("""
+        #         DELETE FROM follows
+        #         WHERE follower_username=%s
+        #         AND following_username=%s
+        #     """, [username, current_user])
+
+        #     return redirect("suggested_user_profile", username=username)
+
+
+        # 2 Check if YOU already follow them
+        cursor.execute("""
+            SELECT status FROM follows
+            WHERE follower_username=%s
+            AND following_username=%s
+        """, [current_user, username])
+
+        existing = cursor.fetchone()
+
+        if existing:
+            if existing[0] == "accepted":
+                #  Unfollow
+                cursor.execute("""
+                    DELETE FROM follows
+                    WHERE follower_username=%s
+                    AND following_username=%s
+                """, [current_user, username])
+
+            elif existing[0] == "requested":
+                #  Cancel Request
+                cursor.execute("""
+                    DELETE FROM follows
+                    WHERE follower_username=%s
+                    AND following_username=%s
+                """, [current_user, username])
+
+        else:
+            # 3 New Follow
+            cursor.execute("""
+                SELECT is_private FROM register
+                WHERE username=%s
+            """, [username])
+
+            private_row = cursor.fetchone()
+            is_private = private_row[0] if private_row else 0
+
+            status = "requested" if is_private == 1 else "accepted"
+
+            cursor.execute("""
+                INSERT INTO follows (follower_username, following_username, status)
+                VALUES (%s, %s, %s)
+            """, [current_user, username, status])
+
+    return redirect("suggested_user_profile", username=username)
+
+def add_comment(request):
+    if request.method != "POST":
+        return redirect("home")
+
+    if "user" not in request.session:
+        return redirect("login")
+
+    post_id = request.POST.get("post_id")
+    comment = request.POST.get("comment")
+    username = request.session.get("user")
+
+    # print("POST_ID:", post_id)
+    # print("COMMENT:", comment)
+    # print(username)
+
+    if not post_id or not comment:
+        print(" Missing post_id or comment")
+        return redirect(request.META.get("HTTP_REFERER"))
+
+    with connection.cursor() as cursor:
+
+        cursor.execute(
+            "SELECT id FROM register WHERE username=%s",
+            [username]
+        )
+        user = cursor.fetchone()
+
+        if not user:
+            print("❌ User not found")
+            return redirect(request.META.get("HTTP_REFERER"))
+
+        user_id = user[0]
+        
+        cursor.execute(
+            """
+            INSERT INTO comments (post_id, user_id, comment)
+            VALUES (%s, %s, %s)
+            """,
+            [int(post_id), user_id, comment]
+        )
+        messages.success(request,f"{username} your comment added successfully....")
+
+        print(" COMMENT INSERTED")
+
+    return redirect(request.META.get("HTTP_REFERER"))
+
+def post_crud(request):
+    if 'user' not in request.session:
+        return redirect('login')
+    username = request.session['user']
+    posts = viewpost(request)
+    profile = profiledata(request)
+    return render(request,"post_crud.html",{'username' :username, 'posts':posts, 'profile' : profile})
+
+def delete_post(request, post_id):
+    username = request.session.get('user')
+
+    with connection.cursor() as cursor:
+        cursor.execute(
+            "DELETE FROM posts WHERE id=%s AND username=%s",
+            [post_id, username]
+        )
+        messages.success(request,f"{username} Your Post Delete Successfully.....")
+
+    return redirect('profile')
+
+def update_post(request):
+    if request.method == "POST":
+        post_id = request.POST.get('post_id')
+        caption = request.POST.get('caption')
+        username = request.session.get('user')
+
+        with connection.cursor() as cursor:
+            cursor.execute(
+                "UPDATE posts SET caption=%s WHERE id=%s AND username=%s",
+                [caption, post_id, username]
+            )
+            messages.success(request,f" Hey!! {username} Your Post Update Successfully...And New Updated Caption is {caption}...")
+
+        return redirect('post_crud')
+
+
+def forgot_password(request):
+    if "user" not in request.session:
+        return redirect('login')
+    
+    profile = profiledata(request)
+    login = getloginuserdt(request)
+
+    password_found = None
+
+    if request.method == "POST":
+        username = request.POST.get("username")
+        mobile = request.POST.get("mobile")
+
+        with connection.cursor() as cursor:
+            cursor.execute("""
+                SELECT password
+                FROM register
+                WHERE username = %s AND mobile = %s
+            """, [username, mobile])
+
+            row = cursor.fetchone()
+
+            if row:
+                # ✅ MATCH FOUND
+                password_found = row[0]
+            else:
+                # ❌ NO MATCH
+                messages.error(request, "Invalid username or mobile number")
+
+    return render(
+        request,
+        "forgot_password.html",
+        {
+            "profile": profile,
+            "login": login,
+            "password_found": password_found
+        }
+    )
+
+def forgot_password(request):
+    if "user" not in request.session:
+        return redirect('login')
+    
+    profile = profiledata(request)
+    login = getloginuserdt(request)
+
+    password_found = None
+    error_popup = False
+    error_message = ""
+
+    if request.method == "POST":
+        username = request.POST.get("username")
+        mobile = request.POST.get("mobile")
+
+        with connection.cursor() as cursor:
+            cursor.execute("""
+                SELECT password
+                FROM register
+                WHERE username = %s AND mobile = %s
+            """, [username, mobile])
+
+            row = cursor.fetchone()
+            
+
+            if row:
+                # ✅ SUCCESS → SHOW PASSWORD POPUP
+                password_found = row[0]
+            else:
+                # ❌ ERROR → SHOW ERROR POPUP
+                error_popup = True
+                error_message = "Invalid username or mobile number"
+
+    return render(
+        request,
+        "forgot_password.html",
+        {
+            "profile": profile,
+            "login": login,
+            "password_found": password_found,
+            "error_popup": error_popup,
+            "error_message": error_message,
+        }
+    )
+
+
+
+
+def toggle_like(request):
+    if request.method != "POST":
+        return JsonResponse({"error": "Invalid request"}, status=400)
+
+    username = request.session.get("user")
+    if not username:
+        return JsonResponse({"error": "Not logged in"}, status=401)
+
+    try:
+        data = json.loads(request.body)
+        post_id = data.get("post_id")
+    except json.JSONDecodeError:
+        return JsonResponse({"error": "Invalid JSON"}, status=400)
+
+    print("SESSION USER:", username)
+    print("POST ID:", post_id)
+
+    if not post_id:
+        return JsonResponse({"error": "post_id missing"}, status=400)
+
+    with connection.cursor() as cursor:
+        # get user id
+        cursor.execute(
+            "SELECT id FROM register WHERE username=%s",
+            [username]
+        )
+        user_row = cursor.fetchone()
+        if not user_row:
+            return JsonResponse({"error": "User not found"}, status=404)
+
+        user_id = user_row[0]
+
+        # check if already liked
+        cursor.execute(
+            "SELECT id FROM likes WHERE post_id=%s AND user_id=%s",
+            [post_id, user_id]
+        )
+        liked = cursor.fetchone()
+
+        if liked:
+            # UNLIKE
+            cursor.execute(
+                "DELETE FROM likes WHERE post_id=%s AND user_id=%s",
+                [post_id, user_id]
+            )
+            liked_status = False
+        else:
+            # LIKE
+            cursor.execute(
+                "INSERT INTO likes (post_id, user_id) VALUES (%s, %s)",
+                [post_id, user_id]
+            )
+            liked_status = True
+
+        # updated count
+        cursor.execute(
+            "SELECT COUNT(*) FROM likes WHERE post_id=%s",
+            [post_id]
+        )
+        count = cursor.fetchone()[0]
+
+    return JsonResponse({
+        "liked": liked_status,
+        "count": count
+    })
+
+
+def chats(request):
+    if "user" not in request.session:
+        return redirect('login')
+    
+    username = request.session.get("user")
+    loginprof = profiledata(request)
+    suser = suggestuser(request)
+    # 🔹 Profile images (NO JOIN)
+    with connection.cursor() as cursor:
+
+         # 🔹 Suggested users
+        cursor.execute("""
+            SELECT id, username
+            FROM register
+            WHERE username != %s
+        """, [username])
+        users = cursor.fetchall()
+
+        cursor.execute("""
+            SELECT username, image
+            FROM profile
+            WHERE username != %s
+        """,[username])
+        profiles = dict(cursor.fetchall())
+
+        suggested_users = []
+        for uid, uname in users:
+            img = profiles.get(uname)
+
+            if img:
+                img = "" + img
+
+            suggested_users.append({
+                "id": uid,
+                "username": uname,
+                "image": img  # match by username
+            })
+            
+    return render(request, "chats.html", {
+        "loginprof" : loginprof,
+        "username" : username,
+        "suser" :suggested_users
+    })   
+
+
+def chat_page(request,username):
+   if "user" not in request.session:
+        return redirect('login')
+   
+   loginprof = profiledata(request)
+   me = request.session.get("user")
+   if not me:
+        return redirect("login")
+   
+   with connection.cursor() as cursor:
+        # 🔒 Check privacy + follow status
+        cursor.execute("""
+            SELECT r.is_private,
+                f.status
+            FROM register r
+            LEFT JOIN follows f
+                ON f.follower_username = %s
+                AND f.following_username = r.username
+            WHERE r.username = %s
+        """, [me, username])
+
+        privacy_row = cursor.fetchone()
+
+        if not privacy_row:
+            return redirect("home")
+
+        is_private = privacy_row[0]
+        follow_status = privacy_row[1]
+
+        if is_private == 1 and follow_status != "accepted":
+          return redirect("home")
+
+        # 1️⃣ Get chat user info
+        cursor.execute("""
+            SELECT r.username, p.image
+            FROM register r
+            LEFT JOIN profile p ON r.username = p.username
+            WHERE r.username = %s
+        """, [username])
+
+        row = cursor.fetchone()
+        print("LOGGED USER =", me)
+        print("CHAT USER =", username)
+
+
+        # 2️⃣ Get chat messages between both users
+        cursor.execute("""
+            SELECT sender, receiver, message, create_at
+            FROM chats
+            WHERE 
+                (sender = %s AND receiver = %s)
+                OR 
+                (sender = %s AND receiver = %s)
+            ORDER BY create_at ASC
+        """, [me, username, username, me])
+
+        messages = cursor.fetchall()
+
+    # Build chat user object
+        if row:
+            chat_user = {
+                "username": row[0],
+                "image": row[1]
+            }
+        else:
+            chat_user = None
+
+            # Convert messages to readable list
+        chat_messages = []
+        for msg in messages:
+            chat_messages.append({
+                    "sender": msg[0],
+                    "receiver": msg[1],
+                    "message": msg[2],
+                    "time": msg[3]
+                })
+        return render(request, "chat_pg.html", {
+            "chat_user": chat_user,
+            "loginprof": loginprof,
+            "messages": chat_messages,
+            "me": me
+        })
+
+def update_privacy(request):
+    if 'user' not in request.session:
+        return redirect('login')
+
+    username = request.session.get('user')
+    status = request.POST.get('status')  # "1" or "0"
+
+    with connection.cursor() as cursor:
+        cursor.execute("""
+            UPDATE register
+            SET is_private = %s
+            WHERE username = %s
+        """, [status, username])
+
+    return JsonResponse({"success": True})
+
+def logout(request):
+    if "user" in request.session:
+        request.session.flush()
+    return redirect("login")

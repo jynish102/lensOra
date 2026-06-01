@@ -1,111 +1,124 @@
 {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <link rel="stylesheet" href="{% static 'css/sidebar.css' %}">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    {% block extra_css %}{% endblock %}
+    <title>{% block title %}Base{% endblock %}</title>
 
-<link rel="stylesheet" href="">
-<link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <!-- ✨ Skeleton CSS -->
+    <style>
+/* 🔵 Fullscreen Loader */
+#logo-loader {
+    position: fixed;
+    inset: 0;
+    background: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
 
-<body >
+/* 🔵 Circle Wrapper */
+.loader-circle {
+    position: relative;
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-<nav class="sidebar close">
-    <header>
-        <div class="image-text">
-            <span class="image">
-                <img class="profile-custom" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQz4J1XfiouVQm6mrrz8CyL7qd6YZ7a3WZ6JA&s" alt="logo">
-            </span>
-            
-        </div>
+/* 🔵 Animated Border Ring */
+.loader-circle::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    padding: 5px;
+    background: linear-gradient(
+        45deg,
+        #ff0066,
+        #ffcc00,
+        #00ffcc,
+        #0066ff,
+        #ff0066
+    );
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: rotate 2s linear infinite;
+}
 
-        <i class="bx bx-chevron-right toggle"></i>
-    </header>
+/* 🔵 Logo inside circle */
+.loader-logo {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: contain;
+    background: white;
+    padding: 10px;
+    z-index: 2;
+}
 
-    <!-- Scrollable Menu -->
-    <div class="menu-bar">
-        <div class="menu">
+/* 🔄 Rotation Animation */
+@keyframes rotate {
+    100% {
+        transform: rotate(360deg);
+    }
+}
 
-            <!-- SEARCH -->
-            <li class="search-box">
-                <i class="bx bx-search icon"></i>
-                <input type="search" placeholder="Search...">
-            </li>
+    </style>
+</head>
 
-            <!-- LINKS -->
-            <ul class="menu-links">
-                <li class="nav-link">
-                    <a href="#">
-                        <i class="bx bx-home-alt icon"></i>
-                        <span class="text nav-text">Home</span>
-                    </a>
-                </li>
+<body>
 
-                <li class="nav-link">
-                    <a href="#">
-                        <i class='bx bx-plus-circle icon'></i>
-                        <span class="text nav-text">Add Post</span>
-                    </a>
-                </li>
-
-                <li class="nav-link">
-                    <a href="#">
-                        <i class='bx bx-movie-play icon'></i>
-                        <span class="text nav-text">Reels</span>
-                    </a>
-                </li>
-
-                <li class="profile-box">
-                <a href="#">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQz4J1XfiouVQm6mrrz8CyL7qd6YZ7a3WZ6JA&s" alt="profile">
-                    <span class="text nav-text">My Profile</span>
-                </a>
-            </li>
-
-            </ul>
-        </div>
-
-        <!-- Bottom Section -->
-        <div class="bottom-content">
-            
-
-            <li class="nav-link">
-                <a href="#">
-                    <i class="bx bx-log-out icon"></i>
-                    <span class="text nav-text">Logout</span>
-                </a>
-            </li>
-
-            <!-- DARK MODE SWITCH -->
-            <li class="mode">
-                <div class="moon-sun">
-                    <i class="bx bx-moon icon moon"></i>
-                    <i class="bx bx-sun icon sun"></i>
-                </div>
-                <span class="mode-text text">Dark Mode</span>
-
-                <div class="toggle-switch">
-                    <span class="switch"></span>
-                </div>
-            </li>
-        </div>
+    <!-- 🔥 Animated Logo Loader -->
+<div id="logo-loader">
+    <div class="loader-circle">
+        <img src="{% static 'images/logoa.png' %}" 
+             class="loader-logo" 
+             alt="Logo">
     </div>
-</nav>
-
-<div class="main-content">
-    {% block content %}
-    
-    {% endblock  %}
 </div>
 
+    <!-- 🔹 Real Content Wrapper -->
+    <div id="main-content" style="display:none;">
+        
+        {% include 'sidebar.html' %}
 
+        <section class="home">
+            <div class="home-container">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </section>
 
-<footer class="footer">
-    <div class="footer-content">
-        <div class="footer-brand">
-            <img src="your-logo.png" alt="LensORa Logo" class="footer-logo">
-            <span class="footer-text">by <strong>LensORa</strong></span>
-        </div>
-        <p>© 2025–26 PixelAura • All Rights Reserved</p>
     </div>
-</footer>
 
+    <script src="{% static 'js/sidebar.js' %}"></script>
 
+    <!-- ✨ Hide Skeleton When Page Loads -->
+    <script>
+window.addEventListener("load", function () {
+    const loader = document.getElementById("logo-loader");
+    const content = document.getElementById("main-content");
 
-<script src="{% static 'js/sidebar.js' %}"></script>
+    loader.style.opacity = "0";
+    loader.style.transition = "opacity 0.6s ease";
+
+    setTimeout(() => {
+        loader.style.display = "none";
+        content.style.display = "block";
+    }, 600);
+});
+</script>
+
+    {% block extra_js %}{% endblock %}
 </body>
+</html>

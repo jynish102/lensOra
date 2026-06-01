@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Chats{% endblock %}
+{% block content %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/chats.css' %}">
+{% endblock %}
+
+<div class="chat-layout">
+    <div class="chat-top-card">
+      <div class="chat-user-info">
+        <img src="{{ loginprof.image|default:'/static/images/default-user.webp' }}" class="chat-user-img">
+
+        <div class="chat-user-text">
+          <span class="chat-username">{{ username }}</span>
+        
+        </div>
+      </div>
+
+      <div class="chat-center-text">
+        <p>All chats are shown here</p>
+      </div>
+    </div>
+
+    <div class="chat-sidebar">
+
+      <h3 class="chat-title">Suggested Users</h3>
+      
+      {% for s in suser %}
+      <div class="chat-user">
+        <a href="{% url 'chat_page' s.username   %}" class="user-item"> 
+        {% if s.image %}
+        <img src="{{ s.image }}" class="chat-avatar" />
+              {% else %}
+        <img
+                src="{% static 'images/default-user.webp' %}"
+                class="chat-avatar"
+              />
+              {% endif %}
+      
+        <span class="chat-name">{{ s.username }}</span>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+</div>
+
+
+{% endblock %}

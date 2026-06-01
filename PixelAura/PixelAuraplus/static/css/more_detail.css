@@ -8,13 +8,13 @@ body{
     color: #333;
 }
 
-/* 3-column grid for: birthdate | phone | photo */
+
 .extra-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 22px;
     align-items: flex-start;
-    /* align columns to top */
+   
     margin-bottom: 20px;
 }
 
@@ -25,7 +25,7 @@ body{
     gap: 8px;
 }
 
-/* Icon at top of each column */
+
 .small-icon {
     width: 48px;
     height: 48px;
@@ -36,7 +36,7 @@ body{
     background: #f7f5ff;
     box-shadow: 0 5px 16px rgba(106, 93, 252, 0.15);
     color: #8f7bff;
-    /* SVG stroke color */
+    
 }
 
 .field-label {
@@ -45,7 +45,7 @@ body{
     color: #444;
 }
 
-/* Birthdate + phone inputs */
+
 .extra-input {
     width: 100%;
     padding: 10px 12px;
@@ -62,7 +62,7 @@ body{
     box-shadow: 0 0 0 2px rgba(106, 93, 252, 0.25);
 }
 
-/* Profile preview box (just visual, no JS) */
+
 .photo-preview.small-preview {
     width: 100%;
     height: 80px;
@@ -77,20 +77,20 @@ body{
     margin-bottom: 6px;
 }
 
-/* File input */
+
 .extra-input-file {
     font-size: 13px;
 }
 
-/* Next button wrapper */
+
 .next-btn-wrap {
     display: flex;
     justify-content: flex-end;
-    /* align button to right side */
+  
     margin-top: 10px;
 }
 
-/* Next button style */
+
 .next-btn {
     padding: 10px 26px;
     border-radius: 999px;
@@ -115,7 +115,7 @@ body{
     box-shadow: 0 2px 8px rgba(88, 73, 251, 0.4);
 }
 
-/* Responsive: stack columns on small screens */
+
 @media (max-width: 900px) {
     .extra-grid {
         grid-template-columns: 1fr;

@@ -1,0 +1,240 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}suggested_profile{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/suggested_profile.css' %}" />{% endblock %}
+{% block content %}
+
+
+<div class="profile-header">
+  <a href="{% url 'home' %}" class="close-link">
+      <i class='bx bx-x ac-close'></i>
+    </a>
+
+    <div class="profile-left">
+        <img src="{{ profile.image|default:'/static/images/default-user.webp' }}" class="profile-photo">
+    </div>
+
+    <div class="profile-right">
+        <div class="top-row">
+            
+            <h2 class="username">{{ user.username }}</h2>
+            
+           <form method="post" action="{% url 'follow_user' user.username %}">
+            {% csrf_token %}
+
+            {% if follow_status == "accepted" %}
+                <button class="follow-btn following">Following</button>
+
+            {% elif follow_status == "requested" %}
+                <button class="follow-btn requested">Requested</button>
+
+            {% elif request_pending_for_you %}
+                <button class="follow-btn accept">Accept</button>
+                
+                {% comment %} <button type="submit" name="action" value="accept" 
+            class="follow-btn accept">
+        Accept
+    </button>
+
+    <button type="submit" name="action" value="reject" 
+            class="follow-btn reject">
+        Reject
+    </button> {% endcomment %}
+
+            {% elif follows_you %}
+                <button class="follow-btn follow-back">Follow Back</button>
+
+            {% else %}
+                <button class="follow-btn">Follow</button>
+
+            {% endif %}
+</form>
+        </div>
+
+        <ul class="profile-stats">
+            <li><span>{{ post_count }}</span> posts</li>
+            <li><span id = "followerBtn" style="cursor:pointer;">{{ followers_count }}</span> followers
+            </li>
+            <li><span id="followingBtn" style="cursor:pointer;">{{ following_count }} </span> following</li>
+           
+        </ul>
+
+        <div class="user-bio">
+           
+            <p>{{ profile.bio|default:''}}</p>
+            
+
+        </div>
+    </div>
+
+</div>
+
+<hr>
+{% if show_posts %}
+    <div class="posts-grid">
+        {% for post in posts %}
+            <div class="post">
+              {% if post.1 %}
+                {% if post.1|lower|slice:"-4:" == ".mp4" %}
+                <video class="grid-post" onclick="openViewPost('{{ post.1 }}', '{{ post.0 }}','{{ post.3|escapejs }}')" autoplay muted loop playsinline>
+                  <source src="{{ post.1 }}" type="video/mp4"   />
+                  Your browser does not support the video tag.
+                </video>
+                {% else %}
+                <img src="{{ post.1 }}"  onclick="openViewPost('{{ post.1 }}', '{{ post.0 }}', '{{ post.2|escapejs }}'),false"
+              class="grid-post">
+              {% endif %}
+              
+              {% endif %}
+            </div>
+        {% empty %}
+            <p>No posts yet</p>
+        {% endfor %}
+    </div>
+{% else %}
+   <div class="private-message">
+      🔒 This account is private
+   </div>
+{% endif %}    
+
+
+<!-- VIEW POST POPUP -->
+<div class="view-post-overlay" id="viewPostPopup">
+
+  <div class="view-post-box">
+
+    <!-- LEFT IMAGE -->
+    <div class="view-post-left">
+      <div id="viewMediaContainer" class="view-media-box"></div>
+    </div>
+
+    <!-- RIGHT CONTENT -->
+    <div class="view-post-right">
+
+      <!-- HEADER -->
+      <div class="view-post-header">
+        <div class="view-user">
+          <img src="{{ profile.image|default:'/static/images/default-user.webp' }}"
+               class="view-user-pic">
+          <span>{{ user.username }}</span>
+        </div>
+        <i class="bx bx-x close-popup"></i>
+      </div>
+
+      <!-- CAPTION / COMMENTS -->
+      <div class="view-comments">
+       <div class="view-user owner-comment">
+            <img src="{{ profile.image|default:'/static/images/default-user.webp' }}"
+                class="view-user-pic">
+          <p><b>{{ user.username }}</b> 
+            <span id="popupCaption"></span> 
+          </p>
+          <div class="comment-list" id="commentList">
+              </div>
+          </div>
+        </div>
+         
+        
+      </div>
+
+      <!-- ADD COMMENT -->
+        <form method="POST" action="{% url 'add_comment' %}">
+          {% csrf_token %}
+        <input type="hidden" name="post_id" id="commentPostId" />
+        <div class="view-add-comment">
+          <textarea name="comment" type="text" placeholder="Add a comment…" required></textarea>
+          <input type="submit" value="Post">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<!-------------- Following Popup------------------------------------------------------------>
+
+<div class="follow-overlay" id="followModal">
+  <div class="follow-box">
+
+    <!-- HEADER -->
+    <div class="follow-header">
+      <h3>Following</h3>
+      <span class="close-btn" onclick="closeFollowModal()">✕</span>
+    </div>
+
+    <!-- SEARCH -->
+    <div class="follow-search">
+      <input type="text" placeholder="Search" />
+    </div>
+
+    <!-- USER LIST -->
+    <div class="follow-list">
+
+     {% for user in following_users %}
+      <div class="follow-item">
+        <img src="{{ user.2 }}" class="follow-avatar">
+
+        <div class="follow-info">
+          <div class="follow-username">
+            {{ user.0 }}
+          </div>
+          <div class="follow-name">{{ user.1 }}</div>
+        </div>
+
+        <button class="follow_btn">Following</button>
+      </div>
+  {% empty %}
+  <p style="text-align:center; padding:20px;">No Following Yet</p>
+  {% endfor %}
+      
+    </div>
+  </div>
+</div>
+<!----------------------------------------end of popup----------------------------------------------------------->
+<!-------------- Followers Popup------------------------------------------------------------>
+
+<div class="follow-overlay" id="followersModal">
+  <div class="follow-box">
+
+    <!-- HEADER -->
+    <div class="follow-header">
+      <h3>Followers</h3>
+      <span class="close-btn" onclick="closeFollowersModal()">✕</span>
+    </div>
+
+    <!-- SEARCH -->
+    <div class="follow-search">
+      <input type="text" placeholder="Search" />
+    </div>
+
+    <!-- USER LIST -->
+    <div class="follow-list">
+
+     {% for user in follower_users %}
+      <div class="follow-item">
+        <img src="{{ user.2 }}" class="follow-avatar">
+
+        <div class="follow-info">
+          <div class="follow-username">
+            {{ user.0 }}
+          </div>
+          <div class="follow-name">{{ user.1 }}</div>
+        </div>
+
+        <button class="follow_btn">Follower</button>
+      </div>
+      {% empty %}
+      <p style="text-align:center; padding:20px;">No Followers Yet</p>
+      {% endfor %}
+      
+    </div>
+  </div>
+</div>
+<!----------------------------------------end----------------------------------------------------------->
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/suggested_profile.js' %}"></script>
+
+{% endblock %}
+

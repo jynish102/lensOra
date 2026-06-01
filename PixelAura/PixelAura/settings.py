@@ -55,7 +55,7 @@ ROOT_URLCONF = 'PixelAura.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -65,6 +65,7 @@ TEMPLATES = [
             ],
         },
     },
+   
 ]
 
 WSGI_APPLICATION = 'PixelAura.wsgi.application'
@@ -120,10 +121,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
-STATICFILES_DIR = [os.path.join(BASE_DIR,'static','css')]
+STATICFILES_DIR = [os.path.join(BASE_DIR,'PixelAuraplus/static')]
 
-MEDIA_URL ='media/'
-MEDIA_ROOT = [os.path.join(BASE_DIR,'media','img')]
+MEDIA_URL ='PixelAuraplus/static/images/'
+MEDIA_ROOT = os.path.join(BASE_DIR,'PixelAuraplus/static/images/')
 
 
 # Default primary key field type

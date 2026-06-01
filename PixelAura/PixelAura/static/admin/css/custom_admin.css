@@ -1,0 +1,15 @@
+/* login page background */
+body.login {
+    background: #1e272e !important;
+}
+
+/* login form */
+.login #container {
+    background: white;
+    border-radius: 10px;
+}
+
+/* header color */
+#header {
+    background: #6c5ce7 !important;
+}
