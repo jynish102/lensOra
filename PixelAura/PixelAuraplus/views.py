@@ -60,7 +60,7 @@ def register(request):
             
             query ="insert into register (name,email,mobile,password,birthdate,username) values(%s,%s,%s,%s,%s,%s)"
             cursor.execute(query,[nm, em, mb, pw, dob, un])
-            messages.success(request, f"Registration successful! Welcome {un} 🎉")
+            messages.success(request, f"Registration successful! Welcome {un} ")
             return redirect('login')
 
     return render(request,'register.html')
@@ -92,7 +92,7 @@ def home(request):
                 'username': data[6]
         }
 
-         # 🔹 Suggested users
+         #  Suggested users
         cursor.execute("""
             SELECT id, username
             FROM register
@@ -101,7 +101,7 @@ def home(request):
         users = cursor.fetchall()
 
 
-        # 🔹 Profile images (NO JOIN)
+        #  Profile images (NO JOIN)
         cursor.execute("""
             SELECT username, image
             FROM profile
@@ -122,7 +122,7 @@ def home(request):
                 "image": img  # match by username
             })
             
-            #postst dynamic
+            #posts dynamic
             login_username = login_user[0]["username"]
         cursor.execute("""
             SELECT 
@@ -321,14 +321,14 @@ def setting(request):
         with connection.cursor() as cursor:
            
 
-            # 🔍 Check if profile exists
+            #  Check if profile exists
             cursor.execute(
                 "SELECT id FROM profile WHERE username = %s",
                 [un]
             )
             existing = cursor.fetchone()
             if existing:
-                # ✅ UPDATE
+                #  UPDATE
                 if pro_image_r_p:
                     cursor.execute("""
                         UPDATE profile
@@ -344,7 +344,7 @@ def setting(request):
                 messages.success(request,f"{un} Your Profile UPDATED Successfully....And Your Gender is {gen}......")
 
             else:
-                # ✅ INSERT
+                #  INSERT
                 cursor.execute("""
                     INSERT INTO profile (username, bio, gender, image)
                     VALUES (%s, %s, %s, %s)
@@ -426,7 +426,7 @@ def change_pass(request):
         new = request.POST.get("npwd")
         confirm = request.POST.get("cnfmpwd")
 
-        # 1️⃣ Password match check
+        # 1 Password match check
         if new != confirm:
             messages.error(request, "New passwords do not match")
             return redirect("change_pass")
@@ -436,7 +436,7 @@ def change_pass(request):
 
 
         with connection.cursor() as cursor:
-            # 2️⃣ Verify current password
+            # 2 Verify current password
             cursor.execute(
                 "SELECT id FROM register WHERE username=%s AND password=%s",
                 [username, current_hashed]
@@ -447,7 +447,7 @@ def change_pass(request):
                 messages.error(request, "Current password is incorrect")
                 return redirect("change_pass")
 
-            # 3️⃣ Update password
+            # 3 Update password
             cursor.execute(
                 "UPDATE register SET password=%s WHERE username=%s",
                 [new_hashed, username]
@@ -692,11 +692,11 @@ def delete_comment(request):
 
         comment_owner = row[0]
 
-        # ❌ Not owner → deny
+        #  Not owner → deny
         if comment_owner != username:
             return JsonResponse({"error": "Permission denied"}, status=403)
 
-        # ✅ Delete
+        #  Delete
         cursor.execute("DELETE FROM comments WHERE id = %s", [comment_id])
 
     return JsonResponse({"success": True})
@@ -780,7 +780,7 @@ def suggested_profile(request, username):
         post_count = len(posts)
 
 
-         # ✅ CHECK FOLLOW STATUS
+         #  CHECK FOLLOW STATUS
         cursor.execute("""
             SELECT status FROM follows
             WHERE follower_username=%s AND following_username=%s
@@ -1059,7 +1059,7 @@ def follow_user(request, username):
 
     with connection.cursor() as cursor:
 
-        # 1️⃣ Check if someone requested YOU
+        # 1 Check if someone requested YOU
         cursor.execute("""
             SELECT status FROM follows
             WHERE follower_username=%s
@@ -1069,7 +1069,7 @@ def follow_user(request, username):
         reverse = cursor.fetchone()
 
         if reverse and reverse[0] == "requested":
-            # 🔥 ACCEPT REQUEST
+            #  ACCEPT REQUEST
             cursor.execute("""
                 UPDATE follows
                 SET status='accepted'
@@ -1080,7 +1080,7 @@ def follow_user(request, username):
             return redirect("suggested_user_profile", username=username)
         
         # if reverse and reverse[0] == "requested" and action == "reject":
-        #      # 🔥 ReJECT REQUEST
+        #      #  ReJECT REQUEST
         #     cursor.execute("""
         #         DELETE FROM follows
         #         WHERE follower_username=%s
@@ -1132,7 +1132,7 @@ def follow_user(request, username):
                 INSERT INTO follows (follower_username, following_username, status)
                 VALUES (%s, %s, %s)
             """, [current_user, username, status])
-
+     
     return redirect("suggested_user_profile", username=username)
 
 def add_comment(request):
@@ -1163,7 +1163,7 @@ def add_comment(request):
         user = cursor.fetchone()
 
         if not user:
-            print("❌ User not found")
+            print(" User not found")
             return redirect(request.META.get("HTTP_REFERER"))
 
         user_id = user[0]
@@ -1240,10 +1240,10 @@ def forgot_password(request):
             row = cursor.fetchone()
 
             if row:
-                # ✅ MATCH FOUND
+                #  MATCH FOUND
                 password_found = row[0]
             else:
-                # ❌ NO MATCH
+                #  NO MATCH
                 messages.error(request, "Invalid username or mobile number")
 
     return render(
@@ -1282,10 +1282,10 @@ def forgot_password(request):
             
 
             if row:
-                # ✅ SUCCESS → SHOW PASSWORD POPUP
+                #  SUCCESS → SHOW PASSWORD POPUP
                 password_found = row[0]
             else:
-                # ❌ ERROR → SHOW ERROR POPUP
+                #  ERROR → SHOW ERROR POPUP
                 error_popup = True
                 error_message = "Invalid username or mobile number"
 
@@ -1300,8 +1300,6 @@ def forgot_password(request):
             "error_message": error_message,
         }
     )
-
-
 
 
 def toggle_like(request):
@@ -1378,10 +1376,10 @@ def chats(request):
     username = request.session.get("user")
     loginprof = profiledata(request)
     suser = suggestuser(request)
-    # 🔹 Profile images (NO JOIN)
+    #  Profile images (NO JOIN)
     with connection.cursor() as cursor:
 
-         # 🔹 Suggested users
+         # Suggested users
         cursor.execute("""
             SELECT id, username
             FROM register
@@ -1426,7 +1424,7 @@ def chat_page(request,username):
         return redirect("login")
    
    with connection.cursor() as cursor:
-        # 🔒 Check privacy + follow status
+        # Check privacy + follow status
         cursor.execute("""
             SELECT r.is_private,
                 f.status
@@ -1448,7 +1446,7 @@ def chat_page(request,username):
         if is_private == 1 and follow_status != "accepted":
           return redirect("home")
 
-        # 1️⃣ Get chat user info
+        # 1 Get chat user info
         cursor.execute("""
             SELECT r.username, p.image
             FROM register r
@@ -1461,7 +1459,7 @@ def chat_page(request,username):
         print("CHAT USER =", username)
 
 
-        # 2️⃣ Get chat messages between both users
+        # 2 Get chat messages between both users
         cursor.execute("""
             SELECT sender, receiver, message, create_at
             FROM chats

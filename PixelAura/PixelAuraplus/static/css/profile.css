@@ -139,6 +139,7 @@ body {
 
 
 
+<<<<<<< HEAD
 /* .default-user-icon {
     position: absolute;
     inset: 0;
@@ -151,6 +152,12 @@ body {
     border-radius: 50%;
     z-index: 1;
 } */
+=======
+.default-user-icon {
+    font-size: 48px;
+    color: white;
+}
+>>>>>>> 97df6a19ee0b9f4f1232fb06e04ac0701d3b34ad
 
 .user-top-row {
     display: flex;
@@ -165,6 +172,11 @@ body {
     line-height: 1.2;
 }
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 97df6a19ee0b9f4f1232fb06e04ac0701d3b34ad
 .getting-started {
     margin-top: 10px;
     padding: 10px 0;
@@ -348,6 +360,21 @@ body {
     background: #fff;
 }
 
+<<<<<<< HEAD
+=======
+.default-user-icon {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 60px;
+    color: #999;
+    background: #f0f0f0;
+    border-radius: 50%;
+    z-index: 1;
+}
+>>>>>>> 97df6a19ee0b9f4f1232fb06e04ac0701d3b34ad
 
 .crop-header i {
     display: flex;
@@ -911,7 +938,10 @@ flex: 1;
     object-fit: contain;
     background: black;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 97df6a19ee0b9f4f1232fb06e04ac0701d3b34ad
 /*--------follow  popup css---------------------*/
 
 .follow-overlay {
@@ -1026,4 +1056,8 @@ flex: 1;
     font-weight: 600;
     cursor: pointer;
 }
+<<<<<<< HEAD
 /*----------------end of pop--------------------*/
+=======
+/*----------------end of pop--------------------*/
+>>>>>>> 97df6a19ee0b9f4f1232fb06e04ac0701d3b34ad

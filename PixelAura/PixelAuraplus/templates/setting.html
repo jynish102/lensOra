@@ -2,15 +2,23 @@
 {% block title %}Setting{%endblock%} 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/setting.css' %}" />
+<<<<<<< HEAD
 {% endblock %} 
 {% block content %}
 
+=======
+{% endblock %} {% block content %}
+>>>>>>> 97df6a19ee0b9f4f1232fb06e04ac0701d3b34ad
 {% if messages %}
  {% for message in messages %}
     <div class="toast-message">
       {{ message }}
     </div>
+<<<<<<< HEAD
   {% endfor %}
+=======
+  {% endfor %}  
+>>>>>>> 97df6a19ee0b9f4f1232fb06e04ac0701d3b34ad
 {% endif %}
 <div class="app">
   <div class="settings-panel">
@@ -77,10 +85,15 @@
         <div class="profile-left">
           <img
             id="profilePreview"
+<<<<<<< HEAD
             {% comment %} src="{{ profile.image|default:'images/default-user.webp' }}"
             alt="Profile" {% endcomment %}
 
              src="{% if profile.image %}{{ profile.image }}{% else %}{% static 'images/default-user.webp' %}{% endif %}" 
+=======
+            src="{{ profile.image|default:'/static/images/default-user.png' }}"
+            alt="Profile"
+>>>>>>> 97df6a19ee0b9f4f1232fb06e04ac0701d3b34ad
           />
           <div>
             {% for login in datas %}
@@ -88,6 +101,7 @@
             <p>{{ login.name }}</p>
             {% endfor %}
           </div>
+<<<<<<< HEAD
         </div>
 
         <button type="button" id="openPhotoModal">Change photo</button>
@@ -195,6 +209,143 @@
             templates or stickers will be deleted. If you switch back to a
             public account within 24 hours, they will be restored.
           </p>
+=======
+>>>>>>> 97df6a19ee0b9f4f1232fb06e04ac0701d3b34ad
+        </div>
+
+        <button type="button" id="openPhotoModal">Change photo</button>
+      </div>
+      <input
+        type="file"
+        id="profileImageInput"
+        name="profile_image"
+        accept="image/*"
+        hidden
+      />
+
+      <div class="form-group">
+        <label>Bio</label>
+        <textarea id="bioInput" name="bio" placeholder="Bio">{{ profile.bio }}</textarea
+        >
+        <small id="bioCount">0 / 150</small>
+        <small id="bioError" style="color: red; display: none"
+          >Bio cannot exceed 150 characters</small
+        >
+      </div>
+
+<<<<<<< HEAD
+      <div class="privacy-actions">
+        <button class="confirm-btn" id="confirmPrivate">
+          Switch to private
+        </button>
+        <button class="cancel-btn" id="cancelPrivate">Cancel</button>
+=======
+      <div class="form-group">
+        <label>Gender</label>
+        <select name="gender">
+          <option>Prefer not to say</option>
+          <option
+            value="male"
+            {%
+            if
+            profile.gender=
+            = "male"
+            %}selected{%
+            endif
+            %}
+          >
+            Male
+          </option>
+          <option
+            value="female"
+            {%
+            if
+            profile.gender=
+            = "female"
+            %}selected{%
+            endif
+            %}
+          >
+            Female
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <input type="submit" class="submit-btn" value="Submit" />
+      </div>
+    </form>
+
+    <!--popup---------------------------------------------->
+    <!-- ✅ PROFILE PHOTO POPUP -->
+    <div class="photo-modal" id="photoModal">
+      <div class="photo-modal-box">
+        <h3>Change Profile Photo</h3>
+
+        <div class="photo-options uploadBtn">Upload Photo</div>
+
+        <div class="photo-options removeBtn">Remove Current Photo</div>
+
+        <div class="photo-options cancel" id="closePhotoModal">Cancel</div>
+>>>>>>> 97df6a19ee0b9f4f1232fb06e04ac0701d3b34ad
+      </div>
+    </div>
+  </div>
+
+<<<<<<< HEAD
+=======
+  <!--------------------------Account  privacy-------------------------------------->
+  <div class="privacy-section">
+    <h2 class="privacy-title">Account privacy</h2>
+    <div class="privacy-card">
+      <div class="privacy-row">
+        <div class="privacy-text">
+          <h4>Private account</h4>
+          <p>
+            When your account is public, your profile and posts can be seen by
+            anyone, on or off Instagram.
+            <br /><br />
+            When your account is private, only the followers you approve can see
+            what you share.
+          </p>
+        </div>
+
+        <!-- INSTAGRAM STYLE TOGGLE -->
+        <div class="ig-toggle">
+          <input type="checkbox" id="privacyToggle" />
+          <label for="privacyToggle"></label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!----------------------------------------------------------------------->
+  <!-- PRIVACY CONFIRM MODAL -->
+  <div class="privacy-overlay" id="privacyModal">
+    <div class="privacy-modal">
+      <h3>Switch to private account?</h3>
+
+      <div class="privacy-content">
+        <div class="privacy-row-item">
+          <i class="bx bx-movie-play privacy-icon"></i>
+          <p>Only your followers will be able to see your photos and videos.</p>
+        </div>
+
+        <div class="privacy-row-item">
+          <i class="bx bx-at privacy-icon"></i>
+          <p>
+            This won't change who can message, tag or @mention you, but you
+            won't be able to tag people who don't follow you.
+          </p>
+        </div>
+
+        <div class="privacy-row-item">
+          <i class="bx bx-refresh privacy-icon"></i>
+          <p>
+            No one can reuse your content. All reels, posts and stories that
+            previously used your content in features like remixes, sequences,
+            templates or stickers will be deleted. If you switch back to a
+            public account within 24 hours, they will be restored.
+          </p>
         </div>
       </div>
 
@@ -207,6 +358,7 @@
     </div>
   </div>
 
+>>>>>>> 97df6a19ee0b9f4f1232fb06e04ac0701d3b34ad
   <!-------------------------End privacy--------------------->
 </div>
 {% endblock %} {% block extra_js %}

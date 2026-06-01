@@ -12,6 +12,10 @@
 {% endif %} 
 
 <body>
+<<<<<<< HEAD
+=======
+  
+>>>>>>> 97df6a19ee0b9f4f1232fb06e04ac0701d3b34ad
 
   <div class="profile-container">
     <a href="{% url 'home' %}" class="close-link">
@@ -32,7 +36,11 @@
           <img src="{{ profile.image }}" class="profile-img">
           {% else %}
           
+<<<<<<< HEAD
           <img src="{% static 'images/default-user.webp' %}" class="profile-img">
+=======
+          <img src="{% static 'images/default-user.png' %}" class="profile-img">
+>>>>>>> 97df6a19ee0b9f4f1232fb06e04ac0701d3b34ad
           {% endif %}
         </div>
 
@@ -58,7 +66,11 @@
             </div>
             <div>
               <b>{{ followers_count}}</b>
+<<<<<<< HEAD
               <span id="followerBtn" style="cursor:pointer;" >Followers</span>
+=======
+              <span>Followers</span>
+>>>>>>> 97df6a19ee0b9f4f1232fb06e04ac0701d3b34ad
             </div>
             <div>
               <b>{{ following_count }}</b>
@@ -135,12 +147,6 @@
         </div>
       </div>
     </div>
-
-
-   
-
-
-
   <!-- VIEW POST POPUP (NEW) -->
   <div class="view-post-overlay" id="viewPostPopup">
 
@@ -166,7 +172,11 @@
                 {% if profile.image %}
                    <img src="{{ profile.image }}" class="view-user-pic">
                 {% else %}
+<<<<<<< HEAD
                   
+=======
+                 
+>>>>>>> 97df6a19ee0b9f4f1232fb06e04ac0701d3b34ad
                   <img src="{% static 'images/default-user.webp' %}" class="view-user-pic">
                 {% endif %}
                {% for login in userlogin %} 
@@ -195,10 +205,13 @@
             </div>
             </p>
             <div class="comment-list" id="commentList">
+<<<<<<< HEAD
               
               
                
                 
+=======
+>>>>>>> 97df6a19ee0b9f4f1232fb06e04ac0701d3b34ad
 
                 <!-- 3 DOT MENU -->
                 <div class="comment-more" onclick="toggleCommentMenu(this)">
@@ -235,7 +248,11 @@
 </div>
 </div>
 <!-------------- Following Popup------------------------------------------------------------>
+<<<<<<< HEAD
 
+=======
+<!-- FOLLOWING MODAL -->
+>>>>>>> 97df6a19ee0b9f4f1232fb06e04ac0701d3b34ad
 <div class="follow-overlay" id="followModal">
   <div class="follow-box">
 
@@ -274,7 +291,11 @@
   </div>
 </div>
 <!----------------------------------------end of popup----------------------------------------------------------->
+<<<<<<< HEAD
 <!-------------- Followers Popup------------------------------------------------------------>
+=======
+  <!-------------- Followers Popup------------------------------------------------------------>
+>>>>>>> 97df6a19ee0b9f4f1232fb06e04ac0701d3b34ad
 
 <div class="follow-overlay" id="followersModal">
   <div class="follow-box">
@@ -316,7 +337,10 @@
 
 <!----------------------------------------end----------------------------------------------------------->
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 97df6a19ee0b9f4f1232fb06e04ac0701d3b34ad
 </body>
 <script src="{% static 'js/profile.js' %}"></script>
 

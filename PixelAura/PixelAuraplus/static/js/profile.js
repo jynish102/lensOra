@@ -147,10 +147,6 @@ function toggleCommentMenu(el) {
     .forEach((m) => m !== el && m.classList.remove("active"));
 
   el.classList.toggle("active");
-}
-
-
-
 
 /*-------------------------follow popup----------------------------------- */
 const followingModal = document.getElementById("followModal");
@@ -183,4 +179,3 @@ function closeFollowersModal() {
   document.body.style.overflow = "auto";
 }
 /*-------------------------------------end popup--------------------------- */
-

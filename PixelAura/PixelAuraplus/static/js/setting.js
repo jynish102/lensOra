@@ -109,7 +109,7 @@ setTimeout(() => {
 
   if (!toggle) return;
   let previousState = toggle.checked;
-  let isManualChange = false; //  ADD THIS LINE
+  let isManualChange = false; // ✅ ADD THIS LINE
 
   /* CLICK TOGGLE */
   if (toggle) {
